@@ -1,0 +1,33 @@
+HELP.md
+.DS_Store
+!gradle/wrapper/gradle-wrapper.jar
+.gradle
+/build/
+/target/
+.hprof
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
