@@ -1,5 +1,31 @@
-databaseChangeLog:
-  - logicalFilePath: no-path
-  - include:
-      file: changes/init.yaml
-      relativeToChangelogFile: true
+
+  databaseChangeLog:
+    - logicalFilePath: no-path
+    - include:
+        file: changes/init.yaml
+        relativeToChangelogFile: true
+
+    - changeSet:
+        id: 1
+        author: izzatulla.toshpulatov@mail.ru
+        changes:
+          - sql:
+              dbms: 'mysql'
+              endDelimiter: \nGO
+              splitStatements: true
+              stripComments: true
+              sql: create table role
+  (
+  role_id      int                     not null,
+  role_name    int                     null,
+  role_created timestamp default now() null,
+  modified     timestamp               null,
+  constraint role_pk
+  primary key (role_id)
+  );  create unique index role_role_name_uindex
+  on role (role_name);
+
+
+
+
+

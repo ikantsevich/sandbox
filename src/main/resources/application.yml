@@ -18,11 +18,16 @@ spring:
   datasource:
     name: 'sandbox'
     driver-class-name: org.mariadb.jdbc.Driver
-    url: '${datasource.url}'
-    username: '${datasource.username}'
-    password: '${datasource.password}'
+    url: 'jdbc:mysql://localhost:3306/sandbox'
+    username: 'mYsql'
+    password: 'mYsql934509018'
   liquibase:
     user: '${datasource.username}'
     parameters.env: '${spring.profiles.active}'
     enabled: true
-    change-log: '/db.changelog/db.changelog-master.yaml'    
+    change-log: '/db.changelog/db.changelog-master.yaml'
+
+
+
+
+
