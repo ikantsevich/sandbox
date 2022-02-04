@@ -1,12 +1,12 @@
 server:
-  port: 8081
+  port: 8084
   servlet.context-path: /sandbox
 datasource:
   schema: 'sandbox'
   host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
   username: 'root'
-  password: ''
+  password: 'Arcane700+'
 spring:
   jpa:
     properties:
