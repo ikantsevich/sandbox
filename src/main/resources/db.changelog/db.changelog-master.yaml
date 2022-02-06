@@ -1,40 +1,18 @@
 databaseChangeLog:
   - logicalFilePath: no-path
+
   - include:
       file: changes/init.yaml
       relativeToChangelogFile: true
 
-  - changeSet:
-      id: 1
-      author: asilbekdev@gmail.com
-      changes:
-      - sql:
-          dbms: 'mysql'
-          endDelimiter: \nGO
-          splitStatements: true
-          stripComments: true
-          sql: create table tg_info(info_id       int NOT NULL AUTO_INCREMENT,chat_id       varchar(20),chat_state    varchar(20),username      varchar(20),info_crested  datetime default CURRENT_TIMESTAMP,info_modified datetime,PRIMARY KEY (info_id),unique (chat_id));
+  - include:
+      file: changes/tg_info.yaml
+      relativeToChangelogFile: true
 
-  - changeSet:
-      id: 2
-      author: asilbekdev@gmail.com
-      changes:
-        - sql:
-            dbms: 'mysql'
-            endDelimiter: \nGO
-            splitStatements: true
-            stripComments: true
-            sql: create table employee(em_id        int NOT NULL AUTO_INCREMENT,tg_info_id   int,em_firstname varchar(20),em_lastname  varchar(20),em_email     varchar(20) unique,em_position  varchar(20),em_start     datetime,em_end       datetime,em_created   timestamp default CURRENT_TIMESTAMP,em_modified  datetime,PRIMARY KEY (em_id),CONSTRAINT fk_tg_info_id FOREIGN KEY (tg_info_id)references tg_info(info_id));
+  - include:
+      file: changes/employee.yaml
+      relativeToChangelogFile: true
 
-  - changeSet:
-      id: 3
-      author: asilbekdev@gmail.com
-      changes:
-        - sql:
-            dbms: 'mysql'
-            endDelimiter: \nGO
-            splitStatements: true
-            stripComments: true
-            sql: create table vacation(va_id       int NOT NULL AUTO_INCREMENT,em_id       int,va_start    timestamp,va_end      timestamp,va_created  timestamp default CURRENT_TIMESTAMP,va_modified timestamp,PRIMARY KEY (va_id),CONSTRAINT fk_emp FOREIGN KEY (em_id)references employee(em_id));
-
-
+  - include:
+      file: changes/vacation.yaml
+      relativeToChangelogFile: true
