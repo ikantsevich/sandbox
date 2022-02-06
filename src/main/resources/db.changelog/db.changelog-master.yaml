@@ -1,31 +1,95 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - include:
+      file: changes/init.yaml
+      relativeToChangelogFile: true
 
-  databaseChangeLog:
-    - logicalFilePath: no-path
-    - include:
-        file: changes/init.yaml
-        relativeToChangelogFile: true
-
-    - changeSet:
-        id: 1
-        author: izzatulla.toshpulatov@mail.ru
-        changes:
-          - sql:
-              dbms: 'mysql'
-              endDelimiter: \nGO
-              splitStatements: true
-              stripComments: true
-              sql: create table role
+  - changeSet:
+      id: 1
+      author: izzatulla.toshpulatov@mail.ru
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE permission
   (
-  role_id      int                     not null,
-  role_name    int                     null,
-  role_created timestamp default now() null,
-  modified     timestamp               null,
-  constraint role_pk
-  primary key (role_id)
-  );  create unique index role_role_name_uindex
-  on role (role_name);
+  per_id      BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'permission primary key',
+  per_name    VARCHAR(100) NULL COMMENT 'permission name',
+  per_created TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+  ad_modified TIMESTAMP    NULL COMMENT 'Record modified timestamp',
+  PRIMARY KEY (per_id),
+  UNIQUE KEY (per_name)
+  )
+  - changeSet:
+      id: 2
+      author: izzatulla.toshpulatov@mail.ru
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE role
+  (
+  role_id      BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'role primary key',
+  role_name   INT NULL COMMENT 'role name as int',
+  role_created TIMESTAMP    NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+  role_modified TIMESTAMP    NULL COMMENT 'Record modified timestamp',
+  PRIMARY KEY (role_id),
+  UNIQUE KEY (role_name)
+  )
 
+  - changeSet:
+      id: 3
+      author: izzatulla.toshpulatov@mail.ru
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE parking
+  (
+  role_per_id       BIGINT    NOT NULL AUTO_INCREMENT COMMENT 'role_permission primary key',
+  rol_id            BIGINT    NOT NULL COMMENT 'role_id foreign key',
+  per_id            BIGINT    NOT NULL COMMENT 'per_id foreign key',
+  role_per_created  TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+  role_per_modified TIMESTAMP NULL COMMENT 'Record modified timestamp',
+  PRIMARY KEY (role_per_id),
+  CONSTRAINT role_id_fk
+  FOREIGN KEY (rol_id)
+  REFERENCES role (role_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+  CONSTRAINT per_id_fk
+  FOREIGN KEY (per_id)
+  REFERENCES permission (per_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+  )
 
-
-
-
+  - changeSet:
+      id: 4
+      author: izzatulla.toshpulatov@mail.ru
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE em_role
+  (
+  em_role_id       BIGINT    NOT NULL AUTO_INCREMENT COMMENT 'employee_role primary key',
+  rol_id            BIGINT    NOT NULL COMMENT 'role_id foreign key',
+  em_id            BIGINT    NOT NULL COMMENT 'em_id foreign key',
+  em_role_created  TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+  em_role_modified TIMESTAMP NULL COMMENT 'Record modified timestamp',
+  PRIMARY KEY (em_role_id),
+  CONSTRAINT role_em_id_fk
+  FOREIGN KEY (rol_id)
+  REFERENCES role (role_id)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+  )
