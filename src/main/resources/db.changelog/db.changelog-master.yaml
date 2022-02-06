@@ -3,3 +3,156 @@ databaseChangeLog:
   - include:
       file: changes/init.yaml
       relativeToChangelogFile: true
+
+  - changeSet:
+      id: 1
+      author: basiashvilin@gmail.com
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE address (
+                 ad_id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Address primary key',
+                 country VARCHAR(100) NULL COMMENT 'Country name',
+                 city VARCHAR(100) NULL COMMENT 'City name',
+                 street VARCHAR(100) NULL COMMENT 'Street name',
+                 building_num INT NULL COMMENT 'Number of building',
+                 zip_code VARCHAR(100) NULL COMMENT 'Zip code',
+                 ad_created TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+                 ad_modified TIMESTAMP NULL COMMENT 'Record modified timestamp',
+                 PRIMARY KEY (ad_id))
+                 COMMENT = 'Table for addresses';
+  - changeSet:
+      id: 2
+      author: basiashvilin@gmail.com
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE office (
+                 of_id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Office primary key',
+                 ad_id BIGINT NOT NULL COMMENT 'Office address foreign key',
+                 pa_id BIGINT NULL COMMENT 'Office parking foreign key',
+                 of_name VARCHAR(100) NULL COMMENT 'Office name',
+                 of_status VARCHAR(50) NOT NULL COMMENT 'Status of office',
+                 of_created TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+                 of_modified TIMESTAMP NULL COMMENT 'Record modified timestamp',
+                 PRIMARY KEY (of_id),
+                 INDEX office_address_fk_idx (ad_id ASC) VISIBLE,
+                 CONSTRAINT office_address_fk
+                 FOREIGN KEY (ad_id)
+                 REFERENCES address (ad_id)
+                 ON DELETE NO ACTION
+                 ON UPDATE NO ACTION)
+                 COMMENT = 'Table for offices';
+  - changeSet:
+      id: 3
+      author: basiashvilin@gmail.com
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE parking (
+                 pa_id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Parking primary key',
+                 of_id BIGINT NOT NULL COMMENT 'Parking office foreign key',
+                 ad_id BIGINT NOT NULL COMMENT 'Parking address foreign key',
+                 pa_created TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+                 pa_modified TIMESTAMP NULL COMMENT 'Record modified timestamp',
+                 PRIMARY KEY (pa_id),
+                 INDEX parking_address_fk_idx (ad_id ASC) VISIBLE,
+                 INDEX parking_office_fk_idx (of_id ASC) VISIBLE,
+                 CONSTRAINT parking_address_fk
+                 FOREIGN KEY (ad_id)
+                 REFERENCES address (ad_id)
+                 ON DELETE NO ACTION
+                 ON UPDATE NO ACTION,
+                 CONSTRAINT parking_office_fk
+                 FOREIGN KEY (of_id)
+                 REFERENCES office (of_id)
+                 ON DELETE NO ACTION
+                 ON UPDATE NO ACTION)
+                 COMMENT = 'Table for parkings';
+  - changeSet:
+      id: 4
+      author: basiashvilin@gmail.com
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: ALTER TABLE office
+                 ADD INDEX office_parking_fk_idx (pa_id ASC) VISIBLE;
+  - changeSet:
+      id: 5
+      author: basiashvilin@gmail.com
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: ALTER TABLE office
+                 ADD CONSTRAINT office_parking_fk
+                 FOREIGN KEY (pa_id)
+                 REFERENCES parking (pa_id)
+                 ON DELETE NO ACTION
+                 ON UPDATE NO ACTION;
+  - changeSet:
+      id: 6
+      author: basiashvilin@gmail.com
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE parking_spot (
+                 spot_id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Parking spot primary key',
+                 pa_id BIGINT NOT NULL COMMENT 'Parking foreign key',
+                 spot_status VARCHAR(50) NOT NULL COMMENT 'Parking spot status',
+                 spot_num INT NOT NULL COMMENT 'Parking spot number',
+                 e_charger TINYINT NOT NULL DEFAULT 0 COMMENT 'Has e-charger or not',
+                 spot_created TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record created timestamp',
+                 spot_modified TIMESTAMP NULL COMMENT 'Record modified timestamp',
+                 PRIMARY KEY (spot_id),
+                 INDEX parking_spot_parking_fk_idx (pa_id ASC) VISIBLE,
+                 CONSTRAINT parking_spot_parking_fk
+                 FOREIGN KEY (pa_id)
+                 REFERENCES parking (pa_id)
+                 ON DELETE NO ACTION
+                 ON UPDATE NO ACTION)
+                 COMMENT = 'Table for parking spots';
+  - changeSet:
+      id: 7
+      author: basiashvilin@gmail.com
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: CREATE TABLE booking (
+                 bo_id BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Booking primary key',
+                 em_id BIGINT NOT NULL COMMENT 'Employee foreign key',
+                 seat_id BIGINT NULL COMMENT 'Seat foreign key',
+                 spot_id BIGINT NULL COMMENT 'Parking spot foreign key',
+                 bo_status VARCHAR(50) NOT NULL COMMENT 'Booking status',
+                 starting_date TIMESTAMP NOT NULL COMMENT 'Booking starting date',
+                 ending_date TIMESTAMP NULL COMMENT 'Booking ending date',
+                 bo_created TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Record creation timestamp',
+                 bo_modified TIMESTAMP NULL COMMENT 'Record modified timestamp',
+                 PRIMARY KEY (bo_id),
+                 INDEX booking_parking_spot_fk_idx (spot_id ASC) VISIBLE,
+                 CONSTRAINT booking_parking_spot_fk
+                 FOREIGN KEY (spot_id)
+                 REFERENCES parking_spot (spot_id)
+                 ON DELETE NO ACTION
+                 ON UPDATE NO ACTION)
+                 COMMENT = 'Booking table';
