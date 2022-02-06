@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -18,6 +16,7 @@ import java.util.Date;
 @Entity
 public class TgInfo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer infoId;
     String chatId;
     String chatState;

@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
@@ -19,6 +16,7 @@ import java.util.Date;
 @Entity
 public class Vacation {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer va_id;
 
     @OneToOne
