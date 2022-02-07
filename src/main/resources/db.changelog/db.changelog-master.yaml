@@ -1,5 +1,48 @@
 databaseChangeLog:
-  - logicalFilePath: no-path
   - include:
-      file: changes/init.yaml
+      file: changes/em_role.yaml
       relativeToChangelogFile: true
+
+  - changeSet:
+      id: 4
+      author: Jakhongir
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: create table em_role (role_id integer constraint em_role_role_role_id_fk references role, em_id integer constraint em_role_employee_em_id_fk references employee, emr_created timestamp, emr_modified timestamp);
+
+  - changeSet:
+      id: 5
+      author: Jakhongir
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: create table role (role_id serial constraint role_pk primary key, role_name varchar(20), role_created timestamp, role_modified timestamp);
+
+  - changeSet:
+      id: 6
+      author: Jakhongir
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: create table role_per (role_id integer constraint role_per_role_role_id_fk references role, per_id integer constraint role_per_permission_per_id_fk references permission, role_per_created timestamp, role_per_modified timestamp);
+
+  - changeSet:
+      id: 7
+      author: Jakhongir
+      changes:
+        - sql:
+            dbms: 'mysql'
+            endDelimiter: \nGO
+            splitStatements: true
+            stripComments: true
+            sql: create table permission (per_id serial constraint permission_pk primary key, per_name varchar(20), per_created timestamp, per_modified timestamp);
