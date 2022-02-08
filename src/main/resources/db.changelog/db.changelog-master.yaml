@@ -1,5 +1,18 @@
 databaseChangeLog:
   - logicalFilePath: no-path
+
   - include:
       file: changes/init.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/office.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/floor.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/attachment.yaml
       relativeToChangelogFile: true

@@ -1,12 +1,12 @@
 server:
-  port: 8081
+  port: 8080
   servlet.context-path: /sandbox
 datasource:
   schema: 'sandbox'
   host: '${dockerdbhost:localhost}:3306'
-  url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
+  url: 'jdbc:mysql://${datasource.host}/${datasource.schema}'
   username: 'root'
-  password: ''
+  password: '09102003'
 spring:
   jpa:
     properties:
@@ -17,7 +17,7 @@ spring:
       hibernate.type: trace
   datasource:
     name: 'sandbox'
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: '${datasource.url}'
     username: '${datasource.username}'
     password: '${datasource.password}'
@@ -25,4 +25,4 @@ spring:
     user: '${datasource.username}'
     parameters.env: '${spring.profiles.active}'
     enabled: true
-    change-log: '/db.changelog/db.changelog-master.yaml'    
+    change-log: '/db.changelog/db.changelog-master.yaml'

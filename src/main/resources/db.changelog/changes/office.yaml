@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: office teble init
+      author: saidamin
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: office
+      changes:
+        - createTable:
+            tableName: office
+            columns:
+              - column:
+                  name: of_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_of_id
+              - column:
+                  name: ad_id
+                  type: int
+                  constraints:
+                    unique: true
+#                    foreignKeyName: fk_ad_id
+#                    references: address(ad_id)
+              - column:
+                  name: pa_id
+                  type: int
+                  constraints:
+                    unique: true
+                    nullable: true
+#                    foreignKeyName: fk_pa_id
+#                    references: parking(pa_id)
+              - column:
+                  name: of_status
+                  type: varchar(255)
+              - column:
+                  name: of_created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: of_modified
+                  type: datetime
