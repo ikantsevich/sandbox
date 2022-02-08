@@ -5,8 +5,8 @@ import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.dto.EmployeeDto;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,26 +14,34 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+    private final ModelMapper mapper = new ModelMapper();
 
     @Override
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeDto> getEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+
+
+        return employees.stream().map(employee -> mapper.map(employee, EmployeeDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public Employee getEmployeeByID(Long id) {
+    public EmployeeDto getEmployeeByID(Long id) {
         Optional<Employee> byId = employeeRepository.findById(id);
 
-        return byId.orElseThrow(() -> new EntityNotFoundException("Employee with id: " + id + " not found"));
+        Employee employee = byId.orElseThrow(() -> new EntityNotFoundException("Employee with id: " + id + " not found"));
+
+        return mapper.map(employee, EmployeeDto.class);
     }
 
     @Override
-    public Employee create(Employee employee) {
-        return employeeRepository.save(employee);
+    public EmployeeDto create(EmployeeDto employeeDto) {
+        Employee employee = mapper.map(employeeDto, Employee.class);
+
+        return mapper.map(employeeRepository.save(employee), EmployeeDto.class);
     }
 
     @Override
@@ -42,13 +50,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee update(Long id, Employee employee) {
+    public EmployeeDto update(Long id, EmployeeDto employeeDto) {
+        Employee employee = mapper.map(employeeDto, Employee.class);
         employee.setId(id);
-        return employeeRepository.save(employee);
-    }
-
-    @Override
-    public List<EmployeeDto> toDtoList(List<Employee> employees, ModelMapper mapper) {
-        return employees.stream().map(employee -> mapper.map(employee, EmployeeDto.class)).collect(Collectors.toList());
+        return mapper.map(employeeRepository.save(employee), EmployeeDto.class);
     }
 }

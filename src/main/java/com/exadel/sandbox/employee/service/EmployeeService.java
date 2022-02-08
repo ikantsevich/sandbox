@@ -1,21 +1,17 @@
 package com.exadel.sandbox.employee.service;
 
-import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.dto.EmployeeDto;
-import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
 public interface EmployeeService {
-    List<Employee> getEmployees();
+    List<EmployeeDto> getEmployees();
 
-    Employee getEmployeeByID(Long id);
+    EmployeeDto getEmployeeByID(Long id);
 
-    Employee create(Employee employee);
+    EmployeeDto create(EmployeeDto employeeDto);
 
     void deleteById(Long id);
 
-    Employee update(Long id, Employee employee);
-
-    List<EmployeeDto> toDtoList(List<Employee> employees, ModelMapper mapper);
+    EmployeeDto update(Long id, EmployeeDto employeeDto);
 }

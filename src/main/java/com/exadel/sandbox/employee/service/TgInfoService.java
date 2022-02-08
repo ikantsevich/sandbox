@@ -1,21 +1,18 @@
 package com.exadel.sandbox.employee.service;
 
 import com.exadel.sandbox.employee.dto.TgInfoDto;
-import com.exadel.sandbox.employee.entity.TgInfo;
-import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
 public interface TgInfoService {
-    List<TgInfo> getTgInfos();
+    List<TgInfoDto> getTgInfos();
 
-    TgInfo getTgInfoById(Long id);
+    TgInfoDto getTgInfoById(Long id);
 
-    TgInfo create(TgInfo tgInfo);
+    TgInfoDto create(TgInfoDto tgInfoDto);
 
     void deleteById(Long id);
 
-    TgInfo update(Long id, TgInfo tgInfo);
+    TgInfoDto update(Long id, TgInfoDto tgInfoDto);
 
-    List<TgInfoDto> toDtoList(List<TgInfo> tgInfos, ModelMapper mapper);
 }

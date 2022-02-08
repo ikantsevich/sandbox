@@ -5,8 +5,8 @@ import com.exadel.sandbox.vacation.dto.VacationDto;
 import com.exadel.sandbox.vacation.entities.Vacation;
 import com.exadel.sandbox.vacation.repository.VacationRepository;
 import com.exadel.sandbox.vacation.service.VacationService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,27 +14,34 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class VacationServiceImpl implements VacationService {
 
-
-    @Autowired
-    VacationRepository vacationRepository;
+    private final VacationRepository vacationRepository;
+    private final ModelMapper mapper = new ModelMapper();
 
     @Override
-    public List<Vacation> getVacation() {
-        return vacationRepository.findAll();
+    public List<VacationDto> getVacations() {
+        List<Vacation> vacations = vacationRepository.findAll();
+
+        return vacations.stream().map(vacation -> mapper.map(vacation, VacationDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public Vacation getVacationById(Long id) {
+    public VacationDto getVacationById(Long id) {
         Optional<Vacation> byId = vacationRepository.findById(id);
 
-        return byId.orElseThrow(() -> new EntityNotFoundException("Vacation with id: " + id + " not found"));
+        Vacation vacation = byId.orElseThrow(() -> new EntityNotFoundException("Vacation with id: " + id + " not found"));
+
+        return mapper.map(vacation, VacationDto.class);
     }
 
+
     @Override
-    public Vacation create(Vacation vacation) {
-        return vacationRepository.save(vacation);
+    public VacationDto create(VacationDto vacationDto) {
+        Vacation vacation = mapper.map(vacationDto, Vacation.class);
+
+        return mapper.map(vacationRepository.save(vacation), VacationDto.class);
     }
 
     @Override
@@ -43,14 +50,10 @@ public class VacationServiceImpl implements VacationService {
     }
 
     @Override
-    public Vacation update(Long id, Vacation vacation) {
+    public VacationDto update(Long id, VacationDto vacationDto) {
+        Vacation vacation = mapper.map(vacationDto, Vacation.class);
         vacation.setId(id);
 
-        return vacationRepository.save(vacation);
-    }
-
-    @Override
-    public List<VacationDto> toDtoList(List<Vacation> vacations, ModelMapper mapper) {
-        return vacations.stream().map(vacation -> mapper.map(vacation, VacationDto.class)).collect(Collectors.toList());
+        return mapper.map(vacationRepository.save(vacation), VacationDto.class);
     }
 }

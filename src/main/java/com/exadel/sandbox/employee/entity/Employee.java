@@ -1,6 +1,5 @@
 package com.exadel.sandbox.employee.entity;
 
-import com.exadel.sandbox.employee.entity.TgInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

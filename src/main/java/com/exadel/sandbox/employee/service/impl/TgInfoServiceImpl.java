@@ -5,8 +5,8 @@ import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.employee.dto.TgInfoDto;
 import com.exadel.sandbox.employee.entity.TgInfo;
 import com.exadel.sandbox.employee.repository.TgInfoRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,28 +14,34 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class TgInfoServiceImpl implements TgInfoService {
 
-
-    @Autowired
-    TgInfoRepository tgInfoRepository;
+    private final ModelMapper mapper = new ModelMapper();
+    private final TgInfoRepository tgInfoRepository;
 
 
     @Override
-    public List<TgInfo> getTgInfos() {
-        return tgInfoRepository.findAll();
+    public List<TgInfoDto> getTgInfos() {
+
+        List<TgInfo> tgInfos = tgInfoRepository.findAll();
+
+        return tgInfos.stream().map(tgInfo -> mapper.map(tgInfo, TgInfoDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public TgInfo getTgInfoById(Long id) {
+    public TgInfoDto getTgInfoById(Long id) {
         Optional<TgInfo> byId = tgInfoRepository.findById(id);
 
-        return byId.orElseThrow(() -> new EntityNotFoundException("TgInfo with id: " + id + " not found"));
+        TgInfo tgInfo = byId.orElseThrow(() -> new EntityNotFoundException("TgInfo with id: " + id + " not found"));
+
+        return mapper.map(tgInfo, TgInfoDto.class);
     }
 
     @Override
-    public TgInfo create(TgInfo tgInfo) {
-        return tgInfoRepository.save(tgInfo);
+    public TgInfoDto create(TgInfoDto tgInfoDto) {
+        TgInfo tgInfo = mapper.map(tgInfoDto, TgInfo.class);
+        return mapper.map(tgInfo, TgInfoDto.class);
     }
 
     @Override
@@ -44,14 +50,10 @@ public class TgInfoServiceImpl implements TgInfoService {
     }
 
     @Override
-    public TgInfo update(Long id, TgInfo tgInfo) {
+    public TgInfoDto update(Long id, TgInfoDto tgInfoDto) {
+
+        TgInfo tgInfo = mapper.map(tgInfoDto, TgInfo.class);
         tgInfo.setId(id);
-        return tgInfoRepository.save(tgInfo);
-    }
-
-    @Override
-    public List<TgInfoDto> toDtoList(List<TgInfo> tgInfos, ModelMapper mapper) {
-
-        return tgInfos.stream().map(tgInfo -> mapper.map(tgInfo, TgInfoDto.class)).collect(Collectors.toList());
+        return mapper.map(tgInfoRepository.save(tgInfo), TgInfoDto.class);
     }
 }
