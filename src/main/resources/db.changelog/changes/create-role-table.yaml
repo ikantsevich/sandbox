@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: create role
+      author: izzatulla
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: role_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_name
+                    type: int
+                    constraints:
+                      uniqueKey: true
+                      nullable: false
+              - column:
+                  name: role_created
+                    type: datetime
+                      defaultValueComputed: CURRENT_TIMESTAMP
+                    constraints:
+                      nullable: false
+              - column:
+                  name: role_modified
+                    type: datetime
