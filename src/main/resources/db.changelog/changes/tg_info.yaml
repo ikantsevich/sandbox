@@ -30,6 +30,8 @@ databaseChangeLog:
               - column:
                   name: chat_state
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: username
                   type: varchar(255)
@@ -42,4 +44,5 @@ databaseChangeLog:
               - column:
                   name: info_modified
                   type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
 #

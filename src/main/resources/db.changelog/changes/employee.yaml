@@ -31,17 +31,24 @@ databaseChangeLog:
               - column:
                   name: em_firstname
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: em_lastname
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: em_email
                   type: varchar(255)
                   constraints:
                     unique: true
+                    nullable: false
               - column:
                   name: em_position
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: preferred_seat
                   type: int
@@ -58,3 +65,4 @@ databaseChangeLog:
               - column:
                   name: em_modified
                   type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP

@@ -43,3 +43,4 @@ databaseChangeLog:
             - column:
                 name: va_modified
                 type: datetime
+                defaultValueComputed: CURRENT_TIMESTAMP

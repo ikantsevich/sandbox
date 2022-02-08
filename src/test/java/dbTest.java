@@ -1,5 +1,5 @@
-import com.exadel.sandbox.entities.Employee;
-import com.exadel.sandbox.service.EmployeeService;
+import com.exadel.sandbox.employee.entity.Employee;
+import com.exadel.sandbox.employee.service.EmployeeService;
 
 import java.util.Arrays;
 import java.util.List;
