@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: booking table init
+      author: basiashvilin@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: booking
+      changes:
+        - createTable:
+            tableName: booking
+            columns:
+              - column:
+                  name: bo_id
+                  type: bigint
+                  autoIncrement: true
+                  remarks: 'Booking primary key'
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: spot_id_pk
+              - column:
+                  name: em_id
+                  type: bigint
+                  remarks: 'Employee foreign key'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seat_id
+                  type: bigint
+                  remarks: 'Seat foreign key'
+                  constraints:
+                    nullable: true
+              - column:
+                  name: spot_id
+                  type: bigint
+                  remarks: 'Parking spot foreign key'
+                  constraints:
+                    nullable: true
+                    foreignKeyName: bo_spot_fk
+                    references: parking_spot(spot_id)
+              - column:
+                  name: bo_status
+                  type: varchar(50)
+                  remarks: 'Booking status'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bo_start_date
+                  type: datetime
+                  remarks: 'Booking starting date'
+              - column:
+                  name: bo_end_date
+                  type: datetime
+                  remarks: 'Booking ending date'
+              - column:
+                  name: bo_created
+                  type: datetime
+                  remarks: 'Record creation timestamp'
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: bo_modified
+                  type: datetime
+                  remarks: 'Record modified timestamp'

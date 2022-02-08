@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: parking_spot table init
+      author: basiashvilin@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: parking_spot
+      changes:
+        - createTable:
+            tableName: parking_spot
+            columns:
+              - column:
+                  name: spot_id
+                  type: bigint
+                  autoIncrement: true
+                  remarks: 'Parking Spot primary key'
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: spot_id_pk
+              - column:
+                  name: pa_id
+                  type: bigint
+                  remarks: 'Parking foreign key'
+                  constraints:
+                    nullable: false
+                    foreignKeyName: spot_pa_fk
+                    references: parking(pa_id)
+              - column:
+                  name: spot_status
+                  type: varchar(50)
+                  remarks: 'Status of parking spot'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: spot_num
+                  type: int
+                  remarks: 'Parking spot number'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: e_charger
+                  type: boolean
+                  remarks: 'Has e-charger or not'
+              - column:
+                  name: spot_created
+                  type: datetime
+                  remarks: 'Record creation timestamp'
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: spot_modified
+                  type: datetime
+                  remarks: 'Record modified timestamp'

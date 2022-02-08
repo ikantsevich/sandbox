@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: parking table init
+      author: basiashvilin@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: parking
+      changes:
+        - createTable:
+            tableName: parking
+            columns:
+              - column:
+                  name: pa_id
+                  type: bigint
+                  autoIncrement: true
+                  remarks: 'Parking primary key'
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pa_id_pk
+              - column:
+                  name: of_id
+                  type: bigint
+                  remarks: 'Parking office foreign key'
+                  constraints:
+                    nullable: false
+                    foreignKeyName: pa_of_fk
+                    references: office(of_id)
+              - column:
+                  name: ad_id
+                  type: bigint
+                  remarks: 'Parking address foreign key'
+                  constraints:
+                    nullable: false
+                    foreignKeyName: pa_ad_fk
+                    references: address(ad_id)
+              - column:
+                  name: pa_created
+                  type: datetime
+                  remarks: 'Record creation timestamp'
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: pa_modified
+                  type: datetime
+                  remarks: 'Record modified timestamp'
+  - changeSet:
+      id: add parking foreign key
+      author: basiashvilin@gmail.com
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: pa_id
+            baseTableName: office
+            constraintName: of_pa_fk
+            referencedColumnNames: pa_id
+            referencedTableName: parking

@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: office table init
+      author: basiashvilin@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: office
+      changes:
+        - createTable:
+            tableName: office
+            columns:
+              - column:
+                  name: of_id
+                  type: bigint
+                  autoIncrement: true
+                  remarks: 'Office primary key'
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: of_id_pk
+              - column:
+                  name: ad_id
+                  type: bigint
+                  remarks: 'Office address foreign key'
+                  constraints:
+                    foreignKeyName: of_ad_fk
+                    references: address(ad_id)
+              - column:
+                  name: pa_id
+                  type: bigint
+                  remarks: 'Office parking foreign key'
+                  constraints:
+                    nullable: true
+              - column:
+                  name: of_name
+                  type: varchar(255)
+                  remarks: 'Office name'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: of_status
+                  type: varchar(50)
+                  remarks: 'Status of office'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: of_created
+                  type: datetime
+                  remarks: 'Record creation timestamp'
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: of_modified
+                  type: datetime
+                  remarks: 'Record modified timestamp'
+
