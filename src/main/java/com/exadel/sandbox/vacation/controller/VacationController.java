@@ -1,6 +1,8 @@
 package com.exadel.sandbox.vacation.controller;
 
-import com.exadel.sandbox.vacation.dto.VacationDto;
+import com.exadel.sandbox.vacation.dto.VacationCreateDto;
+import com.exadel.sandbox.vacation.dto.VacationResponseDto;
+import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
 import com.exadel.sandbox.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,18 +16,18 @@ public class VacationController {
     private final VacationService vacationService;
 
     @GetMapping("list")
-    List<VacationDto> getTgInfos(){
+    List<VacationResponseDto> getTgInfos(){
         return vacationService.getVacations();
     }
 
     @GetMapping("{id}")
-    VacationDto getTgInfoById(@PathVariable("id") Long id){
+    VacationResponseDto getTgInfoById(@PathVariable("id") Long id){
         return vacationService.getVacationById(id);
     }
 
     @PostMapping()
-    VacationDto createTgInfo(@RequestBody VacationDto vacationDto){
-        return vacationService.create(vacationDto);
+    VacationResponseDto createTgInfo(@RequestBody VacationCreateDto vacationCreateDto){
+        return vacationService.create(vacationCreateDto);
     }
 
     @DeleteMapping("{id}")
@@ -34,9 +36,9 @@ public class VacationController {
     }
 
     @PutMapping("{id}")
-    VacationDto updateTgInfo(@PathVariable("id") Long id,
-                           @RequestBody VacationDto vacationDto){
+    VacationResponseDto updateTgInfo(@PathVariable("id") Long id,
+                           @RequestBody VacationUpdateDto vacationUpdateDto){
 
-        return vacationService.update(id, vacationDto);
+        return vacationService.update(id, vacationUpdateDto);
     }
 }

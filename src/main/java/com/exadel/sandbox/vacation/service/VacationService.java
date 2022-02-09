@@ -1,17 +1,19 @@
 package com.exadel.sandbox.vacation.service;
 
-import com.exadel.sandbox.vacation.dto.VacationDto;
+import com.exadel.sandbox.vacation.dto.VacationCreateDto;
+import com.exadel.sandbox.vacation.dto.VacationResponseDto;
+import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
 
 import java.util.List;
 
 public interface VacationService {
-    List<VacationDto> getVacations();
+    List<VacationResponseDto> getVacations();
 
-    VacationDto getVacationById(Long id);
+    VacationResponseDto getVacationById(Long id);
 
-    VacationDto create(VacationDto vacationDto);
+    VacationResponseDto create(VacationCreateDto vacationCreateDto);
 
     void deleteById(Long id);
 
-    VacationDto update(Long id, VacationDto vacationDto);
+    VacationResponseDto update(Long id, VacationUpdateDto vacationUpdateDto);
 }

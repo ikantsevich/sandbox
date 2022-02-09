@@ -1,6 +1,9 @@
 package com.exadel.sandbox.employee.controller;
 
-import com.exadel.sandbox.employee.dto.EmployeeDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
+import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +18,20 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("list")
-    List<EmployeeDto> getEmployees() {
+    List<EmployeeResponseDto> getEmployees() {
         return employeeService.getEmployees();
     }
 
     @GetMapping("{id}")
-    EmployeeDto getEmployeeById(@PathVariable("id") Long id) {
+    EmployeeResponseDto getEmployeeById(@PathVariable("id") Long id) {
 
         return employeeService.getEmployeeByID(id);
     }
 
     @PostMapping()
-    EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
+    EmployeeResponseDto createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
 
-        return employeeService.create(employeeDto);
+        return employeeService.create(employeeCreateDto);
     }
 
     @DeleteMapping("{id}")
@@ -37,10 +40,10 @@ public class EmployeeController {
     }
 
     @PutMapping("{id}")
-    EmployeeDto updateEmployee(@PathVariable("id") Long id,
-                               @RequestBody EmployeeDto employeeDto) {
+    EmployeeResponseDto updateEmployee(@PathVariable("id") Long id,
+                               @RequestBody EmployeeUpdateDto employeeUpdateDto) {
 
 
-        return employeeService.update(id, employeeDto);
+        return employeeService.update(id, employeeUpdateDto);
     }
 }

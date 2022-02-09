@@ -1,18 +1,20 @@
 package com.exadel.sandbox.employee.service;
 
-import com.exadel.sandbox.employee.dto.TgInfoDto;
+import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoCreateDto;
+import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoResponseDto;
+import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 
 import java.util.List;
 
 public interface TgInfoService {
-    List<TgInfoDto> getTgInfos();
+    List<TgInfoResponseDto> getTgInfos();
 
-    TgInfoDto getTgInfoById(Long id);
+    TgInfoResponseDto getTgInfoById(Long id);
 
-    TgInfoDto create(TgInfoDto tgInfoDto);
+    TgInfoResponseDto create(TgInfoCreateDto tgInfoCreateDto);
 
     void deleteById(Long id);
 
-    TgInfoDto update(Long id, TgInfoDto tgInfoDto);
+    TgInfoResponseDto update(Long id, TgInfoUpdateDto tgInfoUpdateDto);
 
 }

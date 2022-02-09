@@ -1,58 +1,92 @@
 package com.exadel.sandbox.employee.service.impl;
 
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
+import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoResponseDto;
+import com.exadel.sandbox.employee.entity.TgInfo;
 import com.exadel.sandbox.employee.service.EmployeeService;
 import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.employee.entity.Employee;
-import com.exadel.sandbox.employee.dto.EmployeeDto;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
     @Override
-    public List<EmployeeDto> getEmployees() {
+    @Transactional
+    public List<EmployeeResponseDto> getEmployees() {
         List<Employee> employees = employeeRepository.findAll();
 
+        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
 
-        return employees.stream().map(employee -> mapper.map(employee, EmployeeDto.class)).collect(Collectors.toList());
+        for (Employee employee: employees) {
+            employeeResponseDtos.add(fullMap(employee));
+        }
+
+
+        return employeeResponseDtos;
     }
 
     @Override
-    public EmployeeDto getEmployeeByID(Long id) {
+    @Transactional
+    public EmployeeResponseDto getEmployeeByID(Long id) {
         Optional<Employee> byId = employeeRepository.findById(id);
 
         Employee employee = byId.orElseThrow(() -> new EntityNotFoundException("Employee with id: " + id + " not found"));
 
-        return mapper.map(employee, EmployeeDto.class);
+        return fullMap(employee);
     }
 
     @Override
-    public EmployeeDto create(EmployeeDto employeeDto) {
-        Employee employee = mapper.map(employeeDto, Employee.class);
+    @Transactional
+    public EmployeeResponseDto create(EmployeeCreateDto employeeCreateDto) {
+        Employee employee = mapper.map(employeeCreateDto, Employee.class);
 
-        return mapper.map(employeeRepository.save(employee), EmployeeDto.class);
+        if(employeeCreateDto.getTgInfoResponseDto() != null)
+            employee.setTgInfo(mapper.map(employeeCreateDto.getTgInfoResponseDto(), TgInfo.class));
+
+
+
+        return fullMap(employeeRepository.save(employee));
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         employeeRepository.deleteById(id);
     }
 
     @Override
-    public EmployeeDto update(Long id, EmployeeDto employeeDto) {
-        Employee employee = mapper.map(employeeDto, Employee.class);
+    @Transactional
+    public EmployeeResponseDto update(Long id, EmployeeUpdateDto employeeUpdateDto) {
+        Employee employee = mapper.map(employeeUpdateDto, Employee.class);
         employee.setId(id);
-        return mapper.map(employeeRepository.save(employee), EmployeeDto.class);
+
+        return fullMap(employee);
+    }
+
+    private EmployeeResponseDto fullMap(Employee employee) {
+        EmployeeResponseDto employeeResponseDto = mapper.map(employee, EmployeeResponseDto.class);
+
+        TgInfoResponseDto tgInfoResponseDto = null;
+        if(employee.getTgInfo() != null)
+            tgInfoResponseDto = mapper.map(employee.getTgInfo(), TgInfoResponseDto.class);
+
+        employeeResponseDto.setTgInfoResponseDto(tgInfoResponseDto);
+
+        return employeeResponseDto;
     }
 }

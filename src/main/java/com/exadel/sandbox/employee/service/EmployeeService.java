@@ -1,17 +1,19 @@
 package com.exadel.sandbox.employee.service;
 
-import com.exadel.sandbox.employee.dto.EmployeeDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
 
 import java.util.List;
 
 public interface EmployeeService {
-    List<EmployeeDto> getEmployees();
+    List<EmployeeResponseDto> getEmployees();
 
-    EmployeeDto getEmployeeByID(Long id);
+    EmployeeResponseDto getEmployeeByID(Long id);
 
-    EmployeeDto create(EmployeeDto employeeDto);
+    EmployeeResponseDto create(EmployeeCreateDto employeeCreateDto);
 
     void deleteById(Long id);
 
-    EmployeeDto update(Long id, EmployeeDto employeeDto);
+    EmployeeResponseDto update(Long id, EmployeeUpdateDto employeeUpdateDto);
 }
