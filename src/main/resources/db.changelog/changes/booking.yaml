@@ -20,13 +20,15 @@ databaseChangeLog:
                   remarks: 'Booking primary key'
                   constraints:
                     primaryKey: true
-                    primaryKeyName: spot_id_pk
+                    primaryKeyName: bo_id_pk
               - column:
                   name: em_id
                   type: bigint
                   remarks: 'Employee foreign key'
                   constraints:
                     nullable: false
+                    foreignKeyName: bo_em_fk
+                    references: employee(em_id)
               - column:
                   name: seat_id
                   type: bigint
