@@ -1,4 +1,4 @@
-package com.exadel.sandbox.entities;
+package com.exadel.sandbox.permission.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 @AllArgsConstructor
@@ -23,20 +21,20 @@ public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer per_id;
+    @Column(name = "per_id")
+    private Integer id;
 
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "per_name", nullable = false, unique = true)
     private int name;
 
 
     @CreatedDate
-    private Date createdDate;
+    @Column(name = "per_created")
+    private Date created;
 
 
     @LastModifiedDate
-    private Date modifiedDate;
-
-    @ManyToMany(mappedBy = "permissions")
-    private List<Role> roles = new ArrayList<>();
+    @Column(name = "per_modified")
+    private Date modified;
 }

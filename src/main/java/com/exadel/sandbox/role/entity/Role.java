@@ -1,9 +1,9 @@
-package com.exadel.sandbox.entities;
+package com.exadel.sandbox.role.entity;
 
+import com.exadel.sandbox.permission.entity.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,27 +23,24 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer role_id;
+    @Column(name = "role_id")
+    private Integer id;
 
 
-    @Column( nullable = false, unique = true)
-    private int name;
+    @Column(name = "role_name", nullable = false, unique = true)
+    private String name;
 
 
     @CreatedDate
-    private Date CreatedDate;
+    @Column(name = "role_created")
+    private Date created;
 
 
     @LastModifiedDate
-    private Date modifiedDate;
+    @Column(name = "role_modified")
+    private Date modified;
 
     @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "role_per",
-            joinColumns = {@JoinColumn(name = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "per_id"),
-            }
-
-    )
+    @JoinTable(name = "role_per", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id"),})
     List<Permission> permissions = new ArrayList<>();
 }

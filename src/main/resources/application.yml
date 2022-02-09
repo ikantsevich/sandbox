@@ -5,8 +5,8 @@ datasource:
   schema: 'sandbox'
   host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
-  username: 'root'
-  password: 'Arcane700+'
+  username: 'mYsql'
+  password: 'mYsql934509018'
 spring:
   autoconfigure:
     exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
@@ -17,6 +17,7 @@ spring:
       hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
       hibernate.show_sql: true
       hibernate.format_sql: true
+      hibernate.ddl-auto: none
       hibernate.type: trace
   datasource:
     name: 'sandbox'

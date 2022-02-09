@@ -20,12 +20,14 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
+                    primaryKeyName: pk_role_id
               - column:
                   name: role_name
-                    type: int
+                    type: varchar(255)
                     constraints:
                       uniqueKey: true
                       nullable: false
+                      uniqueConstraintName: uk_role_name
               - column:
                   name: role_created
                     type: datetime

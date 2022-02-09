@@ -20,12 +20,14 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
+                    primaryKeyName: pk_per_id
               - column:
                   name: per_name
-                    type: varchar(200)
+                    type: varchar(255)
                     constraints:
                       uniqueKey: true
                       nullable: false
+                      uniqueConstraintName: uk_per_name
               - column:
                   name: per_created
                     type: datetime
