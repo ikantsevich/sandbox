@@ -15,43 +15,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AttachmentController {
     private AttachmentService attachmentService;
-    private AttachmentMapper attachmentMapper;
 
     @GetMapping("list")
-    List<AttachmentDto> getAttachments(){
-        List<Attachment> attachments = attachmentService.getAttachments();
-        return attachments.stream().map(attachmentMapper::toDto).collect(Collectors.toList());
+    List<AttachmentDto> getAttachments() {
+        return attachmentService.getAttachments();
     }
 
     @GetMapping("search")
-    AttachmentDto getAttachment(@RequestParam("id") Long id){
-        Attachment attachment = attachmentService.getById(id);
-        return attachmentMapper.toDto(attachment);
+    AttachmentDto getAttachment(@RequestParam("id") Long id) {
+        return attachmentService.getById(id);
     }
 
     @GetMapping("{id}")
-    AttachmentDto getAttachmentByMessageId(@PathVariable("id") Long id){
-        Attachment attachment = attachmentService.getAttachmentByMessageId(id);
-        return attachmentMapper.toDto(attachment);
+    AttachmentDto getAttachmentByMessageId(@PathVariable("id") Long id) {
+        return attachmentService.getAttachmentByMessageId(id);
     }
 
     @PutMapping()
-    AttachmentDto createAttachment(@RequestBody AttachmentDto attachmentDto){
-        Attachment attachment = attachmentMapper.toEntity(attachmentDto);
-        attachment = attachmentService.create(attachment);
-        return attachmentMapper.toDto(attachment);
+    AttachmentDto createAttachment(@RequestBody AttachmentDto attachmentDto) {
+        return attachmentService.create(attachmentDto);
     }
 
     @DeleteMapping("{id}")
-    void deleteById(@PathVariable("id") Long id){
+    void deleteById(@PathVariable("id") Long id) {
         attachmentService.deleteById(id);
     }
 
     @PostMapping("{id}")
-    AttachmentDto updateFloor(@PathVariable("id") Long id,
-                         @RequestBody AttachmentDto attachmentDto ){
-        Attachment attachment = attachmentMapper.toEntity(attachmentDto);
-        attachment = attachmentService.update(id, attachment);
-        return attachmentMapper.toDto(attachment);
+    AttachmentDto updateFloor(@PathVariable("id") Long id, @RequestBody AttachmentDto attachmentDto) {
+        return attachmentService.update(id, attachmentDto);
     }
 }

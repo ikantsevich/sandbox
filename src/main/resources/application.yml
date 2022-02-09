@@ -17,7 +17,7 @@ spring:
       hibernate.type: trace
   datasource:
     name: 'sandbox'
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     url: '${datasource.url}'
     username: '${datasource.username}'
     password: '${datasource.password}'

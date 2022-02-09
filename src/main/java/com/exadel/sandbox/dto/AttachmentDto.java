@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,10 +14,10 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttachmentDto {
     private Long id;
-    private String  chatId;
+    private String chatId;
     private Long messageId;
     private String atName;
     private Long atSize;
-    private Date atCreated;
-    private Date atModified;
+    private LocalDateTime atCreated;
+    private LocalDateTime atModified;
 }

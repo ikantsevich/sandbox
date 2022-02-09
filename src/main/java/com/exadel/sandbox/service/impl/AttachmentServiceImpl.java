@@ -1,35 +1,46 @@
 package com.exadel.sandbox.service.impl;
 
+import com.exadel.sandbox.dto.AttachmentDto;
 import com.exadel.sandbox.entities.Attachment;
-import com.exadel.sandbox.entities.Floor;
+import com.exadel.sandbox.mapper.AttachmentMapper;
 import com.exadel.sandbox.repositories.AttachmentRepository;
 import com.exadel.sandbox.service.AttachmentService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AttachmentServiceImpl implements AttachmentService {
+
+    AttachmentMapper attachmentMapper;
 
     @Autowired
     AttachmentRepository attachmentRepository;
 
     @Override
-    public List<Attachment> getAttachments() {
-        return attachmentRepository.findAll();
+    public List<AttachmentDto> getAttachments() {
+        List<Attachment> all = attachmentRepository.findAll();
+
+        List<AttachmentDto> list = new ArrayList<>();
+
+        for (Attachment attachment: all){
+            list.add(attachmentMapper.toDto(attachment));
+        }
+        return list;
+
     }
 
     @Override
-    public Attachment getById(Long id) {
-        return getById(id);
+    public AttachmentDto getById(Long id) {
+        Attachment attachment = attachmentRepository.getOne(id);
+        return attachmentMapper.toDto(attachment);
     }
 
     @Override
-    public Attachment create(Attachment attachment) {
-        return attachmentRepository.save(attachment);
+    public AttachmentDto create(AttachmentDto attachmentDto) {
+        Attachment attachment = attachmentMapper.toEntity(attachmentDto);
+        Attachment save = attachmentRepository.save(attachment);
+        return attachmentMapper.toDto(save);
     }
 
     @Override
@@ -38,17 +49,20 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public Attachment update(Long id, Attachment attachment) {
-        Attachment byId = getById(id);
+    public AttachmentDto update(Long id, AttachmentDto attachmentDto) {
+        Attachment attachment = attachmentMapper.toEntity(attachmentDto);
+        AttachmentDto byId = getById(id);
         if (byId == null)
             throw new RuntimeException("Attachment not found");
 
         attachment.setId(id);
-        return attachmentRepository.save(attachment);
+        Attachment save = attachmentRepository.save(attachment);
+        return attachmentMapper.toDto(save);
     }
 
     @Override
-    public Attachment getAttachmentByMessageId(Long id) {
-        return attachmentRepository.getAllByMessageId(id);
+    public AttachmentDto getAttachmentByMessageId(Long id) {
+        Attachment allByMessageId = attachmentRepository.getAllByMessageId(id);
+        return attachmentMapper.toDto(allByMessageId);
     }
 }

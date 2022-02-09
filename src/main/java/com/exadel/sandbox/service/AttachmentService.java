@@ -7,15 +7,15 @@ import com.exadel.sandbox.entities.Office;
 import java.util.List;
 
 public interface AttachmentService {
-    List<Attachment> getAttachments();
+    List<AttachmentDto> getAttachments();
 
-    Attachment getById(Long id);
+    AttachmentDto getById(Long id);
 
-    Attachment create(Attachment attachment);
+    AttachmentDto create(AttachmentDto attachment);
 
     void deleteById(Long id);
 
-    Attachment update(Long id, Attachment attachment);
+    AttachmentDto update(Long id, AttachmentDto attachmentDto);
 
-    Attachment getAttachmentByMessageId(Long id);
+    AttachmentDto getAttachmentByMessageId(Long id);
 }

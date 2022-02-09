@@ -5,5 +5,6 @@ import com.exadel.sandbox.entities.Attachment;
 
 public interface AttachmentMapper {
     Attachment toEntity(AttachmentDto attachmentDto);
+
     AttachmentDto toDto(Attachment attachment);
 }

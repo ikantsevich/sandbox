@@ -6,46 +6,26 @@ import com.exadel.sandbox.mapper.OfficeMapper;
 import com.exadel.sandbox.mapper.impl.AttachmentMapperImpl;
 import com.exadel.sandbox.mapper.impl.FloorMapperImpl;
 import com.exadel.sandbox.mapper.impl.OfficeMapperImpl;
-import com.exadel.sandbox.service.AttachmentService;
-import com.exadel.sandbox.service.FloorService;
-import com.exadel.sandbox.service.OfficeService;
-import com.exadel.sandbox.service.impl.AttachmentServiceImpl;
-import com.exadel.sandbox.service.impl.FloorServiceImpl;
-import com.exadel.sandbox.service.impl.OfficeServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@Component
-@RequiredArgsConstructor
+
+@Configuration
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class Config {
     @Bean
-    AttachmentService attachmentService() {
-        return new AttachmentServiceImpl();
+    OfficeMapper officeMapper(){
+        return new OfficeMapperImpl();
     }
 
     @Bean
-    AttachmentMapper attachmentMapper() {
-        return new AttachmentMapperImpl();
-    }
-
-    @Bean
-    FloorService floorService() {
-        return new FloorServiceImpl();
-    }
-
-    @Bean
-    FloorMapper floorMapper() {
+    FloorMapper floorMapper(){
         return new FloorMapperImpl();
     }
 
     @Bean
-    OfficeService officeService() {
-        return new OfficeServiceImpl();
-    }
-
-    @Bean
-    OfficeMapper officeMapper() {
-        return new OfficeMapperImpl();
+    AttachmentMapper attachmentMapper(){
+        return new AttachmentMapperImpl();
     }
 }

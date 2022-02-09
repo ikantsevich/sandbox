@@ -5,5 +5,6 @@ import com.exadel.sandbox.entities.Floor;
 
 public interface FloorMapper {
     Floor toEntity(FloorDto floorDto);
+
     FloorDto toDto(Floor floor);
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -16,7 +17,7 @@ public class OfficeDto {
     private Long id;
     private Long parkingId;
     private Long addressId;
-    private String  officeStatus;
-    private Date officeCreated;
-    private Date officeModified;
+    private String officeStatus;
+    private LocalDateTime officeCreated;
+    private LocalDateTime officeModified;
 }

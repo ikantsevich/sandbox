@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -19,6 +20,6 @@ public class FloorDto {
     private int flNum;
     private String kitchenStatus;
     private String meetingRoomStatus;
-    private Date flCreated;
-    private Date flModified;
+    private LocalDateTime flCreated;
+    private LocalDateTime flModified;
 }

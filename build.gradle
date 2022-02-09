@@ -37,12 +37,13 @@ dependencies {
     api('org.springframework.boot:spring-boot-starter-web')
     api('org.springframework.boot:spring-boot-starter-security')
     implementation('org.mariadb.jdbc:mariadb-java-client')
-    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.2'
     compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
     api('commons-collections:commons-collections:3.2.2')
-    api('org.testng:testng:6.11')
+    api('org.testng:testng:7.5')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+//    https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
 }
 
 test {

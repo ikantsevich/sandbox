@@ -6,15 +6,15 @@ import com.exadel.sandbox.entities.Office;
 import java.util.List;
 
 public interface OfficeService {
-    List<Office> getOffices();
+    List<OfficeDto> getOffices();
 
-    Office getById(Long id);
+    OfficeDto getById(Long id);
 
-    Office create(Office office);
+    OfficeDto create(OfficeDto officeDto);
 
     void deleteById(Long id);
 
-    Office update(Long id, Office office);
+    OfficeDto update(Long id, OfficeDto officeDto);
 
-    Office getOfficeByAddressId(Long id);
+    OfficeDto getOfficeByAddressId(Long id);
 }

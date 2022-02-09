@@ -1,20 +1,21 @@
 package com.exadel.sandbox.service;
 
+import com.exadel.sandbox.dto.FloorDto;
 import com.exadel.sandbox.entities.Floor;
 import com.exadel.sandbox.entities.Office;
 
 import java.util.List;
 
 public interface FloorService {
-    List<Floor> getFloors();
+    List<FloorDto> getFloors();
 
-    Floor getById(Long id);
+    FloorDto getById(Long id);
 
-    Floor create(Floor floor);
+    FloorDto create(FloorDto floorDto);
 
     void deleteById(Long id);
 
-    Floor update(Long id, Floor floor);
+    FloorDto update(Long id, FloorDto floorDto);
 
-    List<Floor> getFloorsByOfId(Long id);
+    List<FloorDto> getFloorsByOfId(Long id);
 }

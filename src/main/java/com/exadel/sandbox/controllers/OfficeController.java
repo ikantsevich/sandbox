@@ -16,44 +16,35 @@ import java.util.stream.Collectors;
 public class OfficeController {
 
     private OfficeService officeService;
-    private OfficeMapper mapper;
 
     @GetMapping("list")
-    List<OfficeDto> getOffices(){
-        List<Office> offices = officeService.getOffices();
-        return offices.stream().map(mapper::toDto).collect(Collectors.toList());
+    List<OfficeDto> getOffices() {
+        return officeService.getOffices();
     }
 
     @GetMapping("search")
-    OfficeDto getOffice(@RequestParam("id") Long id){
-        Office office = officeService.getOfficeByAddressId(id);
-        return mapper.toDto(office);
+    OfficeDto getOffice(@RequestParam("id") Long id) {
+        return officeService.getById(id);
     }
 
     @GetMapping("{id}")
-    OfficeDto getOfficeById(@PathVariable("id") Long id){
-        Office office = officeService.getById(id);
-        return mapper.toDto(office);
+    OfficeDto getOfficeByAddressId(@PathVariable("id") Long id) {
+        return officeService.getOfficeByAddressId(id);
     }
 
     @PutMapping()
-    OfficeDto createOffice(@RequestBody OfficeDto officeDto){
-        Office office = mapper.toEntity(officeDto);
-        office = officeService.create(office);
-        return mapper.toDto(office);
+    OfficeDto createOffice(@RequestBody OfficeDto officeDto) {
+        return officeService.create(officeDto);
     }
 
     @DeleteMapping("{id}")
-    void deleteById(@PathVariable("id") Long id){
+    void deleteById(@PathVariable("id") Long id) {
         officeService.deleteById(id);
     }
 
     @PostMapping("{id}")
-    OfficeDto updateOffice(@PathVariable("id") Long id,
-                          @RequestBody OfficeDto officeDto ){
-        Office office = mapper.toEntity(officeDto);
-        office = officeService.update(id, office);
-        return mapper.toDto(office);
+    OfficeDto updateOffice(@PathVariable("id") Long id, @RequestBody OfficeDto officeDto) {
+        return officeService.update(id, officeDto);
     }
 
 
