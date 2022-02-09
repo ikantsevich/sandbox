@@ -3,6 +3,12 @@ databaseChangeLog:
   - changeSet:
       id: create permission
       author: izzatulla
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: permission
       changes:
         - createTable:
             tableName: permission
@@ -29,3 +35,6 @@ databaseChangeLog:
               - column:
                   name: per_modified
                     type: datetime
+                    defaultValueComputed: CURRENT_TIMESTAP
+                      constraints:
+                        nullable: false

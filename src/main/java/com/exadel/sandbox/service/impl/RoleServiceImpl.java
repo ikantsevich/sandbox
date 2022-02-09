@@ -1,49 +1,53 @@
 package com.exadel.sandbox.service.impl;
 
+import com.exadel.sandbox.dto.RoleDto;
 import com.exadel.sandbox.entities.Role;
+import com.exadel.sandbox.mapper.Mapper;
 import com.exadel.sandbox.repositories.RoleRepository;
-import com.exadel.sandbox.service.RoleService;
+import com.exadel.sandbox.service.Service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
+import java.util.stream.Collectors;
+
+
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl implements Service<RoleDto> {
     private final RoleRepository roleRepository;
+    private final Mapper<Role, RoleDto> roleMapper;
 
     @Override
-    public Role getRoleByName(int name) {
-        return roleRepository.getRoleByName(name);
+    public List<RoleDto> getAll() {
+        List<Role> roles = roleRepository.findAll();
+        return roles.stream().map(roleMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<Role> getRoles() {
-        return roleRepository.findAll();
+    public RoleDto getById(Integer id) {
+        Role role = roleRepository.getOne(id);
+        if (role == null)
+            throw new RuntimeException("Permission not found");
+        else
+            return roleMapper.toDto(role);
     }
 
     @Override
-    public Role getRoleById(int id) {
-        return roleRepository.getOne(id);
+    public RoleDto create(RoleDto roleDto) {
+        return roleMapper.toDto(roleRepository.save(roleMapper.toEntity(roleDto)));
     }
 
     @Override
-    public Role create(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public void deleteById(int id) {
+    public void deleteById(Integer id) {
+        getById(id);//throws exception if there is no role with curr id
         roleRepository.deleteById(id);
     }
 
     @Override
-    public Role update(int id, Role role) {
-        if (roleRepository.existsById(id))
-        {
-            throw new RuntimeException("Role not found");
-        }
-        role.setId(id);
-        return roleRepository.save(role);
+    public RoleDto updateById(Integer id, RoleDto roleDto) {
+        getById(id);
+        Role role = roleMapper.toEntity(roleDto);
+        role.setRole_id(id);
+        roleRepository.save(role);
+        return roleMapper.toDto(role);
     }
 }

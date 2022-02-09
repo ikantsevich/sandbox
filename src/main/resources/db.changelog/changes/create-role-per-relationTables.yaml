@@ -3,6 +3,12 @@ databaseChangeLog:
   - changeSet:
       id: create role-per-relation
       author: izzatulla
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: role_per
       changes:
         - createTable:
             tableName: role_per
@@ -26,3 +32,6 @@ databaseChangeLog:
               - column:
                   name: role_per_modified
                     type: datetime
+                    defaultValueComputed: CURRENT_TIMESTAP
+                      constraints:
+                        nullable: false
