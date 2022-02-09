@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("office")
+@RequestMapping("/office")
 @RequiredArgsConstructor
 public class OfficeController {
 
     private OfficeService officeService;
 
-    @GetMapping("list")
+    @GetMapping("/list")
     List<OfficeDto> getOffices() {
         return officeService.getOffices();
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     OfficeDto getOffice(@RequestParam("id") Long id) {
         return officeService.getById(id);
     }

@@ -1,27 +1,24 @@
 package com.exadel.sandbox.controllers;
 
 import com.exadel.sandbox.dto.AttachmentDto;
-import com.exadel.sandbox.entities.Attachment;
-import com.exadel.sandbox.mapper.AttachmentMapper;
 import com.exadel.sandbox.service.AttachmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("attachment")
+@RequestMapping("/attachment")
 @RequiredArgsConstructor
 public class AttachmentController {
     private AttachmentService attachmentService;
 
-    @GetMapping("list")
+    @GetMapping("/list")
     List<AttachmentDto> getAttachments() {
         return attachmentService.getAttachments();
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     AttachmentDto getAttachment(@RequestParam("id") Long id) {
         return attachmentService.getById(id);
     }

@@ -4,7 +4,7 @@ server:
 datasource:
   schema: 'sandbox'
   host: '${dockerdbhost:localhost}:3306'
-  url: 'jdbc:mysql://${datasource.host}/${datasource.schema}'
+  url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
   username: 'root'
   password: '09102003'
 spring:

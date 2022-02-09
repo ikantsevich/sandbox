@@ -13,17 +13,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("floor")
+@RequestMapping("/floor")
 @RequiredArgsConstructor
 public class FloorController {
     private FloorService floorService;
 
-    @GetMapping("list")
+    @GetMapping("/list")
     List<FloorDto> getFloors() {
         return floorService.getFloors();
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     FloorDto getFloor(@RequestParam("id") Long id) {
         return floorService.getById(id);
     }

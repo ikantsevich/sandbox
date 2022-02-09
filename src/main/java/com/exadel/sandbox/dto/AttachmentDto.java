@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttachmentDto {
     private Long id;
     private String chatId;

@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class FloorDto {
     private Long flId;
     private Long ofId;
