@@ -1,10 +1,8 @@
 package com.exadel.sandbox.vacation.service.impl;
 
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.exception.EntityNotFoundException;
-import com.exadel.sandbox.vacation.dto.VacationBaseDto;
 import com.exadel.sandbox.vacation.dto.VacationCreateDto;
 import com.exadel.sandbox.vacation.dto.VacationResponseDto;
 import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
@@ -54,7 +52,8 @@ public class VacationServiceImpl implements VacationService {
     @Override
     public VacationResponseDto create(VacationCreateDto vacationCreateDto) {
         Vacation vacation = mapper.map(vacationCreateDto, Vacation.class);
-        vacation.setEmployee(mapper.map(vacationCreateDto.getEmployeeResponseDto(), Employee.class));
+        if (vacation.getEmployee() != null)
+            vacation.setEmployee(mapper.map(vacationCreateDto.getEmployeeResponseDto(), Employee.class));
 
         return fullMap(vacationRepository.save(vacation));
     }
@@ -66,9 +65,10 @@ public class VacationServiceImpl implements VacationService {
 
     @Override
     public VacationResponseDto update(Long id, VacationUpdateDto vacationUpdateDto) {
-        Vacation vacation = mapper.map(vacationUpdateDto, Vacation.class);
 
-        vacation.setId(id);
+        Vacation vacation = vacationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Vacation with id: " + id + " not found"));
+
+        mapper.map(vacationUpdateDto, vacation);
 
         return fullMap(vacationRepository.save(vacation));
     }

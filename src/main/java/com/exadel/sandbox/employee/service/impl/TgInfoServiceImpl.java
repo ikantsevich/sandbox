@@ -1,6 +1,5 @@
 package com.exadel.sandbox.employee.service.impl;
 
-import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoBaseDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoCreateDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoResponseDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +23,6 @@ public class TgInfoServiceImpl implements TgInfoService {
     private final TgInfoRepository tgInfoRepository;
 
     @Override
-    @Transactional
     public List<TgInfoResponseDto> getTgInfos() {
         List<TgInfo> tgInfos = tgInfoRepository.findAll();
 
@@ -33,7 +30,6 @@ public class TgInfoServiceImpl implements TgInfoService {
     }
 
     @Override
-    @Transactional
     public TgInfoResponseDto getTgInfoById(Long id) {
         Optional<TgInfo> byId = tgInfoRepository.findById(id);
 
@@ -44,23 +40,23 @@ public class TgInfoServiceImpl implements TgInfoService {
     }
 
     @Override
-    @Transactional
     public TgInfoResponseDto create(TgInfoCreateDto tgInfoCreateDto) {
-        TgInfo tgInfo = mapper.map(mapper.map(tgInfoCreateDto, TgInfoBaseDto.class), TgInfo.class);
-        return mapper.map(tgInfo, TgInfoResponseDto.class);
+        TgInfo tgInfo = mapper.map(tgInfoCreateDto, TgInfo.class);
+
+        return mapper.map(tgInfoRepository.save(tgInfo), TgInfoResponseDto.class);
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id) {
         tgInfoRepository.deleteById(id);
     }
 
     @Override
-    @Transactional
     public TgInfoResponseDto update(Long id, TgInfoUpdateDto tgInfoUpdateDto) {
-        TgInfo tgInfo = mapper.map(mapper.map(tgInfoUpdateDto, TgInfoBaseDto.class), TgInfo.class);
-        tgInfo.setId(id);
+        TgInfo tgInfo = tgInfoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("TgInfo with id: " + id + " not found"));
+
+        mapper.map(tgInfoUpdateDto, tgInfo);
+
         return mapper.map(tgInfoRepository.save(tgInfo), TgInfoResponseDto.class);
     }
 }

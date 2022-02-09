@@ -1,6 +1,5 @@
 package com.exadel.sandbox.vacation.dto;
 
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

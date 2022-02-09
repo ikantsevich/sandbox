@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +25,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final ModelMapper mapper;
 
     @Override
-    @Transactional
     public List<EmployeeResponseDto> getEmployees() {
         List<Employee> employees = employeeRepository.findAll();
 
@@ -41,7 +39,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    @Transactional
     public EmployeeResponseDto getEmployeeByID(Long id) {
         Optional<Employee> byId = employeeRepository.findById(id);
 
@@ -51,7 +48,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    @Transactional
     public EmployeeResponseDto create(EmployeeCreateDto employeeCreateDto) {
         Employee employee = mapper.map(employeeCreateDto, Employee.class);
 
@@ -64,18 +60,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id) {
         employeeRepository.deleteById(id);
     }
 
     @Override
-    @Transactional
     public EmployeeResponseDto update(Long id, EmployeeUpdateDto employeeUpdateDto) {
-        Employee employee = mapper.map(employeeUpdateDto, Employee.class);
-        employee.setId(id);
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Employee with id: " + id + " not found"));
 
-        return fullMap(employee);
+        mapper.map(employeeUpdateDto, employee);
+
+        return fullMap(employeeRepository.save(employee));
     }
 
     private EmployeeResponseDto fullMap(Employee employee) {

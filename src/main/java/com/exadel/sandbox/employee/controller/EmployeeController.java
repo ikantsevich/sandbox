@@ -3,7 +3,6 @@ package com.exadel.sandbox.employee.controller;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
-import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

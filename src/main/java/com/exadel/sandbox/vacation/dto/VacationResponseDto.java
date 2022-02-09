@@ -3,7 +3,6 @@ package com.exadel.sandbox.vacation.dto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import lombok.*;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Data

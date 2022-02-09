@@ -1,6 +1,5 @@
 package com.exadel.sandbox.employee.dto.employeeDto;
 
-import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoResponseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

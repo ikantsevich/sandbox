@@ -1,9 +1,7 @@
 package com.exadel.sandbox.employee.dto.tgInfoDto;
 
 import lombok.*;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Data
