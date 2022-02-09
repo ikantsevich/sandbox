@@ -14,12 +14,12 @@ databaseChangeLog:
             tableName: notification
             columns:
               - column:
-                  name: no_id
+                  name: notif_id
                   type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_no_id
+                    primaryKeyName: pk_notif_id
               - column:
                   name: at_id
                   type: int
@@ -30,12 +30,12 @@ databaseChangeLog:
                     references: at(at_id)
               - column:
                   name: message
-                  type: varchar
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: no_created
+                  name: notif_created
                   type: CURRENT_TIMESTAMP
               - column:
-                  name: no_modified
+                  name: notif_modified
                   type: CURRENT_TIMESTAMP
