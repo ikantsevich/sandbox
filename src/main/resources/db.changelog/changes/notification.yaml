@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: notification table init
+      author: Jakhongir
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: notification
+      changes:
+        - createTable:
+            tableName: notification
+            columns:
+              - column:
+                  name: no_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_no_id
+              - column:
+                  name: at_id
+                  type: int
+                  constraints:
+                    unique: true
+                    nullable: true
+                    foreignKeyName: fk_at
+                    references: at(at_id)
+              - column:
+                  name: message
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: no_created
+                  type: CURRENT_TIMESTAMP
+              - column:
+                  name: no_modified
+                  type: CURRENT_TIMESTAMP

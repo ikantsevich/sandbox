@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: em_no table init
+      author: Jakhongir
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: em_no
+      changes:
+        - createTable:
+            tableName: em_no
+            columns:
+              - column:
+                  name: em_id
+                  type: int
+                  constraints:
+                    unique: true
+                    nullable: true
+                    foreignKeyName: fk_em
+                    references: em(em_id)
+              - column:
+                  name: no_id
+                  type: int
+                  constraints:
+                    unique: true
+                    nullable: true
+                    foreignKeyName: fk_no
+                    references: no(no_id)
+              - column:
+                  name: em_no_created
+                  type: CURRENT_TIMESTAMP

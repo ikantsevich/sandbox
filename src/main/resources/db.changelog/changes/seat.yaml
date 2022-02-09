@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: seat table init
+      author: Jakhongir
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: seat
+      changes:
+        - createTable:
+            tableName: seat
+            columns:
+              - column:
+                  name: seat_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_seat_id
+              - column:
+                  name: fl_id
+                  type: int
+                  constraints:
+                    unique: true
+                    nullable: true
+                    foreignKeyName: fk_fl
+                    references: fl(fl_id)
+              - column:
+                  name: seat_num
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seat_status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seat_desc
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seat_created
+                  type: CURRENT_TIMESTAMP
+              - column:
+                  name: seat_modified
+                  type: CURRENT_TIMESTAMP
