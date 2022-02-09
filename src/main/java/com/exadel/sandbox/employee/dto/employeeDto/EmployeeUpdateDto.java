@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class EmployeeUpdateDto extends EmployeeBaseDto{
+public class EmployeeUpdateDto extends EmployeeBaseDto {
     private Integer preferredSeat;
     private LocalDateTime employmentStart;
     private LocalDateTime employmentEnd;

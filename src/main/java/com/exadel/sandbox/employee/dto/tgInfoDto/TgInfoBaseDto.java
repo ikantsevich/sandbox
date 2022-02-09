@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TgInfoBaseDto{
+public class TgInfoBaseDto {
     private String chatId;
     private String username;
-
 }

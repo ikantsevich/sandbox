@@ -6,6 +6,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class VacationCreateDto extends VacationBaseDto{
+public class VacationCreateDto extends VacationBaseDto {
     private EmployeeResponseDto employeeResponseDto;
 }

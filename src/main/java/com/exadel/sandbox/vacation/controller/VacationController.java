@@ -16,28 +16,28 @@ public class VacationController {
     private final VacationService vacationService;
 
     @GetMapping("list")
-    List<VacationResponseDto> getTgInfos(){
+    List<VacationResponseDto> getTgInfos() {
         return vacationService.getVacations();
     }
 
     @GetMapping("{id}")
-    VacationResponseDto getTgInfoById(@PathVariable("id") Long id){
+    VacationResponseDto getTgInfoById(@PathVariable("id") Long id) {
         return vacationService.getVacationById(id);
     }
 
     @PostMapping()
-    VacationResponseDto createTgInfo(@RequestBody VacationCreateDto vacationCreateDto){
+    VacationResponseDto createTgInfo(@RequestBody VacationCreateDto vacationCreateDto) {
         return vacationService.create(vacationCreateDto);
     }
 
     @DeleteMapping("{id}")
-    void deleteTgInfo(@PathVariable("id") Long id){
+    void deleteTgInfo(@PathVariable("id") Long id) {
         vacationService.deleteById(id);
     }
 
     @PutMapping("{id}")
     VacationResponseDto updateTgInfo(@PathVariable("id") Long id,
-                           @RequestBody VacationUpdateDto vacationUpdateDto){
+                                     @RequestBody VacationUpdateDto vacationUpdateDto) {
 
         return vacationService.update(id, vacationUpdateDto);
     }

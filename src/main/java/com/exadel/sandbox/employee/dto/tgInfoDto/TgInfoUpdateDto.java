@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TgInfoUpdateDto extends TgInfoBaseDto{
+public class TgInfoUpdateDto extends TgInfoBaseDto {
     private String chatState;
 }

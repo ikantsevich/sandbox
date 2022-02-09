@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class TgInfoCreateDto extends TgInfoBaseDto{
+public class TgInfoCreateDto extends TgInfoBaseDto {
     private String chatState;
 }

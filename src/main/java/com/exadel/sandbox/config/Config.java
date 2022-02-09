@@ -14,7 +14,7 @@ import java.util.Optional;
 public class Config {
 
     @Bean
-    ModelMapper mapper(){
+    ModelMapper mapper() {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -22,7 +22,7 @@ public class Config {
     }
 
     @Bean
-    AuditorAware<String> auditorProvider(){
+    AuditorAware<String> auditorProvider() {
         return Optional::empty;
     }
 }

@@ -4,11 +4,11 @@ import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoResponseDto;
+import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.entity.TgInfo;
+import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.employee.service.EmployeeService;
 import com.exadel.sandbox.exception.EntityNotFoundException;
-import com.exadel.sandbox.employee.entity.Employee;
-import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -30,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
 
-        for (Employee employee: employees) {
+        for (Employee employee : employees) {
             employeeResponseDtos.add(fullMap(employee));
         }
 
@@ -51,9 +51,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponseDto create(EmployeeCreateDto employeeCreateDto) {
         Employee employee = mapper.map(employeeCreateDto, Employee.class);
 
-        if(employeeCreateDto.getTgInfoResponseDto() != null)
+        if (employeeCreateDto.getTgInfoResponseDto() != null)
             employee.setTgInfo(mapper.map(employeeCreateDto.getTgInfoResponseDto(), TgInfo.class));
-
 
 
         return fullMap(employeeRepository.save(employee));
@@ -77,7 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeResponseDto employeeResponseDto = mapper.map(employee, EmployeeResponseDto.class);
 
         TgInfoResponseDto tgInfoResponseDto = null;
-        if(employee.getTgInfo() != null)
+        if (employee.getTgInfo() != null)
             tgInfoResponseDto = mapper.map(employee.getTgInfo(), TgInfoResponseDto.class);
 
         employeeResponseDto.setTgInfoResponseDto(tgInfoResponseDto);

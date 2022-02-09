@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class TgInfoResponseDto extends TgInfoBaseDto{
+public class TgInfoResponseDto extends TgInfoBaseDto {
     private Long id;
     private String chatState;
     private LocalDateTime created;
