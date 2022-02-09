@@ -7,9 +7,6 @@ databaseChangeLog:
       file: changes/address.yaml
       relativeToChangelogFile: true
   - include:
-      file: changes/office.yaml
-      relativeToChangelogFile: true
-  - include:
       file: changes/parking.yaml
       relativeToChangelogFile: true
   - include:

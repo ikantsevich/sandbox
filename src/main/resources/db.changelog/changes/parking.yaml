@@ -46,13 +46,13 @@ databaseChangeLog:
                   name: pa_modified
                   type: datetime
                   remarks: 'Record modified timestamp'
-  - changeSet:
-      id: add parking foreign key
-      author: basiashvilin@gmail.com
-      changes:
-        - addForeignKeyConstraint:
-            baseColumnNames: pa_id
-            baseTableName: office
-            constraintName: of_pa_fk
-            referencedColumnNames: pa_id
-            referencedTableName: parking
+#  - changeSet:
+#      id: add office foreign key
+#      author: basiashvilin@gmail.com
+#      changes:
+#        - addForeignKeyConstraint:
+#            baseColumnNames: pa_id
+#            baseTableName: office
+#            constraintName: of_pa_fk
+#            referencedColumnNames: pa_id
+#            referencedTableName: parking
