@@ -1,8 +1,10 @@
 package com.exadel.sandbox.entities;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,25 +13,20 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "office")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Office {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "pa_id")
     private Long parkingId;
 
-    @Column(name = "ad_id")
     private Long addressId;
 
-    @Column(name = "of_status")
     private String  officeStatus;
 
-    @Column(name = "of_created")
     private Date officeCreated;
 
-    @Column(name = "of_modified")
     private Date officeModified;
 
 

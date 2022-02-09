@@ -5,15 +5,15 @@ import com.exadel.sandbox.entities.Office;
 import com.exadel.sandbox.repositories.FloorRepository;
 import com.exadel.sandbox.service.FloorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
 public class FloorServiceImpl implements FloorService {
 
-    private final FloorRepository floorRepository;
+    @Autowired
+    FloorRepository floorRepository;
 
     @Override
     public List<Floor> getFloors() {

@@ -3,16 +3,14 @@ package com.exadel.sandbox.service.impl;
 import com.exadel.sandbox.entities.Office;
 import com.exadel.sandbox.repositories.OfficeRepository;
 import com.exadel.sandbox.service.OfficeService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
 public class OfficeServiceImpl implements OfficeService {
 
-    private final OfficeRepository officeRepository;
+    @Autowired
+    OfficeRepository officeRepository;
 
     @Override
     public List<Office> getOffices() {
