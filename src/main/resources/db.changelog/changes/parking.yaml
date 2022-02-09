@@ -27,8 +27,6 @@ databaseChangeLog:
                   remarks: 'Parking office foreign key'
                   constraints:
                     nullable: false
-                    foreignKeyName: pa_of_fk
-                    references: office(of_id)
               - column:
                   name: ad_id
                   type: bigint
@@ -51,8 +49,8 @@ databaseChangeLog:
 #      author: basiashvilin@gmail.com
 #      changes:
 #        - addForeignKeyConstraint:
-#            baseColumnNames: pa_id
-#            baseTableName: office
-#            constraintName: of_pa_fk
-#            referencedColumnNames: pa_id
-#            referencedTableName: parking
+#            baseColumnNames: of_id
+#            baseTableName: parking
+#            constraintName: pa_of_fk
+#            referencedColumnNames: of_id
+#            referencedTableName: office
