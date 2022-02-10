@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: tg_info teble init
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: tg_info
+      changes:
+        - createTable:
+            tableName: tg_info
+            columns:
+              - column:
+                  name: info_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_em_id
+              - column:
+                  name: chat_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: chat_id_unique
+              - column:
+                  name: chat_state
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: info_created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: info_modified
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+#
