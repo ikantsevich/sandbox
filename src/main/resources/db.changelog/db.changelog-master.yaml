@@ -1,14 +1,18 @@
 databaseChangeLog:
   - logicalFilePath: no-path
+
   - include:
       file: changes/init.yaml
       relativeToChangelogFile: true
+
   - include:
       file: changes/create-permission-table.yaml
       relativeToChangelogFile: true
+
   - include:
       file: changes/create-role-table.yaml
       relativeToChangelogFile: true
+
   - include:
       file: changes/create-role-per-relationTables.yaml
       relativeToChangelogFile: true

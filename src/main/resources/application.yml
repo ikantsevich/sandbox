@@ -5,8 +5,8 @@ datasource:
   schema: 'sandbox'
   host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
-  username: 'mYsql'
-  password: 'mYsql934509018'
+  username: 'root'
+  password: ''
 spring:
   autoconfigure:
     exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration

@@ -21,17 +21,15 @@ databaseChangeLog:
                     references: role(role_id)
               - column:
                   name: per_id
-                    type: bigint
-                    constraints:
-                      foreignKeyName: fk_per_id
-                        references: permission(per_id)
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_per_id
+                    references: permission(per_id)
               - column:
                   name: role_per_created
-                    type: datetime
-                      defaultValueComputed: CURRENT_TIMESTAP
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: role_per_modified
-                    type: datetime
-                    defaultValueComputed: CURRENT_TIMESTAP
-                      constraints:
-                        nullable: false
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP

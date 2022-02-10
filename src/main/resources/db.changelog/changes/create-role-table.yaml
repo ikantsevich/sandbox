@@ -23,20 +23,16 @@ databaseChangeLog:
                     primaryKeyName: pk_role_id
               - column:
                   name: role_name
-                    type: varchar(255)
-                    constraints:
-                      uniqueKey: true
-                      nullable: false
-                      uniqueConstraintName: uk_role_name
+                  type: varchar(255)
+                  constraints:
+                    uniqueKey: true
+                    nullable: false
+                    uniqueConstraintName: uk_role_name
               - column:
                   name: role_created
-                    type: datetime
-                      defaultValueComputed: CURRENT_TIMESTAMP
-                    constraints:
-                      nullable: false
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: role_modified
-                    type: datetime
-                    defaultValueComputed: CURRENT_TIMESTAP
-                      constraints:
-                        nullable: false
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
