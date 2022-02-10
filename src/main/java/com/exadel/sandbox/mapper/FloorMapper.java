@@ -2,7 +2,9 @@ package com.exadel.sandbox.mapper;
 
 import com.exadel.sandbox.dto.FloorDto;
 import com.exadel.sandbox.entities.Floor;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface FloorMapper {
     Floor toEntity(FloorDto floorDto);
 
