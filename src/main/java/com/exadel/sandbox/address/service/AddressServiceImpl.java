@@ -1,9 +1,12 @@
 package com.exadel.sandbox.address.service;
 
 import com.exadel.sandbox.address.dto.AddressBaseDto;
+import com.exadel.sandbox.address.dto.AddressCreateDto;
 import com.exadel.sandbox.address.dto.AddressResponseDto;
+import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import com.exadel.sandbox.address.entity.Address;
 import com.exadel.sandbox.address.repository.AddressRepository;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -35,28 +38,28 @@ public class AddressServiceImpl implements AddressService {
     public AddressResponseDto getAddressById(Long id) {
         Optional<Address> addressByID = addressRepository.findById(id);
         Address address = addressByID.orElseThrow(
-                () -> new IllegalArgumentException("Can\'t get Address with ID: " + id + ". Doesn\'t exist."));
+                () -> new EntityNotFoundException("Can\'t get Address with ID: " + id + ". Doesn\'t exist."));
         return mapper.map(address, AddressResponseDto.class);
     }
 
     @Override
-    public AddressBaseDto create(AddressBaseDto addressBaseDto) {
-        Address employee = mapper.map(addressBaseDto, Address.class);
+    public AddressResponseDto create(AddressCreateDto addressCreateDto) {
+        Address employee = mapper.map(addressCreateDto, Address.class);
         return mapper.map(addressRepository.save(employee), AddressResponseDto.class);
     }
 
     @Override
     public void deleteById(Long id) {
         Address address = addressRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Can\'t delete Address with ID: " + id + ". Doesn\'t exist."));
+                () -> new EntityNotFoundException("Can\'t delete Address with ID: " + id + ". Doesn\'t exist."));
         addressRepository.deleteById(id);
     }
 
     @Override
-    public AddressBaseDto update(Long id, AddressBaseDto addressBaseDto) {
+    public AddressResponseDto update(Long id, AddressUpdateDto addressUpdateDto) {
         Address address = addressRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Can\'t update Address with ID: " + id + ". Doesn\'t exist."));
-        mapper.map(addressBaseDto, address);
+                () -> new EntityNotFoundException("Can\'t update Address with ID: " + id + ". Doesn\'t exist."));
+        mapper.map(addressUpdateDto, address);
         return mapper.map(addressRepository.save(address), AddressResponseDto.class);
     }
 

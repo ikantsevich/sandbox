@@ -23,7 +23,7 @@ databaseChangeLog:
                     primaryKeyName: bo_id_pk
               - column:
                   name: em_id
-                  type: bigint
+                  type: int
                   remarks: 'Employee foreign key'
                   constraints:
                     nullable: false

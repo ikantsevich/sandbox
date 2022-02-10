@@ -1,6 +1,7 @@
 package com.exadel.sandbox.address.service;
 
-import com.exadel.sandbox.address.dto.AddressBaseDto;
+import com.exadel.sandbox.address.dto.AddressCreateDto;
+import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import com.exadel.sandbox.address.dto.AddressResponseDto;
 
 import java.util.List;
@@ -11,10 +12,10 @@ public interface AddressService {
 
     AddressResponseDto getAddressById(Long id);
 
-    AddressBaseDto create(AddressBaseDto customer);
+    AddressResponseDto create(AddressCreateDto customer);
 
     void deleteById(Long id);
 
-    AddressBaseDto update(Long id, AddressBaseDto customer);
+    AddressResponseDto update(Long id, AddressUpdateDto address);
 
 }

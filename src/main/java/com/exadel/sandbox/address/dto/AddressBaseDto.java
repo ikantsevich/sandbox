@@ -8,7 +8,7 @@ public class AddressBaseDto {
     private String country;
     private String city;
     private String street;
-    private int buildingNum;
+    private Integer buildingNum;
     private String zipCode;
 
 }
