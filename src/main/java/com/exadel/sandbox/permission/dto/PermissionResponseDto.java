@@ -5,14 +5,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class PerResponseDto extends PerBaseDto {
-    private Integer id;
-    private Date created;
-    private Date modified;
+public class PermissionResponseDto extends PermissionBaseDto {
+    private Long id;
+    private LocalDateTime created;
+    private LocalDateTime modified;
 }

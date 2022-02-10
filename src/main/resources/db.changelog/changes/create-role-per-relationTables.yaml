@@ -15,13 +15,13 @@ databaseChangeLog:
             columns:
               - column:
                   name: role_id
-                  type: bigint
+                  type: int
                   constraints:
                     foreignKeyName: fk_role_id
                     references: role(role_id)
               - column:
                   name: per_id
-                  type: bigint
+                  type: int
                   constraints:
                     foreignKeyName: fk_per_id
                     references: permission(per_id)

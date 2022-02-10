@@ -1,64 +1,62 @@
 package com.exadel.sandbox.permission.service;
 
-import com.exadel.sandbox.permission.dto.PerBaseDto;
-import com.exadel.sandbox.permission.dto.PerResponseDto;
+import com.exadel.sandbox.permission.dto.PermissionCreateDto;
+import com.exadel.sandbox.permission.dto.PermissionResponseDto;
+import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.entity.Permission;
 import com.exadel.sandbox.permission.repository.PermissionRepository;
-import com.exadel.sandbox.role.service.Service;
+import com.exadel.sandbox.role.service.CrudService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 @Transactional
-public class PermissionServiceImpl implements Service<PerBaseDto, PerResponseDto> {
+public class PermissionServiceImpl implements CrudService<PermissionCreateDto, PermissionUpdateDto, PermissionResponseDto> {
     private final PermissionRepository permissionRepository;
     private final ModelMapper permissionMapper;
 
     @Override
-    public List<PerResponseDto> getAll() {
+    public List<PermissionResponseDto> getAll() {
         List<Permission> permissions = permissionRepository.findAll();
-        if (permissions.size() > 0) {
-            List<PerResponseDto> perResponseDtos = new ArrayList<>();
-            for (Permission permission : permissions) {
-                perResponseDtos.add(permissionMapper.map(permission, PerResponseDto.class));
-            }
-            return perResponseDtos;
+        List<PermissionResponseDto> perResponseDtos = new ArrayList<>();
+        for (Permission permission : permissions) {
+            perResponseDtos.add(permissionMapper.map(permission, PermissionResponseDto.class));
         }
-        return new ArrayList<>();
+        return perResponseDtos;
     }
 
     @Override
-    public PerResponseDto getById(Integer id) {
+    public PermissionResponseDto getById(Long id) {
         Optional<Permission> byId = permissionRepository.findById(id);
         Permission permission = byId.orElseThrow(() -> new RuntimeException("Permission not found"));
-        return permissionMapper.map(permission, PerResponseDto.class);
+        return permissionMapper.map(permission, PermissionResponseDto.class);
     }
 
     @Override
-    public PerResponseDto create(PerBaseDto perBaseDto) {
-        return permissionMapper.map(permissionRepository.save(permissionMapper.map(perBaseDto, Permission.class)), PerResponseDto.class);
+    public PermissionResponseDto create(PermissionCreateDto permissionCreateDto) {
+        return permissionMapper.map(permissionRepository.save(permissionMapper.map(permissionCreateDto, Permission.class)), PermissionResponseDto.class);
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         permissionRepository.deleteById(id);
     }
 
     @Override
-    public PerResponseDto update(Integer id, PerBaseDto perBaseDto) {
+    public PermissionResponseDto update(Long id, PermissionUpdateDto permissionUpdateDto) {
         Permission permission = permissionRepository.findById(id).orElseThrow(() -> new RuntimeException("Permission not found"));
-        permission.setModified(new Date());
+        permission.setModified(LocalDateTime.now());
         permission.setId(id);
-        permission.setName(perBaseDto.getName());
+        permission.setName(permissionUpdateDto.getName());
         permissionRepository.save(permission);
-        return permissionMapper.map(permission, PerResponseDto.class);
+        return permissionMapper.map(permission, PermissionResponseDto.class);
     }
 }

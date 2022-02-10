@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PerBaseDto {
-    protected int name;
+public class PermissionBaseDto {
+    protected String name;
 }

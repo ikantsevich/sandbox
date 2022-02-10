@@ -1,8 +1,9 @@
 package com.exadel.sandbox.permission.controller;
 
-import com.exadel.sandbox.permission.dto.PerBaseDto;
-import com.exadel.sandbox.permission.dto.PerResponseDto;
-import com.exadel.sandbox.role.service.Service;
+import com.exadel.sandbox.permission.dto.PermissionCreateDto;
+import com.exadel.sandbox.permission.dto.PermissionResponseDto;
+import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
+import com.exadel.sandbox.role.service.CrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,30 +13,30 @@ import java.util.List;
 @RequestMapping("permission")
 @RequiredArgsConstructor
 public class PermissionController {
-    private final Service<PerBaseDto, PerResponseDto> permissionService;
+    private final CrudService<PermissionCreateDto, PermissionUpdateDto, PermissionResponseDto> permissionService;
 
     @GetMapping("list")
-    List<PerResponseDto> getPermissions() {
+    List<PermissionResponseDto> getPermissions() {
         return permissionService.getAll();
     }
 
     @GetMapping("{id}")
-    PerResponseDto getPermissionById(@PathVariable("id") Integer id) {
+    PermissionResponseDto getPermissionById(@PathVariable("id") Long id) {
         return permissionService.getById(id);
     }
 
     @PostMapping()
-    PerResponseDto createPermission(@RequestBody PerBaseDto perBaseDto) {
-        return permissionService.create(perBaseDto);
+    PermissionResponseDto createPermission(@RequestBody PermissionCreateDto permissionCreateDto) {
+        return permissionService.create(permissionCreateDto);
     }
 
     @DeleteMapping("{id}")
-    void deleteById(@PathVariable("id") Integer id) {
+    void deleteById(@PathVariable("id") Long id) {
         permissionService.deleteById(id);
     }
 
     @PutMapping("{id}")
-    PerResponseDto updateRole(@PathVariable("id") Integer id, @RequestBody PerBaseDto perBaseDto) {
-        return permissionService.update(id, perBaseDto);
+    PermissionResponseDto updateRole(@PathVariable("id") Long id, @RequestBody PermissionUpdateDto permissionUpdateDto) {
+        return permissionService.update(id, permissionUpdateDto);
     }
 }
