@@ -41,7 +41,6 @@ dependencies {
     api('commons-collections:commons-collections:3.2.2')
     api('org.testng:testng:6.11')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
 }
 
