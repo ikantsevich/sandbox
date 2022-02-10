@@ -14,5 +14,5 @@ public interface SeatService {
 
     void deleteById(Long id);
 
-    SeatResponseDto update(Long id, SeatBaseDto employeeUpdateDto);
+    SeatResponseDto update(Long id, SeatBaseDto seatBaseDto);
 }
