@@ -29,7 +29,7 @@ public class Attachment {
     @Column(name = "chat_id")
     private String chatId;
 
-    @Column(name = "massage_id")
+    @Column(name = "message_id")
     private Long messageId;
 
     @Column(name = "at_name")

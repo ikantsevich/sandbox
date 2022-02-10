@@ -3,21 +3,26 @@ package com.exadel.sandbox.service.impl;
 import com.exadel.sandbox.dto.FloorDto;
 import com.exadel.sandbox.entities.Floor;
 import com.exadel.sandbox.entities.Office;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.mapper.FloorMapper;
 import com.exadel.sandbox.repositories.FloorRepository;
 import com.exadel.sandbox.service.FloorService;
 import liquibase.pro.packaged.F;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Component
 public class FloorServiceImpl implements FloorService {
 
     @Autowired
     FloorRepository floorRepository;
+    @Autowired
     FloorMapper floorMapper;
 
     @Override
@@ -32,8 +37,9 @@ public class FloorServiceImpl implements FloorService {
 
     @Override
     public FloorDto getById(Long id) {
-        Floor one = floorRepository.getOne(id);
-        return floorMapper.toDto(one);
+        Optional<Floor> one = floorRepository.findById(id);
+        Floor floor = one.orElseThrow(() -> new EntityNotFoundException("Employee with id: " + id + " not found"));
+        return floorMapper.toDto(floor);
     }
 
     @Override

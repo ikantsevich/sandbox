@@ -3,6 +3,7 @@ package com.exadel.sandbox.controllers;
 import com.exadel.sandbox.dto.AttachmentDto;
 import com.exadel.sandbox.service.AttachmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,9 @@ import java.util.List;
 @RequestMapping("/attachment")
 @RequiredArgsConstructor
 public class AttachmentController {
-    private AttachmentService attachmentService;
+
+    @Autowired
+    AttachmentService attachmentService;
 
     @GetMapping("/list")
     List<AttachmentDto> getAttachments() {

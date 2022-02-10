@@ -2,16 +2,21 @@ package com.exadel.sandbox.service.impl;
 
 import com.exadel.sandbox.dto.AttachmentDto;
 import com.exadel.sandbox.entities.Attachment;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.mapper.AttachmentMapper;
 import com.exadel.sandbox.repositories.AttachmentRepository;
 import com.exadel.sandbox.service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Component
 public class AttachmentServiceImpl implements AttachmentService {
 
+    @Autowired
     AttachmentMapper attachmentMapper;
 
     @Autowired
@@ -32,8 +37,9 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public AttachmentDto getById(Long id) {
-        Attachment attachment = attachmentRepository.getOne(id);
-        return attachmentMapper.toDto(attachment);
+        Optional<Attachment> attachment = attachmentRepository.findById(id);
+        Attachment attachment1 = attachment.orElseThrow(() -> new EntityNotFoundException("Attachment with id: " + id + " not found"));
+        return attachmentMapper.toDto(attachment1);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.exadel.sandbox.entities.Office;
 import com.exadel.sandbox.mapper.FloorMapper;
 import com.exadel.sandbox.service.FloorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,9 +15,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/floor")
-@RequiredArgsConstructor
 public class FloorController {
-    private FloorService floorService;
+
+    @Autowired
+    FloorService floorService;
 
     @GetMapping("/list")
     List<FloorDto> getFloors() {

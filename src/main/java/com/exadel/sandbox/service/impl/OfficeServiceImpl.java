@@ -2,20 +2,29 @@ package com.exadel.sandbox.service.impl;
 
 import com.exadel.sandbox.dto.OfficeDto;
 import com.exadel.sandbox.entities.Office;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.mapper.OfficeMapper;
 import com.exadel.sandbox.repositories.OfficeRepository;
 import com.exadel.sandbox.service.OfficeService;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.cfg.JoinedSubclassFkSecondPass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Component
+@Transactional
 public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
     OfficeRepository officeRepository;
+    @Autowired
     OfficeMapper officeMapper;
+
 
     @Override
     public List<OfficeDto> getOffices() {
@@ -29,8 +38,9 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public OfficeDto getById(Long id) {
-        Office one = officeRepository.getOne(id);
-        return officeMapper.toDto(one);
+        Optional<Office> one = officeRepository.findById(id);
+        Office office = one.orElseThrow(() -> new EntityNotFoundException("Office with id " + id + " not found"));
+        return officeMapper.toDto(office);
     }
 
     @Override

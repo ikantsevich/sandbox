@@ -1,28 +1,26 @@
 package com.exadel.sandbox.controllers;
 
 import com.exadel.sandbox.dto.OfficeDto;
-import com.exadel.sandbox.entities.Office;
-import com.exadel.sandbox.mapper.OfficeMapper;
 import com.exadel.sandbox.service.OfficeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/office")
-@RequiredArgsConstructor
+@RequestMapping("office")
 public class OfficeController {
 
-    private OfficeService officeService;
+    @Autowired
+    OfficeService officeService;
 
-    @GetMapping("/list")
+    @GetMapping("list")
     List<OfficeDto> getOffices() {
         return officeService.getOffices();
     }
 
-    @GetMapping("/search")
+    @GetMapping("search")
     OfficeDto getOffice(@RequestParam("id") Long id) {
         return officeService.getById(id);
     }
@@ -46,6 +44,4 @@ public class OfficeController {
     OfficeDto updateOffice(@PathVariable("id") Long id, @RequestBody OfficeDto officeDto) {
         return officeService.update(id, officeDto);
     }
-
-
 }

@@ -18,6 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "office")
 public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
