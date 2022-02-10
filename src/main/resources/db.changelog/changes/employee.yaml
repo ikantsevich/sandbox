@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: employee teble init
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: employee
+      changes:
+        - createTable:
+            tableName: employee
+            columns:
+              - column:
+                  name: em_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_em_id
+              - column:
+                  name: tg_info_id
+                  type: int
+                  constraints:
+                    unique: true
+                    nullable: true
+                    foreignKeyName: fk_tg_info
+                    references: tg_info(info_id)
+              - column:
+                  name: em_firstname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: em_lastname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: em_email
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: em_position
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: preferred_seat
+                  type: int
+              - column:
+                  name: em_start
+                  type: datetime
+              - column:
+                  name: em_end
+                  type: datetime
+              - column:
+                  name: em_created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: em_modified
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
