@@ -1,12 +1,12 @@
 package com.exadel.sandbox.role.dto;
 
-import com.exadel.sandbox.permission.dto.PerResponseDto;
+import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -14,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class RoleResponseDto extends RoleBaseDto {
-    private Integer id;
-    private List<PerResponseDto> perResponseDtoList;
-    private Date created;
-    private Date modified;
+    private Long id;
+    private List<PermissionResponseDto> perResponseDtoList;
+    private LocalDateTime created;
+    private LocalDateTime modified;
 }

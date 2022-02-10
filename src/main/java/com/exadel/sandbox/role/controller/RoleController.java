@@ -1,8 +1,9 @@
 package com.exadel.sandbox.role.controller;
 
-import com.exadel.sandbox.role.dto.RoleBaseDto;
+import com.exadel.sandbox.role.dto.RoleCreateDto;
 import com.exadel.sandbox.role.dto.RoleResponseDto;
-import com.exadel.sandbox.role.service.Service;
+import com.exadel.sandbox.role.dto.RoleUpdateDto;
+import com.exadel.sandbox.role.service.CrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @RequestMapping("role")
 @RequiredArgsConstructor
 public class RoleController {
-    private final Service<RoleBaseDto, RoleResponseDto> roleService;
+    private final CrudService<RoleCreateDto, RoleUpdateDto, RoleResponseDto> roleService;
 
     @GetMapping("list")
     List<RoleResponseDto> getRoles() {
@@ -20,22 +21,22 @@ public class RoleController {
     }
 
     @GetMapping("{id}")
-    RoleResponseDto getRoleById(@PathVariable("id") Integer id) {
+    RoleResponseDto getRoleById(@PathVariable("id") Long id) {
         return roleService.getById(id);
     }
 
     @PostMapping()
-    RoleResponseDto createRole(@RequestBody RoleBaseDto roleBaseDto) {
-        return roleService.create(roleBaseDto);
+    RoleResponseDto createRole(@RequestBody RoleCreateDto roleCreateDto) {
+        return roleService.create(roleCreateDto);
     }
 
     @DeleteMapping("{id}")
-    void deleteById(@PathVariable("id") Integer id) {
+    void deleteById(@PathVariable("id") Long id) {
         roleService.deleteById(id);
     }
 
     @PutMapping("{id}")
-    RoleResponseDto updateRole(@PathVariable("id") Integer id, @RequestBody RoleBaseDto roleBaseDto) {
-        return roleService.update(id, roleBaseDto);
+    RoleResponseDto updateRole(@PathVariable("id") Long id, @RequestBody RoleUpdateDto roleUpdateDto) {
+        return roleService.update(id, roleUpdateDto);
     }
 }

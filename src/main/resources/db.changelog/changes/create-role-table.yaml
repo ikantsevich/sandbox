@@ -15,7 +15,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: role_id
-                  type: bigint
+                  type: int
                   autoIncrement: true
                   constraints:
                     primaryKey: true

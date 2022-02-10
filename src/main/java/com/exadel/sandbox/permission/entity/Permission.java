@@ -8,7 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -22,19 +22,19 @@ public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "per_id")
-    private Integer id;
+    private Long id;
 
 
     @Column(name = "per_name", nullable = false, unique = true)
-    private int name;
+    private String name;
 
 
     @CreatedDate
     @Column(name = "per_created")
-    private Date created;
+    private LocalDateTime created;
 
 
     @LastModifiedDate
     @Column(name = "per_modified")
-    private Date modified;
+    private LocalDateTime modified;
 }
