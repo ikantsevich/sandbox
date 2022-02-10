@@ -5,7 +5,6 @@ import java.util.List;
 public interface CrudService<CreateDto, UpdateDto, ResDto> {
     List<ResDto> getAll();
 
-
     ResDto getById(Long id);
 
     ResDto create(CreateDto dto);

@@ -1,10 +1,10 @@
 package com.exadel.sandbox.permission.service;
 
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.permission.dto.PermissionCreateDto;
 import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.entity.Permission;
-import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.permission.repository.PermissionRepository;
 import com.exadel.sandbox.role.service.CrudService;
 import lombok.RequiredArgsConstructor;
@@ -38,12 +38,16 @@ public class PermissionServiceImpl implements CrudService<PermissionCreateDto, P
     public PermissionResponseDto getById(Long id) {
         Optional<Permission> byId = permissionRepository.findById(id);
         Permission permission = byId.orElseThrow(() -> new EntityNotFoundException("Permission not found"));
-        return permissionMapper.map(permission, PermissionResponseDto.class);
+        PermissionResponseDto responseDto = permissionMapper.map(permission, PermissionResponseDto.class);
+        return responseDto;
     }
 
     @Override
     public PermissionResponseDto create(PermissionCreateDto permissionCreateDto) {
-        return permissionMapper.map(permissionRepository.save(permissionMapper.map(permissionCreateDto, Permission.class)), PermissionResponseDto.class);
+        Permission permission = permissionMapper.map(permissionCreateDto, Permission.class);
+        Permission savedPermission = permissionRepository.save(permission);
+        PermissionResponseDto responseDto = permissionMapper.map(savedPermission, PermissionResponseDto.class);
+        return responseDto;
     }
 
     @Override
@@ -58,6 +62,7 @@ public class PermissionServiceImpl implements CrudService<PermissionCreateDto, P
         permission.setId(id);
         permission.setName(permissionUpdateDto.getName());
         permissionRepository.save(permission);
-        return permissionMapper.map(permission, PermissionResponseDto.class);
+        PermissionResponseDto responseDto = permissionMapper.map(permission, PermissionResponseDto.class);
+        return responseDto;
     }
 }

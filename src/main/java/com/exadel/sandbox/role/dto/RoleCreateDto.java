@@ -1,6 +1,6 @@
 package com.exadel.sandbox.role.dto;
 
-import com.exadel.sandbox.permission.dto.PermissionCreateDto;
+import com.exadel.sandbox.permission.dto.PermissionBaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class RoleCreateDto extends RoleBaseDto {
-    private List<PermissionCreateDto> permissionCreateDtoList;
+    private List<PermissionBaseDto> permissionList;
 }

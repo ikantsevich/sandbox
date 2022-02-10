@@ -1,5 +1,6 @@
 package com.exadel.sandbox.permission.entity;
 
+import com.exadel.sandbox.role.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -37,4 +40,7 @@ public class Permission {
     @LastModifiedDate
     @Column(name = "per_modified")
     private LocalDateTime modified;
+
+    @ManyToMany(mappedBy = "permissions")
+    private List<Role> roles = new ArrayList<>();
 }

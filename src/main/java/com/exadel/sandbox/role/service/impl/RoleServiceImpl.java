@@ -5,6 +5,7 @@ import com.exadel.sandbox.permission.dto.PermissionBaseDto;
 import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.entity.Permission;
+import com.exadel.sandbox.permission.repository.PermissionRepository;
 import com.exadel.sandbox.role.dto.RoleCreateDto;
 import com.exadel.sandbox.role.dto.RoleResponseDto;
 import com.exadel.sandbox.role.dto.RoleUpdateDto;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @Transactional
 public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto, RoleResponseDto> {
     private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
     private final ModelMapper mapper;
 
     @Override
@@ -47,32 +49,41 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
     public RoleResponseDto create(RoleCreateDto roleCreateDto) {
         Role role = mapper.map(roleCreateDto, Role.class);
         List<Permission> permissions = new ArrayList<>();
-        if (roleCreateDto.getPermissionCreateDtoList() != null) {
-            for (PermissionBaseDto perBaseDto : roleCreateDto.getPermissionCreateDtoList()) {
-                permissions.add(mapper.map(perBaseDto, Permission.class));
-            }
-            role.setPermissions(permissions);
+        for (PermissionBaseDto permissionBaseDto : roleCreateDto.getPermissionList()) {
+            Permission permission = permissionRepository.getByName(permissionBaseDto.getName());
+            if (permission == null) throw new EntityNotFoundException("Permission not found");
+            permissions.add(permission);
         }
-        return entityToResponseDto(role);
+        role.setPermissions(permissions);
+        Role savedRole = roleRepository.save(role);
+        return entityToResponseDto(savedRole);
     }
 
     @Override
     public void deleteById(Long id) {
+        Role role = roleRepository.getOne(id);
+        if (role != null) {
+            role.setPermissions(null);
+            roleRepository.save(role);
+        }
         roleRepository.deleteById(id);
     }
 
     @Override
     public RoleResponseDto update(Long id, RoleUpdateDto roleUpdateDto) {
-        Optional<Role> byId = roleRepository.findById(id);
-        Role role = byId.orElseThrow(() -> new EntityNotFoundException("Role not found"));
-        List<Permission> permissions = new ArrayList<>();
-        role.setId(id);
+        Role role = roleRepository.getOne(id);
+        if (role == null) throw new EntityNotFoundException("Role not found");
         role.setName(roleUpdateDto.getName());
+        role.setPermissions(null);
+        Role updated = roleRepository.save(role);
+        List<Permission> permissions = new ArrayList<>();
         for (PermissionUpdateDto permissionUpdateDto : roleUpdateDto.getPermissionUpdateDtoList()) {
-            permissions.add(mapper.map(permissionUpdateDto, Permission.class));
+            Permission permission = permissionRepository.getByName(permissionUpdateDto.getName());
+            permissions.add(permission);
         }
-        role.setPermissions(permissions);
-        return entityToResponseDto(role);
+        updated.setPermissions(permissions);
+        return entityToResponseDto(roleRepository.save(updated));
+
     }
 
     private RoleResponseDto entityToResponseDto(Role role) {
