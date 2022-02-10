@@ -6,8 +6,11 @@ datasource:
   host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
   username: 'root'
-  password: ''
+  password: '09102003'
 spring:
+  autoconfigure:
+    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC
@@ -25,4 +28,4 @@ spring:
     user: '${datasource.username}'
     parameters.env: '${spring.profiles.active}'
     enabled: true
-    change-log: '/db.changelog/db.changelog-OfficeCrudToMaster.yaml'
+    change-log: '/db.changelog/db.changelog-master.yaml'

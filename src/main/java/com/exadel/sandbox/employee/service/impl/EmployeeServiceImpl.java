@@ -8,7 +8,7 @@ import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.entity.TgInfo;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.employee.service.EmployeeService;
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.officeFloorAttachment.controllers.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

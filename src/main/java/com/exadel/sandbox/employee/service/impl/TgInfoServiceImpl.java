@@ -6,7 +6,7 @@ import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.employee.entity.TgInfo;
 import com.exadel.sandbox.employee.repository.TgInfoRepository;
 import com.exadel.sandbox.employee.service.TgInfoService;
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.officeFloorAttachment.controllers.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

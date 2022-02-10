@@ -17,7 +17,6 @@ public class Config {
     ModelMapper mapper() {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
         return mapper;
     }
 
