@@ -15,12 +15,11 @@ import com.exadel.sandbox.service.impl.OfficeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 
 @Configuration
 @RequiredArgsConstructor
-public class Config {
+public class ConfigOfficeFloorAttachment {
     @Bean
     OfficeMapper officeMapper(){
         return new OfficeMapperImpl();
