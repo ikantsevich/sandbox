@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("office")
+@RequestMapping("/office")
 public class OfficeController {
 
     @Autowired
     OfficeService officeService;
 
-    @GetMapping("list")
+    @GetMapping("/list")
     List<OfficeDto> getOffices() {
         return officeService.getOffices();
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     OfficeDto getOffice(@RequestParam("id") Long id) {
         return officeService.getById(id);
     }
@@ -30,7 +30,7 @@ public class OfficeController {
         return officeService.getOfficeByAddressId(id);
     }
 
-    @PutMapping()
+    @PostMapping()
     OfficeDto createOffice(@RequestBody OfficeDto officeDto) {
         return officeService.create(officeDto);
     }
@@ -40,7 +40,7 @@ public class OfficeController {
         officeService.deleteById(id);
     }
 
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     OfficeDto updateOffice(@PathVariable("id") Long id, @RequestBody OfficeDto officeDto) {
         return officeService.update(id, officeDto);
     }
