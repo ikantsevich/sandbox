@@ -4,6 +4,7 @@ import com.exadel.sandbox.permission.dto.PermissionCreateDto;
 import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.entity.Permission;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.permission.repository.PermissionRepository;
 import com.exadel.sandbox.role.service.CrudService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class PermissionServiceImpl implements CrudService<PermissionCreateDto, P
     @Override
     public PermissionResponseDto getById(Long id) {
         Optional<Permission> byId = permissionRepository.findById(id);
-        Permission permission = byId.orElseThrow(() -> new RuntimeException("Permission not found"));
+        Permission permission = byId.orElseThrow(() -> new EntityNotFoundException("Permission not found"));
         return permissionMapper.map(permission, PermissionResponseDto.class);
     }
 
@@ -52,7 +53,7 @@ public class PermissionServiceImpl implements CrudService<PermissionCreateDto, P
 
     @Override
     public PermissionResponseDto update(Long id, PermissionUpdateDto permissionUpdateDto) {
-        Permission permission = permissionRepository.findById(id).orElseThrow(() -> new RuntimeException("Permission not found"));
+        Permission permission = permissionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Permission not found"));
         permission.setModified(LocalDateTime.now());
         permission.setId(id);
         permission.setName(permissionUpdateDto.getName());

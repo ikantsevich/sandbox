@@ -1,5 +1,6 @@
 package com.exadel.sandbox.role.service.impl;
 
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.permission.dto.PermissionBaseDto;
 import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
@@ -39,7 +40,7 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
     @Override
     public RoleResponseDto getById(Long id) {
         Optional<Role> byId = roleRepository.findById(id);
-        return entityToResponseDto(byId.orElseThrow(() -> new RuntimeException("Role not found")));
+        return entityToResponseDto(byId.orElseThrow(() -> new EntityNotFoundException("Role not found")));
     }
 
     @Override
@@ -63,7 +64,7 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
     @Override
     public RoleResponseDto update(Long id, RoleUpdateDto roleUpdateDto) {
         Optional<Role> byId = roleRepository.findById(id);
-        Role role = byId.orElseThrow(() -> new RuntimeException("Role not found"));
+        Role role = byId.orElseThrow(() -> new EntityNotFoundException("Role not found"));
         List<Permission> permissions = new ArrayList<>();
         role.setId(id);
         role.setName(roleUpdateDto.getName());
