@@ -23,4 +23,9 @@ databaseChangeLog:
 
   - include:
       file: changes/employee.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/vacation.yaml
+      relativeToChangelogFile: true
  
