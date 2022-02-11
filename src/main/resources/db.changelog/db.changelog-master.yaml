@@ -20,3 +20,15 @@ databaseChangeLog:
   - include:
       file: changes/em_notif.yaml
       relativeToChangelogFile: true
+
+  - include:
+      file: changes/tg_info.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/employee.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/vacation.yaml
+      relativeToChangelogFile: true
