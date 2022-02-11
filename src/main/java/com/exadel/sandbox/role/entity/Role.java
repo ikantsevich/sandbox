@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -26,15 +25,12 @@ public class Role {
     @Column(name = "role_id")
     private Long id;
 
-
     @Column(name = "role_name", nullable = false, unique = true)
     private String name;
-
 
     @CreatedDate
     @Column(name = "role_created")
     private LocalDateTime created;
-
 
     @LastModifiedDate
     @Column(name = "role_modified")

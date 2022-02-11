@@ -12,5 +12,4 @@ public interface CrudService<CreateDto, UpdateDto, ResDto> {
     void deleteById(Long id);
 
     ResDto update(Long id, UpdateDto dto);
-
 }

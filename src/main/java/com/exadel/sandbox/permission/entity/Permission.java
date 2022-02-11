@@ -21,21 +21,17 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Permission {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "per_id")
     private Long id;
 
-
     @Column(name = "per_name", nullable = false, unique = true)
     private String name;
-
 
     @CreatedDate
     @Column(name = "per_created")
     private LocalDateTime created;
-
 
     @LastModifiedDate
     @Column(name = "per_modified")

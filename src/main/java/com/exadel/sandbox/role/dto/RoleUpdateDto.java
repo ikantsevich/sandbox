@@ -1,7 +1,5 @@
 package com.exadel.sandbox.role.dto;
 
-import com.exadel.sandbox.permission.dto.PermissionBaseDto;
-import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;

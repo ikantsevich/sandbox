@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -26,12 +26,7 @@ public class PermissionServiceImpl implements CrudService<PermissionCreateDto, P
 
     @Override
     public List<PermissionResponseDto> getAll() {
-        List<Permission> permissions = permissionRepository.findAll();
-        List<PermissionResponseDto> perResponseDtos = new ArrayList<>();
-        for (Permission permission : permissions) {
-            perResponseDtos.add(permissionMapper.map(permission, PermissionResponseDto.class));
-        }
-        return perResponseDtos;
+        return permissionRepository.findAll().stream().map(permission -> permissionMapper.map(permission, PermissionResponseDto.class)).collect(Collectors.toList());
     }
 
     @Override
