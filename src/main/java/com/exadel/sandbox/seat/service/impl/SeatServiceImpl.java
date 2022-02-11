@@ -48,9 +48,9 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     public SeatResponseDto create(SeatBaseDto seatBaseDto) {
-//        Seat seat = mapper.map(seatBaseDto, Seat.class);
-//
-//
+        Seat seat = mapper.map(seatBaseDto, Seat.class);
+
+
         return null;
     }
 
