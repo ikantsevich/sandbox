@@ -6,11 +6,11 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/employee.yaml
+      file: changes/tg_info.yaml
       relativeToChangelogFile: true
 
   - include:
-      file: changes/tg_info.yaml
+      file: changes/employee.yaml
       relativeToChangelogFile: true
 
   - include:
