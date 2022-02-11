@@ -52,7 +52,8 @@ public class PermissionServiceImpl implements CrudService<PermissionCreateDto, P
 
     @Override
     public PermissionResponseDto update(Long id, PermissionUpdateDto permissionUpdateDto) {
-        Permission permission = permissionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Permission not found"));
+        Permission permission = permissionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Permission not found"));
         permission.setModified(LocalDateTime.now());
         permission.setId(id);
         permission.setName(permissionUpdateDto.getName());

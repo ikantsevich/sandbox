@@ -29,7 +29,10 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
 
     @Override
     public List<RoleResponseDto> getAll() {
-        return roleRepository.findAll().stream().map(this::entityToResponseDto).collect(Collectors.toList());
+        return roleRepository.findAll()
+                .stream()
+                .map(this::entityToResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -41,7 +44,10 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
     @Override
     public RoleResponseDto create(RoleCreateDto roleCreateDto) {
         Role role = mapper.map(roleCreateDto, Role.class);
-        List<Permission> permissions = roleCreateDto.getPermissionList().stream().map(perBaseDto -> permissionRepository.getByName(perBaseDto.getName())).collect(Collectors.toList());
+        List<Permission> permissions = roleCreateDto.getPermissionList()
+                .stream()
+                .map(perBaseDto -> permissionRepository.getByName(perBaseDto.getName()))
+                .collect(Collectors.toList());
         role.setPermissions(permissions);
         Role savedRole = roleRepository.save(role);
         return entityToResponseDto(savedRole);
@@ -49,7 +55,8 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
 
     @Override
     public void deleteById(Long id) {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Role not found"));
+        Role role = roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found"));
         role.setPermissions(null);
         roleRepository.save(role);
         roleRepository.deleteById(id);
@@ -57,11 +64,15 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
 
     @Override
     public RoleResponseDto update(Long id, RoleUpdateDto roleUpdateDto) {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Role not found"));
+        Role role = roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found"));
         role.setName(roleUpdateDto.getName());
         role.setPermissions(null);
         Role updated = roleRepository.save(role);
-        List<Permission> permissions = roleUpdateDto.getPermissionUpdateDtoList().stream().map(permissionUpdateDto -> permissionRepository.getByName(permissionUpdateDto.getName())).collect(Collectors.toList());
+        List<Permission> permissions = roleUpdateDto.getPermissionUpdateDtoList()
+                .stream()
+                .map(permissionUpdateDto -> permissionRepository.getByName(permissionUpdateDto.getName()))
+                .collect(Collectors.toList());
         updated.setPermissions(permissions);
         return entityToResponseDto(roleRepository.save(updated));
     }
@@ -69,7 +80,10 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
     private RoleResponseDto entityToResponseDto(Role role) {
         RoleResponseDto roleResponseDto = mapper.map(role, RoleResponseDto.class);
         if (role.getPermissions() != null) {
-            List<PermissionResponseDto> perResponseDtos = role.getPermissions().stream().map(permission -> mapper.map(permission, PermissionResponseDto.class)).collect(Collectors.toList());
+            List<PermissionResponseDto> perResponseDtos = role.getPermissions()
+                    .stream()
+                    .map(permission -> mapper.map(permission, PermissionResponseDto.class))
+                    .collect(Collectors.toList());
             roleResponseDto.setPerResponseDtoList(perResponseDtos);
         }
         return roleResponseDto;
