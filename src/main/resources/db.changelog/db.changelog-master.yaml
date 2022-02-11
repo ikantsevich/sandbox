@@ -6,6 +6,18 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
+      file: changes/employee.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/tg_info.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/vacation.yaml
+      relativeToChangelogFile: true
+
+  - include:
       file: changes/create-permission-table.yaml
       relativeToChangelogFile: true
 
@@ -16,16 +28,3 @@ databaseChangeLog:
   - include:
       file: changes/create-role-per-relationTables.yaml
       relativeToChangelogFile: true
-      
-   - include:
-      file: changes/tg_info.yaml
-      relativeToChangelogFile: true
-
-  - include:
-      file: changes/employee.yaml
-      relativeToChangelogFile: true
-
-  - include:
-      file: changes/vacation.yaml
-      relativeToChangelogFile: true
- 
