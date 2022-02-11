@@ -6,11 +6,8 @@ datasource:
   host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
   username: 'root'
-  password: '09102003'
+  password: ''
 spring:
-  autoconfigure:
-    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-    exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC
