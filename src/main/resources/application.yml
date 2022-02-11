@@ -8,12 +8,16 @@ datasource:
   username: 'root'
   password: ''
 spring:
+  autoconfigure:
+    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC
       hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
       hibernate.show_sql: true
       hibernate.format_sql: true
+      hibernate.ddl-auto: none
       hibernate.type: trace
   datasource:
     name: 'sandbox'
@@ -25,4 +29,4 @@ spring:
     user: '${datasource.username}'
     parameters.env: '${spring.profiles.active}'
     enabled: true
-    change-log: '/db.changelog/db.changelog-master.yaml'    
+    change-log: '/db.changelog/db.changelog-master.yaml'
