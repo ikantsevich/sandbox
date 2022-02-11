@@ -2,7 +2,7 @@ package com.exadel.sandbox.vacation.service.impl;
 
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.entity.Employee;
-import com.exadel.sandbox.officeFloorAttachment.controllers.exception.EntityNotFoundException;
+import com.exadel.sandbox.officeFloorAttachment.exception.EntityNotFoundException;
 import com.exadel.sandbox.vacation.dto.VacationCreateDto;
 import com.exadel.sandbox.vacation.dto.VacationResponseDto;
 import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
