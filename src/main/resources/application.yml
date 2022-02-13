@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   servlet.context-path: /sandbox
 datasource:
   schema: 'sandbox'
@@ -8,12 +8,16 @@ datasource:
   username: 'root'
   password: ''
 spring:
+  autoconfigure:
+    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC
       hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
       hibernate.show_sql: true
       hibernate.format_sql: true
+      hibernate.ddl-auto: none
       hibernate.type: trace
   datasource:
     name: 'sandbox'

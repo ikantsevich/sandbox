@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: create role-per-relation
+      author: izzatulla
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: role_per
+      changes:
+        - createTable:
+            tableName: role_per
+            columns:
+              - column:
+                  name: role_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_role_id
+                    references: role(role_id)
+              - column:
+                  name: per_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_per_id
+                    references: permission(per_id)
+              - column:
+                  name: role_per_created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: role_per_modified
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
