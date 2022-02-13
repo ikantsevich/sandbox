@@ -1,4 +1,4 @@
-package com.exadel.sandbox.officeFloorAttachment.exception;
+package com.exadel.sandbox.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.exadel.sandbox.officeFloorAttachment.exception;
+package com.exadel.sandbox.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

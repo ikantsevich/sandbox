@@ -1,4 +1,4 @@
-package com.exadel.sandbox.officeFloorAttachment.exception;
+package com.exadel.sandbox.exception;
 
 public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException() {

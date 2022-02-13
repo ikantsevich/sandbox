@@ -4,7 +4,7 @@ import com.exadel.sandbox.officeFloorAttachment.dto.officeDto.OfficeCreateDto;
 import com.exadel.sandbox.officeFloorAttachment.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.officeFloorAttachment.dto.officeDto.OfficeUpdateDto;
 import com.exadel.sandbox.officeFloorAttachment.entities.Office;
-import com.exadel.sandbox.officeFloorAttachment.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.officeFloorAttachment.repositories.OfficeRepository;
 import com.exadel.sandbox.officeFloorAttachment.service.OfficeService;
 import lombok.RequiredArgsConstructor;

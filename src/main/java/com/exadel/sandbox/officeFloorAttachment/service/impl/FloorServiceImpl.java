@@ -4,7 +4,7 @@ import com.exadel.sandbox.officeFloorAttachment.dto.floorDto.FloorCreateDto;
 import com.exadel.sandbox.officeFloorAttachment.dto.floorDto.FloorResponseDto;
 import com.exadel.sandbox.officeFloorAttachment.dto.floorDto.FloorUpdateDto;
 import com.exadel.sandbox.officeFloorAttachment.entities.Floor;
-import com.exadel.sandbox.officeFloorAttachment.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.officeFloorAttachment.repositories.FloorRepository;
 import com.exadel.sandbox.officeFloorAttachment.service.FloorService;
 import lombok.RequiredArgsConstructor;
