@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: init change set
+      author: ikantsevich@exadel.com
+      changes:
+        - sql:
+            comment: test
+            dbms: mysql
+            sql: SELECT 1 = 1;

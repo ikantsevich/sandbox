@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: address table init
+      author: basiashvilin@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: address
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: ad_id
+                  type: bigint
+                  autoIncrement: true
+                  remarks: 'Address primary key'
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: ad_id_pk
+              - column:
+                  name: country
+                  type: varchar(100)
+                  remarks: 'Country name'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(100)
+                  remarks: 'City name'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: varchar(200)
+                  remarks: 'Street name'
+              - column:
+                  name: building_num
+                  type: int
+                  remarks: 'Number of building'
+              - column:
+                  name: zip_code
+                  type: varchar(100)
+                  remarks: 'Zip code'
+              - column:
+                  name: ad_created
+                  type: datetime
+                  remarks: 'Record creation timestamp'
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: ad_modified
+                  type: datetime
+                  remarks: 'Record modified timestamp'
+
