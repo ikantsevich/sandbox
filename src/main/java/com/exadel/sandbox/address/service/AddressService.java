@@ -12,10 +12,10 @@ public interface AddressService {
 
     AddressResponseDto getAddressById(Long id);
 
-    AddressResponseDto create(AddressCreateDto customer);
+    AddressResponseDto create(AddressCreateDto addressCreateDto);
 
     void deleteById(Long id);
 
-    AddressResponseDto update(Long id, AddressUpdateDto address);
+    AddressResponseDto update(Long id, AddressUpdateDto addressUpdateDto);
 
 }

@@ -1,6 +1,6 @@
-package com.exadel.sandbox.parking.entity;
+package com.exadel.sandbox.parking_spot.entity;
 
-import com.exadel.sandbox.address.entity.Address;
+import com.exadel.sandbox.parking.entity.Parking;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,24 +16,30 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Parking {
+public class ParkingSpot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pa_id")
+    @Column(name = "spot_id")
     private Long id;
 
-    @Column(name = "of_id")
-    private Long office;
+    @ManyToOne
+    @JoinColumn(name = "pa_id")
+    private Parking parking;
 
-    @OneToOne
-    @JoinColumn(name = "ad_id")
-    private Address address;
+    @Column(name = "spot_status")
+    private String status;
+
+    @Column(name = "spot_num")
+    private Integer spotNum;
+
+    @Column(name = "e_charger")
+    private Boolean hasECharger;
 
     @CreatedDate
-    @Column(name = "pa_created")
+    @Column(name = "spot_created")
     private LocalDateTime created;
 
     @LastModifiedDate
-    @Column(name = "pa_modified")
+    @Column(name = "spot_modified")
     private LocalDateTime modified;
 }

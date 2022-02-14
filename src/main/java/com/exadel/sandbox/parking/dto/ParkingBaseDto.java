@@ -7,6 +7,6 @@ import lombok.Data;
 public class ParkingBaseDto {
 
     //    private Office office;
-    //private Address address;
+    private Address address;
 
 }

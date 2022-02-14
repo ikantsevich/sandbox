@@ -12,10 +12,10 @@ public interface ParkingService {
 
     ParkingResponseDto getParkingById(Long id);
 
-    ParkingResponseDto create(ParkingCreateDto customer);
+    ParkingResponseDto create(ParkingCreateDto parkingCreateDto);
 
     void deleteById(Long id);
 
-    ParkingResponseDto update(Long id, ParkingUpdateDto parking);
+    ParkingResponseDto update(Long id, ParkingUpdateDto parkingUpdateDto);
 
 }

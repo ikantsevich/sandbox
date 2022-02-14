@@ -49,9 +49,10 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public ParkingResponseDto create(ParkingCreateDto parkingCreateDto) {
         Parking parking = mapper.map(parkingCreateDto, Parking.class);
-        AddressResponseDto addressResponseDto = parkingCreateDto.getAddressResponseDto();
-        if(addressResponseDto != null)
-            parking.setAddress(mapper.map(addressResponseDto, Address.class));
+
+        if(parkingCreateDto.getAddressResponseDto() != null)
+            parking.setAddress(mapper.map(parkingCreateDto.getAddressResponseDto(), Address.class));
+
         return fullMap(parkingRepository.save(parking));
     }
 
@@ -74,9 +75,8 @@ public class ParkingServiceImpl implements ParkingService {
         ParkingResponseDto parkingResponseDto = mapper.map(parking, ParkingResponseDto.class);
 
         AddressResponseDto addressResponseDto = null;
-        Address address = parking.getAddress();
-        if (address != null)
-            addressResponseDto = mapper.map(address, AddressResponseDto.class);
+        if (parking.getAddress() != null)
+            addressResponseDto = mapper.map(parking.getAddress(), AddressResponseDto.class);
 
         parkingResponseDto.setAddressResponseDto(addressResponseDto);
 
