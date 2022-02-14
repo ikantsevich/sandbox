@@ -54,6 +54,7 @@ databaseChangeLog:
       file: changes/em_notif.yaml
       relativeToChangelogFile: true
 
+
   - include:
       file: changes/notification.yaml
       relativeToChangelogFile: true
