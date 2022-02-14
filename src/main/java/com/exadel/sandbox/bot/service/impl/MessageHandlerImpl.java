@@ -18,13 +18,13 @@ public class MessageHandlerImpl implements MessageHandler {
     private final KeyboardService keyboardService;
 
 
-    //    This place is just for testing for not. Then there are going to be a logic
+    //    This place is just for testing for now. Then there are going to be a logic
     @Override
     public void handle(Message message) {
         System.out.println(message.getText());
         if (message.getText() != null) {
             SendMessage sendMessage = new SendMessage(message.getChatId().toString(), message.getText());
-            sendMessage.setReplyMarkup(keyboardService.getReplyKeyboard(List.of(List.of("Share contact", "Play")), List.of(List.of(true, false))));
+            sendMessage.setReplyMarkup(keyboardService.getReplyKeyboard(List.of(List.of("Share contact", message.getText())), List.of(List.of(true, false))));
             telegramFeign.sendMessage(TelegramUtils.TOKEN, sendMessage);
         }
     }

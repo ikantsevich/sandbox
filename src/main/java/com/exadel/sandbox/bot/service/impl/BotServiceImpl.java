@@ -1,6 +1,7 @@
 package com.exadel.sandbox.bot.service.impl;
 
 import com.exadel.sandbox.bot.dto.GetMeDto;
+import com.exadel.sandbox.bot.dto.InitialDto;
 import com.exadel.sandbox.bot.feign.TelegramFeign;
 import com.exadel.sandbox.bot.service.BotService;
 import com.exadel.sandbox.bot.service.CallbackQueryHandler;
@@ -28,5 +29,10 @@ public class BotServiceImpl implements BotService {
     @Override
     public GetMeDto getMe() {
         return telegramFeign.getMe(TelegramUtils.TOKEN);
+    }
+
+    @Override
+    public InitialDto initializeBot(String url) {
+        return telegramFeign.initializeBot(TelegramUtils.TOKEN, url);
     }
 }

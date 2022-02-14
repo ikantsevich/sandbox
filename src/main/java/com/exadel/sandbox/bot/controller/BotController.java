@@ -1,6 +1,7 @@
 package com.exadel.sandbox.bot.controller;
 
 import com.exadel.sandbox.bot.dto.GetMeDto;
+import com.exadel.sandbox.bot.dto.InitialDto;
 import com.exadel.sandbox.bot.service.BotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +24,8 @@ public class BotController {
         return botService.getMe();
     }
 
-
+    @PostMapping("initialize")
+    public InitialDto initialize(@RequestParam String url) {
+        return botService.initializeBot(url);
+    }
 }
