@@ -43,7 +43,4 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
 }
-
-test {
-    useTestNG()
-}
+test { useTestNG() }
