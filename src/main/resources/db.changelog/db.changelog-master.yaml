@@ -12,6 +12,7 @@ databaseChangeLog:
   - include:
       file: changes/employee.yaml
       relativeToChangelogFile: true
+
   - include:
       file: changes/vacation.yaml
       relativeToChangelogFile: true
@@ -20,18 +21,28 @@ databaseChangeLog:
       file: changes/create-permission-table.yaml
       relativeToChangelogFile: true
 
-
-
   - include:
-      file: changes/booking.yaml
-=========
-
-  - include:
-      file: changes/tg_info.yaml
+      file: changes/create-role-table.yaml
       relativeToChangelogFile: true
 
   - include:
-      file: changes/employee.yaml
+      file: changes/create-role-per-relationTables.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/address.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/parking.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/parking_spot.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/booking.yaml
       relativeToChangelogFile: true
 
   - include:
@@ -50,4 +61,8 @@ databaseChangeLog:
 
   - include:
       file: changes/equipment.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/seat.yaml
       relativeToChangelogFile: true
