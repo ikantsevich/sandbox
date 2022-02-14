@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +32,9 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public List<ParkingResponseDto> getParkings() {
         List<Parking> parkings = parkingRepository.findAll();
-        List<ParkingResponseDto> parkingResponseDtos = new ArrayList<>();
-        for (Parking parking : parkings) {
-            parkingResponseDtos.add(fullMap(parking));
-        }
-        return parkingResponseDtos;
+        return parkings.stream()
+                .map(this::fullMap)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -58,7 +57,7 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public void deleteById(Long id) {
-        Parking parking = parkingRepository.findById(id).orElseThrow(
+        parkingRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can\'t delete Parking with ID: " + id + ". Doesn\'t exist."));
         parkingRepository.deleteById(id);
     }

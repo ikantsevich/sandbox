@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +30,10 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public List<ParkingSpotResponseDto> getParkingSpots() {
-        List<ParkingSpot> parkings = parkingSpotRepository.findAll();
-        List<ParkingSpotResponseDto> parkingResponseDtos = new ArrayList<>();
-        for (ParkingSpot parking : parkings) {
-            parkingResponseDtos.add(fullMap(parking));
-        }
-        return parkingResponseDtos;
+        List<ParkingSpot> parkingSpots = parkingSpotRepository.findAll();
+        return parkingSpots.stream()
+                .map(this::fullMap)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,7 +56,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public void deleteById(Long id) {
-        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow(
+        parkingSpotRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can\'t delete Parking Spot with ID: " + id + ". Doesn\'t exist."));
         parkingSpotRepository.deleteById(id);
     }

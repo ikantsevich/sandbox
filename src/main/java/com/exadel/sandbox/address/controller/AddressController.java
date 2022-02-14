@@ -1,8 +1,8 @@
 package com.exadel.sandbox.address.controller;
 
 import com.exadel.sandbox.address.dto.AddressCreateDto;
-import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import com.exadel.sandbox.address.dto.AddressResponseDto;
+import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import com.exadel.sandbox.address.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,6 @@ import java.util.List;
 public class AddressController {
 
     private final AddressService addressService;
-
 
     @GetMapping("list")
     List<AddressResponseDto> getAddresses(){

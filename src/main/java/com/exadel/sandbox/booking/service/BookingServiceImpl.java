@@ -1,7 +1,5 @@
 package com.exadel.sandbox.booking.service;
 
-import com.exadel.sandbox.address.dto.AddressResponseDto;
-import com.exadel.sandbox.address.entity.Address;
 import com.exadel.sandbox.booking.dto.BookingCreateDto;
 import com.exadel.sandbox.booking.dto.BookingResponseDto;
 import com.exadel.sandbox.booking.dto.BookingUpdateDto;
@@ -17,9 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,11 +30,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingResponseDto> getBookings() {
         List<Booking> bookings = bookingRepository.findAll();
-        List<BookingResponseDto> bookingResponseDtos = new ArrayList<>();
-        for (Booking booking : bookings) {
-            bookingResponseDtos.add(fullMap(booking));
-        }
-        return bookingResponseDtos;
+        return bookings.stream()
+                .map(this::fullMap)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -62,7 +58,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void deleteById(Long id) {
-        Booking booking = bookingRepository.findById(id).orElseThrow(
+        bookingRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can\'t delete Booking with ID: " + id + ". Doesn\'t exist."));
         bookingRepository.deleteById(id);
     }
@@ -78,18 +74,13 @@ public class BookingServiceImpl implements BookingService {
     private BookingResponseDto fullMap(Booking booking) {
         BookingResponseDto bookingResponseDto = mapper.map(booking, BookingResponseDto.class);
 
-        ParkingSpotResponseDto parkingSpotResponseDto = null;
-        if (booking.getParkingSpot() != null)
-            parkingSpotResponseDto = mapper.map(booking.getParkingSpot(), ParkingSpotResponseDto.class);
-
-        bookingResponseDto.setParkingSpotResponseDto(parkingSpotResponseDto);
-
-        EmployeeResponseDto employeeResponseDto = null;
-        if(booking.getEmployee() != null){
-            employeeResponseDto = mapper.map(booking.getEmployee(), EmployeeResponseDto.class);
+        if (booking.getParkingSpot() != null) {
+            bookingResponseDto.setParkingSpotResponseDto(mapper.map(booking.getParkingSpot(), ParkingSpotResponseDto.class));
         }
 
-        bookingResponseDto.setEmployeeResponseDto(employeeResponseDto);
+        if (booking.getEmployee() != null) {
+            bookingResponseDto.setEmployeeResponseDto(mapper.map(booking.getEmployee(), EmployeeResponseDto.class));
+        }
 
         return bookingResponseDto;
     }

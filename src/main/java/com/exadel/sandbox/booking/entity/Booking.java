@@ -1,6 +1,5 @@
 package com.exadel.sandbox.booking.entity;
 
-import com.exadel.sandbox.address.entity.Address;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import lombok.AllArgsConstructor;
