@@ -2,7 +2,7 @@ databaseChangeLog:
   - logicalFilePath: no-path
   - changeSet:
       id: office teble init
-      author: saidamin
+      author: saidaminqambarov408@gmail.com
       preConditions:
         onFail: MARK_RAN
         not:
@@ -25,16 +25,16 @@ databaseChangeLog:
                   type: int
                   constraints:
                     unique: true
-                    foreignKeyName: fk_ad_id
-                    references: address(ad_id)
+#                    foreignKeyName: fk_ad_id
+#                    references: address(ad_id)
               - column:
                   name: pa_id
                   type: int
                   constraints:
                     unique: true
                     nullable: true
-                    foreignKeyName: fk_pa_id
-                    references: parking(pa_id)
+#                    foreignKeyName: fk_pa_id
+#                    references: parking(pa_id)
               - column:
                   name: of_status
                   type: varchar(255)
@@ -45,3 +45,24 @@ databaseChangeLog:
               - column:
                   name: of_modified
                   type: datetime
+
+#  - changeSet:
+#      id: add address foreign key
+#      author: saidaminqambarov408@gmail.com
+#      changes:
+#        - addForeignKeyConstraint:
+#            baseColumnNames: ad_id
+#            baseTableName: office
+#            constraintName: fk_ad_id
+#            referencedColumnNames: ad_id
+#            referencedTableName: address
+#  - changeSet:
+#      id: add parking foreign key
+#      author: saidaminqambarov408@gmail.com
+#      changes:
+#        - addForeignKeyConstraint:
+#            baseColumnNames: pa_id
+#            baseTableName: office
+#            constraintName: fk_pa_id
+#            referencedColumnNames: pa_id
+#            referencedTableName: parking

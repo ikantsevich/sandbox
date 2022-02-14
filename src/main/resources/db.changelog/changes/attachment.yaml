@@ -2,7 +2,7 @@ databaseChangeLog:
   - logicalFilePath: no-path
   - changeSet:
       id: attachment teble init
-      author: saidamin
+      author: saidaminqambarov408@gmail.com
       preConditions:
         onFail: MARK_RAN
         not:
