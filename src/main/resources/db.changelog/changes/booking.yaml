@@ -53,6 +53,8 @@ databaseChangeLog:
                   name: bo_start_date
                   type: datetime
                   remarks: 'Booking starting date'
+                  constraints:
+                    nullable: false
               - column:
                   name: bo_end_date
                   type: datetime
@@ -66,3 +68,13 @@ databaseChangeLog:
                   name: bo_modified
                   type: datetime
                   remarks: 'Record modified timestamp'
+#  - changeSet:
+#      id: add sear foreign key
+#      author: basiashvilin@gmail.com
+#      changes:
+#        - addForeignKeyConstraint:
+#            baseColumnNames: seat_id
+#            baseTableName: seat
+#            constraintName: pa_of_fk
+#            referencedColumnNames: of_id
+#            referencedTableName: office
