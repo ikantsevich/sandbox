@@ -81,7 +81,7 @@ public class KeyboardServiceImpl implements KeyboardService {
         ReplyKeyboardMarkup replyKeyboardMarkup = getReplyKeyboard(buttons);
         List<KeyboardRow> keyboard = replyKeyboardMarkup.getKeyboard();
 
-        for (int i = 0; i < buttons.size(); i ++) {
+        for (int i = 0; i < buttons.size(); i++) {
             KeyboardRow keyboardButtons = keyboard.get(i);
             for (int j = 0; j < buttons.get(i).size(); j++)
                 keyboardButtons.get(j).setRequestContact(requestContact.get(i).get(j));
@@ -96,7 +96,7 @@ public class KeyboardServiceImpl implements KeyboardService {
         ReplyKeyboardMarkup keyboardMarkup = getReplyKeyboard(buttons, requestContact);
         List<KeyboardRow> keyboard = keyboardMarkup.getKeyboard();
 
-        for (int i = 0; i < buttons.size(); i ++) {
+        for (int i = 0; i < buttons.size(); i++) {
             KeyboardRow keyboardButtons = keyboard.get(i);
             for (int j = 0; j < buttons.get(i).size(); j++)
                 keyboardButtons.get(j).setRequestLocation(requestLocation.get(i).get(j));

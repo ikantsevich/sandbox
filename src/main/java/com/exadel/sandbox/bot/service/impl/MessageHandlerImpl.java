@@ -1,7 +1,6 @@
 package com.exadel.sandbox.bot.service.impl;
 
 import com.exadel.sandbox.bot.feign.TelegramFeign;
-import com.exadel.sandbox.bot.service.BotService;
 import com.exadel.sandbox.bot.service.KeyboardService;
 import com.exadel.sandbox.bot.service.MessageHandler;
 import com.exadel.sandbox.bot.utils.TelegramUtils;
@@ -19,7 +18,7 @@ public class MessageHandlerImpl implements MessageHandler {
     private final KeyboardService keyboardService;
 
 
-//    This place is just for testing for not. Then there are going to be a logic
+    //    This place is just for testing for not. Then there are going to be a logic
     @Override
     public void handle(Message message) {
         System.out.println(message.getText());
