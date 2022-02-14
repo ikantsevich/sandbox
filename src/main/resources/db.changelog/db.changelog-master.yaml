@@ -28,3 +28,26 @@ databaseChangeLog:
   - include:
       file: changes/create-role-per-relationTables.yaml
       relativeToChangelogFile: true
+
+
+
+  - include:
+      file: changes/seat.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/notification.yaml
+      relativeToChangelogFile: true
+  - include:
+
+      file: changes/em_notif.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/notification.yaml
+      relativeToChangelogFile: true
+
+
+  - include:
+      file: changes/equipment.yaml
+      relativeToChangelogFile: true
