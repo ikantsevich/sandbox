@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: create permission
+      author: izzatulla
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: permission
+      changes:
+        - createTable:
+            tableName: permission
+            columns:
+              - column:
+                  name: per_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_per_id
+              - column:
+                  name: per_name
+                  type: varchar(255)
+                  constraints:
+                    uniqueKey: true
+                    nullable: false
+                    uniqueConstraintName: uk_per_name
+              - column:
+                  name: per_created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: per_modified
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
