@@ -9,11 +9,6 @@ import com.exadel.sandbox.bot.utils.TelegramUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -33,15 +28,5 @@ public class BotServiceImpl implements BotService {
     @Override
     public GetMeDto getMe() {
         return telegramFeign.getMe(TelegramUtils.TOKEN);
-    }
-
-    @Override
-    public InlineKeyboardMarkup getInlineKeyboard(List<List<String>> name, List<List<String>> callbackData) {
-        return null;
-    }
-
-    @Override
-    public ReplyKeyboardMarkup getReplyKeyboard(List<List<String>> buttons) {
-        return null;
     }
 }
