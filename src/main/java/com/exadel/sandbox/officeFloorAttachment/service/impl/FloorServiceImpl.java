@@ -56,7 +56,7 @@ public class FloorServiceImpl implements FloorService {
         Floor floor = mapper. map(floorUpdateDto, Floor.class);
         FloorResponseDto floorResponseDto = getById(id);
         if (floorResponseDto == null)
-            throw new RuntimeException("Floor not found");
+            throw new EntityNotFoundException("Floor not found with this " + id);
 
         floor.setId(id);
         Floor savedFloor = floorRepository.save(floor);
