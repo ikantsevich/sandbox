@@ -1,5 +1,6 @@
 package com.exadel.sandbox.em_notif.entity;
 
+import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.notification.entity.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,9 +27,9 @@ public class EmployeeNotification {
     private Long id;
 
 
-    //TODO make employee one to one relations
+    //FIXED make employee one to one relations
     @Column(name = "em_id")
-    private Long employeeId;
+    private Employee employeeId;
 
     @OneToOne
     @JoinColumn(name = "notif_id")
