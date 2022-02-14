@@ -13,8 +13,8 @@ public class AttachmentResponseDto {
     private Long id;
     private String chatId;
     private Long messageId;
-    private String atName;
-    private Long atSize;
+    private String name;
+    private Long size;
     private LocalDateTime atCreated;
     private LocalDateTime atModified;
 }

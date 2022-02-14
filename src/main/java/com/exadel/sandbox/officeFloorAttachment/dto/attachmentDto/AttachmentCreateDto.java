@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class AttachmentCreateDto {
     private String chatId;
     private Long messageId;
-    private String atName;
+    private String name;
 }

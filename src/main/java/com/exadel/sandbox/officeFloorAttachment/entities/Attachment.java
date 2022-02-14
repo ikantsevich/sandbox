@@ -28,10 +28,10 @@ public class Attachment {
     private Long messageId;
 
     @Column(name = "at_name")
-    private String atName;
+    private String name;
 
     @Column(name = "at_size")
-    private Long atSize;
+    private Long size;
 
     @CreatedDate
     @Column(name = "at_created")

@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class AttachmentBaseDto {
     private String chatId;
     private Long messageId;
-    private String atName;
-    private Long atSize;
+    private String name;
+    private Long size;
 }

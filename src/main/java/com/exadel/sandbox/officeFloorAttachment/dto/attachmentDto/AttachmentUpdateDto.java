@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 public class AttachmentUpdateDto {
     private Long messageId;
     private String atName;
-    private Long atSize;
+    private Long size;
     private LocalDateTime atModified;
 }
