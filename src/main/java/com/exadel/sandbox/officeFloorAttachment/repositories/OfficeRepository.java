@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Component
 public interface OfficeRepository extends JpaRepository<Office, Long> {
     Office getOfficeByAddressId(Long id);
 }

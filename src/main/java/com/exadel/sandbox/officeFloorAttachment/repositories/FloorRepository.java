@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Component
 public interface FloorRepository extends JpaRepository<Floor, Long> {
     List<Floor> getAllByOfId(Long id);
 }
