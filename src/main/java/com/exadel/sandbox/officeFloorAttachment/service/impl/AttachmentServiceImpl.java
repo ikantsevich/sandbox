@@ -56,7 +56,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         Attachment attachment = mapper.map(attachmentUpdateDto, Attachment.class);
         AttachmentResponseDto attachmentResponseDto = getById(id);
         if (attachmentResponseDto == null)
-            throw new RuntimeException("Attachment not found");
+            throw new EntityNotFoundException("Attachment not found with this " + id);
 
         attachment.setId(id);
         Attachment savedAttachment = attachmentRepository.save(attachment);

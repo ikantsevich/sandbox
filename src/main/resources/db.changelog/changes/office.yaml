@@ -22,19 +22,19 @@ databaseChangeLog:
                     primaryKeyName: pk_of_id
               - column:
                   name: ad_id
-                  type: int
+                  type: bigint
                   constraints:
                     unique: true
-#                    foreignKeyName: fk_ad_id
-#                    references: address(ad_id)
+                    foreignKeyName: fk_ad_id
+                    references: address(ad_id)
               - column:
                   name: pa_id
-                  type: int
+                  type: bigint
                   constraints:
                     unique: true
                     nullable: true
-#                    foreignKeyName: fk_pa_id
-#                    references: parking(pa_id)
+                    foreignKeyName: fk_pa_id
+                    references: parking(pa_id)
               - column:
                   name: of_status
                   type: varchar(255)
@@ -45,6 +45,19 @@ databaseChangeLog:
               - column:
                   name: of_modified
                   type: datetime
+
+#   - changeSet:
+#       id: change ad_id column datatype
+#       author: saidaminqambarov408@gmail.com
+#       changes:
+#         - modifyDataType:
+#             columnName: ad_id
+#             newDataType: bigint
+#             tableName: office
+#         - modifyDataType:
+#             columnName: pa_id
+#             newDataType: bigint
+#             tableName: office
 
 #  - changeSet:
 #      id: add address foreign key

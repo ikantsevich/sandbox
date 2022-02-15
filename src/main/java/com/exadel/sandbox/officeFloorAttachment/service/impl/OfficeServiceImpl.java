@@ -54,7 +54,7 @@ public class OfficeServiceImpl implements OfficeService {
         Office office = mapper.map(officeUpdateDto, Office.class);
         OfficeResponseDto officeResponseDtoById = getById(id);
         if (officeResponseDtoById == null)
-            throw new RuntimeException("Office not found");
+            throw new EntityNotFoundException("Office not found with this " + id);
 
         office.setId(id);
         Office savedOffice = officeRepository.save(office);

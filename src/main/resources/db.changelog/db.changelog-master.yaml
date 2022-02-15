@@ -17,7 +17,6 @@ databaseChangeLog:
       file: changes/vacation.yaml
       relativeToChangelogFile: true
 
-
   - include:
       file: changes/create-permission-table.yaml
       relativeToChangelogFile: true
@@ -31,25 +30,30 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
+      file: changes/address.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/parking.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/parking_spot.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/booking.yaml
+      relativeToChangelogFile: true
+
+  - include:
       file: changes/attachment.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/office.yaml
       relativeToChangelogFile: true
 
   - include:
       file: changes/floor.yaml
       relativeToChangelogFile: true
 
-  - include:
-      file: changes/office.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: changes/address.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: changes/parking.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: changes/parking_spot.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: changes/booking.yaml
-      relativeToChangelogFile: true
