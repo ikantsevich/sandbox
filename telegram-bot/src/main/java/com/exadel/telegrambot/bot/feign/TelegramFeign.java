@@ -118,7 +118,8 @@ public interface TelegramFeign {
     //                        Delete message
     @PostMapping("{token}/deleteMessage")
     void deleteMessage(@PathVariable String token,
-                       @RequestBody Message message);
+                       @RequestParam(name = "chat_id") String chatId,
+                       @RequestParam(name = "message_id") Integer messageId);
 
     @GetMapping("{token}/setWebhook")
     InitialDto initializeBot(@PathVariable String token,

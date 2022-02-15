@@ -23,9 +23,7 @@ public class MessageHandlerImpl implements MessageHandler {
     public void handle(Message message) {
         System.out.println(message.getText());
         if (message.getText() != null) {
-            SendMessage sendMessage = new SendMessage(message.getChatId().toString(), message.getText());
-            sendMessage.setReplyMarkup(keyboardService.getReplyKeyboard(List.of(List.of("Share contact", message.getText())), List.of(List.of(true, false))));
-            telegramFeign.sendMessage(TelegramUtils.TOKEN, sendMessage);
+            telegramFeign.deleteMessage(TelegramUtils.TOKEN, message.getChatId().toString(), message.getMessageId());
         }
     }
 }
