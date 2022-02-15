@@ -13,52 +13,87 @@ ext {
 }
 
 
-apply plugin: "io.spring.dependency-management"
+
+subprojects {
+    group = 'com.exadel'
+    version = '0.0.1-SNAPSHOT'
+
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+        dependencies {
+            classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+            classpath "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
+        }
+    }
+
+    ext {
+        set('springCloudVersion', "Hoxton.SR8")
+    }
 
 
-apply plugin: 'java-library'
-apply plugin: 'groovy'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'jacoco'
+    apply plugin: "io.spring.dependency-management"
 
 
-group 'com.scheduler'
-version '1.0'
+    apply plugin: 'java-library'
+    apply plugin: 'groovy'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
 
-repositories {
-    mavenCentral()
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        api('org.springframework.boot:spring-boot-starter-web')
+        api('org.springframework.boot:spring-boot-starter-security')
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
+        implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+
+
+        api('org.springframework.boot:spring-boot-starter-actuator')
+        api('org.springframework.boot:spring-boot-starter-aop')
+        api('org.springframework.boot:spring-boot-starter-validation')
+
+
+        api('commons-collections:commons-collections:3.2.2')
+        api('org.testng:testng:6.11')
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    test { useTestNG() }
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+project("hot-desk") {
+    dependencies {
+        api('org.springframework.boot:spring-boot-starter-data-jpa')
+        implementation('org.mariadb.jdbc:mariadb-java-client')
+        compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
+
+        implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
+        implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
     }
 }
 
-dependencies {
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    api('org.springframework.boot:spring-boot-starter-actuator')
-    api('org.springframework.boot:spring-boot-starter-aop')
-    api('org.springframework.boot:spring-boot-starter-data-jpa')
-    api('org.springframework.boot:spring-boot-starter-validation')
-    api('org.springframework.boot:spring-boot-starter-web')
-    api('org.springframework.boot:spring-boot-starter-security')
-    implementation('org.mariadb.jdbc:mariadb-java-client')
-    compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
-    api('commons-collections:commons-collections:3.2.2')
-    api('org.testng:testng:6.11')
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
-    implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+project("telegram-bot") {
+    dependencies {
+        implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
+        implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
     }
 }
-
-test { useTestNG() }

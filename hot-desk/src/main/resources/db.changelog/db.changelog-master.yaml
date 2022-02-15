@@ -16,8 +16,6 @@ databaseChangeLog:
   - include:
       file: changes/vacation.yaml
       relativeToChangelogFile: true
-      relativeToChangelogFile: true
-      
 
   - include:
       file: changes/create-permission-table.yaml
