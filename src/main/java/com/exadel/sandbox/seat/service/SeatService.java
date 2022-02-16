@@ -1,6 +1,7 @@
 package com.exadel.sandbox.seat.service;
 
 import com.exadel.sandbox.seat.dto.SeatBaseDto;
+import com.exadel.sandbox.seat.dto.SeatCreateDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface SeatService {
 
     SeatResponseDto getById(Long id);
 
-    SeatResponseDto create(SeatBaseDto seatBaseDto);
+    SeatResponseDto create(SeatCreateDto seatCreateDto);
 
     void deleteById(Long id);
 

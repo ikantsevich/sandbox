@@ -1,5 +1,6 @@
 package com.exadel.sandbox.equipment.entity;
 
+import com.exadel.sandbox.seat.entity.Seat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,9 @@ public class Equipment {
     @Column(name = "eq_id")
     private Long id;
 
-    @Column(name = "seat_id", nullable = false)
-    private Long seatId;
+    @ManyToOne
+    @JoinColumn(name="seat_id", nullable=false)
+    private Seat seat;
 
     @Column(name = "eq_name", nullable = false)
     private String name;

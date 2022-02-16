@@ -1,8 +1,11 @@
 package com.exadel.sandbox.seat.service.impl;
 
 import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
+import com.exadel.sandbox.equipment.entity.Equipment;
+import com.exadel.sandbox.equipment.repository.EquipmentRepository;
 import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.seat.dto.SeatBaseDto;
+import com.exadel.sandbox.seat.dto.SeatCreateDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.sandbox.seat.entity.Seat;
 import com.exadel.sandbox.seat.repository.SeatRepository;
@@ -15,12 +18,15 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Transactional
 public class SeatServiceImpl implements SeatService {
     private final SeatRepository seatRepository;
+    private final EquipmentRepository equipmentRepository;
     private final ModelMapper mapper;
 
     @Override
@@ -47,11 +53,15 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public SeatResponseDto create(SeatBaseDto seatBaseDto) {
-        Seat seat = mapper.map(seatBaseDto, Seat.class);
-
-
-        return null;
+    public SeatResponseDto create(SeatCreateDto seatCreateDto) {
+        Seat seat = mapper.map(seatCreateDto, Seat.class);
+        Set<Equipment> equipmentSet = seatCreateDto.getEquipmentBaseDtos()
+                .stream()
+                .map(equipmentBaseDto -> equipmentRepository.findByName(equipmentBaseDto.getName()))
+                .collect(Collectors.toSet());
+        seat.setEquipmentSet(equipmentSet);
+        Seat savedSeat = seatRepository.save(seat);
+        return fullMap(savedSeat);
     }
 
     @Override
@@ -70,7 +80,14 @@ public class SeatServiceImpl implements SeatService {
 
     private SeatResponseDto fullMap(Seat seat) {
         SeatResponseDto seatResponseDto = mapper.map(seat, SeatResponseDto.class);
+        if (seat.getEquipmentSet() != null){
+            Set<EquipmentResponseDto> equipments = seat.getEquipmentSet()
+                    .stream()
+                    .map(equipment -> mapper.map(equipment, EquipmentResponseDto.class))
+                    .collect(Collectors.toSet());
+            seatResponseDto.setEquipmentResponseDtos(equipments);
+        }
 
-        return null;
+        return seatResponseDto;
     }
 }

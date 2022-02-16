@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SeatBaseDto {
-    private int number;
-    private String status;
-    private String description;
+    protected int number;
+    protected String status;
+    protected String description;
 }

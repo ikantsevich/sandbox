@@ -1,5 +1,6 @@
 package com.exadel.sandbox.seat.entity;
 
+import com.exadel.sandbox.equipment.entity.Equipment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -40,4 +42,8 @@ public class Seat {
     @LastModifiedDate
     @Column(name = "seat_modified")
     private LocalDateTime modified;
+
+    @OneToMany(mappedBy="seat")
+    private Set<Equipment> equipmentSet;
+
 }
