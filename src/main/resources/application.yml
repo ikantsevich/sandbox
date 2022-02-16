@@ -26,4 +26,4 @@ spring:
     user: '${datasource.username}'
     parameters.env: '${spring.profiles.active}'
     enabled: true
-    change-log: '/db.changelog/db.changelog-master.yaml'
+    change-log: '/db.changelog/db.changelog-master.yaml/'
