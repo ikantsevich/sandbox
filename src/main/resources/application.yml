@@ -8,10 +8,10 @@ datasource:
   username: 'root'
   password: ''
 spring:
+  autoconfigure:
+    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   jpa:
-    autoconfigure:
-      exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-      exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
     properties:
       hibernate.jdbc.time_zone: UTC
       hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
