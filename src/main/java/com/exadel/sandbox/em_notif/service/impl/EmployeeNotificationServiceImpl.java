@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -30,14 +31,7 @@ public class EmployeeNotificationServiceImpl implements EmployeeNotificationServ
 
         List<EmployeeNotification> employeeNotificationList = emplyeeNotificationRepository.findAll();
 
-        List<EmployeeNotificationResponseDto> employeeNotificationResponseDtos = new ArrayList<>();
-
-        for (EmployeeNotification emplNotif:
-             employeeNotificationList) {
-            employeeNotificationResponseDtos.add(fullMap(emplNotif));
-        }
-
-        return employeeNotificationResponseDtos;
+        return employeeNotificationList.stream().map(this::fullMap).collect(Collectors.toList());
     }
 
     @Override
@@ -47,9 +41,7 @@ public class EmployeeNotificationServiceImpl implements EmployeeNotificationServ
 
         EmployeeNotification employeeNotification = byId.orElseThrow( ()-> new EntityNotFoundException("employee_notification with id: " + id + " not found"));
 
-
         return fullMap(employeeNotification);
-
 
     }
 

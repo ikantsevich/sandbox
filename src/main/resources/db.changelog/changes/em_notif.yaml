@@ -2,7 +2,7 @@ databaseChangeLog:
   - logicalFilePath: no-path
   - changeSet:
       id: em_notif table init
-      author: Jakhongir
+      author: Alisher
       preConditions:
         onFail: MARK_RAN
         not:
@@ -27,7 +27,7 @@ databaseChangeLog:
                     unique: true
                     nullable: true
                     foreignKeyName: fk_em
-                    references: em(em_id)
+                    references: employee(em_id)
               - column:
                   name: notif_id
                   type: int
@@ -35,7 +35,7 @@ databaseChangeLog:
                     unique: true
                     nullable: true
                     foreignKeyName: fk_notif
-                    references: notif(notif_id)
+                    references: notification(notif_id)
               - column:
                   name: em_notif_created
                   type: datetime

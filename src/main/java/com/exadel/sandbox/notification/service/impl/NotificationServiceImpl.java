@@ -6,8 +6,6 @@ import com.exadel.sandbox.notification.dto.NotificationResponseDto;
 import com.exadel.sandbox.notification.entity.Notification;
 import com.exadel.sandbox.notification.repository.NotificationRepository;
 import com.exadel.sandbox.notification.service.NotificationService;
-import com.exadel.sandbox.seat.dto.SeatResponseDto;
-import com.exadel.sandbox.seat.entity.Seat;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -16,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -30,14 +29,9 @@ public class NotificationServiceImpl implements NotificationService{
     public List<NotificationResponseDto> getNotifications() {
         List<Notification> notificationList = notificationRepository.findAll();
 
-        List<NotificationResponseDto> notificationResponseDtoList = new ArrayList<>();
-
-        for (Notification notification :
-                notificationList) {
-            notificationResponseDtoList.add(fullMap(notification));
-        }
-
-        return notificationResponseDtoList;
+        return notificationList.stream()
+                .map(this::fullMap)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -78,7 +72,7 @@ public class NotificationServiceImpl implements NotificationService{
         NotificationResponseDto notificationResponseDto = mapper.map(notification, NotificationResponseDto.class);
 
 
-        return null;
+        return notificationResponseDto;
     }
 
 }

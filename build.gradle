@@ -37,6 +37,9 @@ dependencies {
     api('org.springframework.boot:spring-boot-starter-web')
     api('org.springframework.boot:spring-boot-starter-security')
     implementation('org.mariadb.jdbc:mariadb-java-client')
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+
     compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
     api('commons-collections:commons-collections:3.2.2')
     api('org.testng:testng:6.11')

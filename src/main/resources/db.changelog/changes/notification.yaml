@@ -2,7 +2,7 @@ databaseChangeLog:
   - logicalFilePath: no-path
   - changeSet:
       id: notification table init
-      author: Jakhongir
+      author: Alisher
       preConditions:
         onFail: MARK_RAN
         not:
@@ -25,9 +25,9 @@ databaseChangeLog:
                   type: int
                   constraints:
                     unique: true
-                    nullable: true
-                    foreignKeyName: fk_at
-                    references: at(at_id)
+#                    nullable: true
+#                    foreignKeyName: fk_at
+#                    references: at(at_id)
               - column:
                   name: message
                   type: varchar(255)
@@ -35,7 +35,9 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: notif_created
-                  type: CURRENT_TIMESTAMP
+                  type: datetime
+                  default_value_computed: CURRENT_TIMESTAMP
               - column:
                   name: notif_modified
-                  type: CURRENT_TIMESTAMP
+                  type: datetime
+                  default_value_computed: CURRENT_TIMESTAMP
