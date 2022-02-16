@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: floor teble init
+      author: saidaminqambarov408@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: floor
+      changes:
+        - createTable:
+            tableName: floor
+            columns:
+              - column:
+                  name: fl_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_fl_id
+              - column:
+                  name: of_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_of_id
+                    references: office(of_id)
+              - column:
+                  name: at_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_at_id
+                    references: attachment(at_id)
+              - column:
+                  name: fl_num
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: kitchen_status
+                  type: varchar(256)
+              - column:
+                  name: meetingroom_status
+                  type: varchar(256)
+              - column:
+                  name: fl_created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: fl_modified
+                  type: datetime

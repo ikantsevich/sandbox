@@ -39,7 +39,7 @@ dependencies {
     implementation('org.mariadb.jdbc:mariadb-java-client')
     compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
     api('commons-collections:commons-collections:3.2.2')
-    api('org.testng:testng:6.11')
+    api('org.testng:testng:7.5')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
 }
