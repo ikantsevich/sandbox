@@ -7,6 +7,6 @@ public class NotificationBaseDto {
     
     private String message;
 
-    private String attachmentId;
+    private Long attachmentId;
 
 }

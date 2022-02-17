@@ -4,8 +4,6 @@ package com.exadel.sandbox.notification.controller;
 import com.exadel.sandbox.notification.dto.NotificationBaseDto;
 import com.exadel.sandbox.notification.dto.NotificationResponseDto;
 import com.exadel.sandbox.notification.service.NotificationService;
-import com.exadel.sandbox.seat.dto.SeatBaseDto;
-import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationController {
 
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     @GetMapping("list")
     List<NotificationResponseDto> getNotifications() {

@@ -40,4 +40,3 @@ databaseChangeLog:
               - column:
                   name: notif_modified
                   type: datetime
-                  default_value_computed: CURRENT_TIMESTAMP

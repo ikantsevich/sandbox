@@ -27,8 +27,8 @@ public class EmployeeNotification {
     private Long id;
 
 
-    //FIXED make employee one to one relations
-    @Column(name = "em_id")
+    @OneToOne
+    @JoinColumn(name = "em_id")
     private Employee employeeId;
 
     @OneToOne

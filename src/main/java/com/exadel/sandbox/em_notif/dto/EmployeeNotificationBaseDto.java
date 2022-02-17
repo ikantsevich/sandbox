@@ -16,10 +16,9 @@ import lombok.NoArgsConstructor;
 //@EqualsAndHashCode(callSuper = true)
 public class EmployeeNotificationBaseDto {
 
-    //FIXME employee id should be from employee dto
     private EmployeeResponseDto employeeResponseDto;
 
-    //FIXME
+
     private NotificationResponseDto notificationResponseDto;
 
 }

@@ -2,11 +2,7 @@ package com.exadel.sandbox.em_notif.contoller;
 
 import com.exadel.sandbox.em_notif.dto.EmployeeNotificationBaseDto;
 import com.exadel.sandbox.em_notif.dto.EmployeeNotificationResponseDto;
-import com.exadel.sandbox.em_notif.repository.EmplyeeNotificationRepository;
 import com.exadel.sandbox.em_notif.service.EmployeeNotificationService;
-import com.exadel.sandbox.notification.dto.NotificationBaseDto;
-import com.exadel.sandbox.notification.dto.NotificationResponseDto;
-import com.exadel.sandbox.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +12,9 @@ import java.util.List;
 @RequestMapping("employee_notification")
 @RequiredArgsConstructor
 public class EmployeeNotificationController{
-    private EmployeeNotificationService employeeNotificationService;
+    private final EmployeeNotificationService employeeNotificationService;
+
+
 
     @GetMapping("list")
     List<EmployeeNotificationResponseDto> getEmplyeeNotifications() {
