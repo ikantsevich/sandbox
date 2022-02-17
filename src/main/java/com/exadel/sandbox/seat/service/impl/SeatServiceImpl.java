@@ -4,9 +4,9 @@ import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
 import com.exadel.sandbox.equipment.entity.Equipment;
 import com.exadel.sandbox.equipment.repository.EquipmentRepository;
 import com.exadel.sandbox.exception.EntityNotFoundException;
-import com.exadel.sandbox.seat.dto.SeatBaseDto;
 import com.exadel.sandbox.seat.dto.SeatCreateDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
+import com.exadel.sandbox.seat.dto.SeatUpdateDto;
 import com.exadel.sandbox.seat.entity.Seat;
 import com.exadel.sandbox.seat.repository.SeatRepository;
 import com.exadel.sandbox.seat.service.SeatService;
@@ -70,10 +70,10 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public SeatResponseDto update(Long id, SeatBaseDto seatBaseDto) {
+    public SeatResponseDto update(Long id, SeatUpdateDto seatUpdateDto) {
         Seat seat = seatRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Seat not found"));
 
-        mapper.map(seatBaseDto, seat);
+        mapper.map(seatUpdateDto, seat);
 
         return fullMap(seatRepository.save(seat));
     }

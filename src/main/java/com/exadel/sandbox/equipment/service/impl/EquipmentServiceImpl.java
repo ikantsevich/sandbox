@@ -1,7 +1,8 @@
 package com.exadel.sandbox.equipment.service.impl;
 
-import com.exadel.sandbox.equipment.dto.EquipmentBaseDto;
+import com.exadel.sandbox.equipment.dto.EquipmentCreateDto;
 import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
+import com.exadel.sandbox.equipment.dto.EquipmentUpdateDto;
 import com.exadel.sandbox.equipment.entity.Equipment;
 import com.exadel.sandbox.equipment.repository.EquipmentRepository;
 import com.exadel.sandbox.equipment.service.EquipmentService;
@@ -40,8 +41,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipmentResponseDto create(EquipmentBaseDto equipmentBaseDto) {
-        Equipment equipment = mapper.map(equipmentBaseDto, Equipment.class);
+    public EquipmentResponseDto create(EquipmentCreateDto equipmentCreateDto) {
+        Equipment equipment = mapper.map(equipmentCreateDto, Equipment.class);
 
         return mapper.map(equipmentRepository.save(equipment), EquipmentResponseDto.class);
     }
@@ -52,10 +53,10 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipmentResponseDto update(Long id, EquipmentBaseDto equipmentBaseDto) {
+    public EquipmentResponseDto update(Long id, EquipmentUpdateDto equipmentUpdateDto) {
         Equipment equipment = equipmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Equipment not found"));
 
-        mapper.map(equipmentBaseDto, equipment);
+        mapper.map(equipmentUpdateDto, equipment);
 
         return mapper.map(equipmentRepository.save(equipment), EquipmentResponseDto.class);
     }
