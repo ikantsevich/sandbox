@@ -55,8 +55,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (employeeCreateDto.getTgInfoResponseDto() != null)
             employee.setTgInfo(mapper.map(employeeCreateDto.getTgInfoResponseDto(), TgInfo.class));
-
-
         return fullMap(employeeRepository.save(employee));
     }
 

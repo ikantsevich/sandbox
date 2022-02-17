@@ -1,5 +1,7 @@
 package com.exadel.sandbox.employee.entity;
 
+import com.exadel.sandbox.permission.entity.Permission;
+import com.exadel.sandbox.role.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -53,4 +57,8 @@ public class Employee {
     @LastModifiedDate
     @Column(name = "em_modified")
     private LocalDateTime modified;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "em_role", joinColumns = {@JoinColumn(name = "em_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id"),})
+    List<Role> roles = new ArrayList<>();
 }
