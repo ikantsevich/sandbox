@@ -21,7 +21,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_notif_id
               - column:
-                  name: at_id
+                  name: att_id
                   type: int
                   constraints:
                     unique: true
@@ -36,7 +36,7 @@ databaseChangeLog:
               - column:
                   name: notif_created
                   type: datetime
-                  default_value_computed: CURRENT_TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: notif_modified
                   type: datetime

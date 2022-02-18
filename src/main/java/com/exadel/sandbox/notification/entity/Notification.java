@@ -26,8 +26,9 @@ public class Notification {
 
     //TODO make attachment many to many attachment relationship
 //    @ManyToMany
-    @JoinColumn(name = "att_id")
-//    private Attachment atttachmentId;
+//    @JoinColumn(name = "att_id")
+    @Column(name = "att_id")
+    private Long atttachmentId;
 
     @Column(name = "message", nullable = false)
     private String message;

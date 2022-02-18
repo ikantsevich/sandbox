@@ -28,7 +28,7 @@ public class NotificationController {
     }
 
     @PostMapping()
-    NotificationResponseDto createSeat(@RequestBody NotificationBaseDto notificationBaseDto) {
+    NotificationResponseDto createNotification(@RequestBody NotificationBaseDto notificationBaseDto) {
 
         return notificationService.create(notificationBaseDto);
     }

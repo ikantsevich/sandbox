@@ -2,9 +2,28 @@ databaseChangeLog:
   - logicalFilePath: no-path
   - changeSet:
       id: init change set
-      author: ikantsevich@exadel.com
+      author: Alisher
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: booking
       changes:
-        - sql:
-            comment: test
-            dbms: mysql
-            sql: SELECT 1 = 1;
+        - createTable:
+            tableName: test_table
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  remarks: 'Test table id pk'
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: test_id_pk
+              - column:
+                  name: name
+                  type: varchar(100)
+                  remarks: 'name column'
+                  constraints:
+                    nullable: false

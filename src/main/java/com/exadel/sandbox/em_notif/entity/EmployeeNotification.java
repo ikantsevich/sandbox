@@ -27,7 +27,7 @@ public class EmployeeNotification {
     private Long id;
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "em_id")
     private Employee employeeId;
 
