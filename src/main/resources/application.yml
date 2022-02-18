@@ -24,4 +24,3 @@ spring:
   liquibase:
     user: '${datasource.username}'
     parameters.env: '${spring.profiles.active}'
-    enabled: true
