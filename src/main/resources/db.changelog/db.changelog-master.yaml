@@ -14,14 +14,6 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/notification.yaml
-      relativeToChangelogFile: true
-
-  - include:
-      file: changes/em_notif.yaml
-      relativeToChangelogFile: true
-
-  - include:
       file: changes/tg_info.yaml
       relativeToChangelogFile: true
 
@@ -32,8 +24,6 @@ databaseChangeLog:
   - include:
       file: changes/vacation.yaml
       relativeToChangelogFile: true
-      relativeToChangelogFile: true
-      
 
   - include:
       file: changes/create-permission-table.yaml

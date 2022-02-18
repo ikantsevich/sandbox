@@ -25,7 +25,7 @@ databaseChangeLog:
                   type: int
                   constraints:
                     unique: true
-                    nullable: true
+                    nullable: false
                     foreignKeyName: fk_fl
                     references: fl(fl_id)
               - column:
