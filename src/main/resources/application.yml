@@ -23,4 +23,3 @@ spring:
     password: '${datasource.password}'
   liquibase:
     user: '${datasource.username}'
-    parameters.env: '${spring.profiles.active}'
