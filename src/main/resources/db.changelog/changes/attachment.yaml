@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: attachment teble init
+      author: saidaminqambarov408@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: attachment
+      changes:
+        - createTable:
+            tableName: attachment
+            columns:
+              - column:
+                  name: at_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_at_id
+              - column:
+                  name: chat_id
+                  type: varchar(32)
+              - column:
+                  name: message_id
+                  type: int
+              - column:
+                  name: at_name
+                  type: varchar(100)
+              - column:
+                  name: at_size
+                  type: long
+              - column:
+                  name: at_created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: at_modified
+                  type: datetime
