@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class EntityNotFoundHandler {
-
     @ExceptionHandler(value = {EntityNotFoundException.class})
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
         HttpStatus status = HttpStatus.NOT_FOUND;
