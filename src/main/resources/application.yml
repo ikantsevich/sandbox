@@ -3,7 +3,7 @@ server:
   servlet.context-path: /sandbox
 datasource:
   schema: 'workplace'
-  host: '${dockerdbhos:localhost}:3306'
+  host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
   username: 'root'
   password: 'Alisher2002MySQL'

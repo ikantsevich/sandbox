@@ -1,5 +1,6 @@
 package com.exadel.sandbox.notification.entity;
 
+import com.exadel.sandbox.officeFloorAttachment.entities.Attachment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,10 +26,9 @@ public class Notification {
 
 
     //TODO make attachment many to many attachment relationship
-//    @ManyToMany
-//    @JoinColumn(name = "att_id")
-    @Column(name = "att_id")
-    private Long atttachmentId;
+    @OneToOne
+    @JoinColumn(name = "att_id")
+    private Attachment attachment;
 
     @Column(name = "message", nullable = false)
     private String message;

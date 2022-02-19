@@ -25,9 +25,9 @@ databaseChangeLog:
                   type: int
                   constraints:
                     unique: true
-#                    nullable: true
-#                    foreignKeyName: fk_at
-#                    references: at(at_id)
+                    nullable: true
+                    foreignKeyName: fk_at
+                    references: atttachment(at_id)
               - column:
                   name: message
                   type: varchar(255)
