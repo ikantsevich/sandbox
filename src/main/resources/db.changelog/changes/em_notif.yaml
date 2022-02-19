@@ -4,7 +4,7 @@ databaseChangeLog:
       id: em_notif table init
       author: Alisher
       preConditions:
-        onFail: MARK_RAN
+        onFail: MARK_RANs
         not:
           tableExists:
             schemaName:
