@@ -1,10 +1,10 @@
 databaseChangeLog:
   - logicalFilePath: no-path
   - changeSet:
-      id: em_notif table init
+      id: em_notif table init2
       author: Alisher
       preConditions:
-        onFail: MARK_RANs
+        onFail: MARK_RAN
         not:
           tableExists:
             schemaName:
