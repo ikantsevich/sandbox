@@ -42,7 +42,18 @@ public class EmployeeController {
     EmployeeResponseDto updateEmployee(@PathVariable("id") Long id,
                                        @RequestBody EmployeeUpdateDto employeeUpdateDto) {
 
-
         return employeeService.update(id, employeeUpdateDto);
+    }
+
+    @PutMapping("{id}/set-tg-info/{tgInfoId}")
+    EmployeeResponseDto setTgInfo(@PathVariable Long id,
+                                  @PathVariable Long tgInfoId) {
+        return employeeService.setTgInfo(id, tgInfoId);
+    }
+
+    @PutMapping("{id}/addRole/{roleId}")
+    EmployeeResponseDto addRole(@PathVariable Long id,
+                                @PathVariable Long roleId) {
+        return employeeService.addRole(id, roleId);
     }
 }

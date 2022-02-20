@@ -1,6 +1,7 @@
 package com.exadel.sandbox.seat.entity;
 
 import com.exadel.sandbox.equipment.entity.Equipment;
+import com.exadel.sandbox.officeFloor.entities.Floor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,8 +24,12 @@ public class Seat {
     @Column(name = "seat_id")
     private Long id;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "fl_id")
-    private Long floorId;
+    private Floor floor;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "seat")
+    private List<Equipment> equipments;
 
     @Column(name = "seat_num", nullable = false)
     private int number;
@@ -42,8 +47,4 @@ public class Seat {
     @LastModifiedDate
     @Column(name = "seat_modified")
     private LocalDateTime modified;
-
-    @OneToMany(mappedBy="seat")
-    private Set<Equipment> equipmentSet;
-
 }

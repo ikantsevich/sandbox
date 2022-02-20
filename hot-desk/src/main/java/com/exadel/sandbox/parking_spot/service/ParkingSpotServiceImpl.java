@@ -1,8 +1,8 @@
 package com.exadel.sandbox.parking_spot.service;
 
 import com.exadel.sandbox.exception.EntityNotFoundException;
-import com.exadel.sandbox.parking.dto.ParkingResponseDto;
-import com.exadel.sandbox.parking.entity.Parking;
+import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
+import com.exadel.sandbox.officeFloor.repositories.OfficeRepository;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotCreateDto;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotUpdateDto;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     private final ParkingSpotRepository parkingSpotRepository;
+    private final OfficeRepository officeRepository;
     private final ModelMapper mapper;
 
     @Override
@@ -44,17 +45,19 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     @Override
     public ParkingSpotResponseDto create(ParkingSpotCreateDto parkingSpotCreateDto) {
         ParkingSpot parkingSpot = mapper.map(parkingSpotCreateDto, ParkingSpot.class);
-
-        if(parkingSpotCreateDto.getParkingResponseDto() != null)
-            parkingSpot.setParking(mapper.map(parkingSpotCreateDto.getParkingResponseDto(), Parking.class));
+        parkingSpot.setOffice(officeRepository.findById(parkingSpotCreateDto.getOfficeId()).orElseThrow(
+                () -> new EntityNotFoundException("Office with id: " + parkingSpotCreateDto.getOfficeId() + " not found")
+        ));
 
         return fullMap(parkingSpotRepository.save(parkingSpot));
+
     }
 
     @Override
     public void deleteById(Long id) {
         parkingSpotRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can\'t delete Parking Spot with ID: " + id + ". Doesn\'t exist."));
+
         parkingSpotRepository.deleteById(id);
     }
 
@@ -66,15 +69,16 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         return mapper.map(parkingSpotRepository.save(parkingSpot), ParkingSpotResponseDto.class);
     }
 
-    private ParkingSpotResponseDto fullMap(ParkingSpot parkingSpot) {
-        ParkingSpotResponseDto parkingSpotResponseDto = mapper.map(parkingSpot, ParkingSpotResponseDto.class);
+    @Override
+    public ParkingSpotResponseDto findByOfficeId(Long id) {
+        ParkingSpot parkingSpotByOfficeId = parkingSpotRepository.findParkingSpotByOfficeId(id);
+        return fullMap(parkingSpotByOfficeId);
+    }
 
-        ParkingResponseDto parkingResponseDto = null;
-        if (parkingSpot.getParking() != null)
-            parkingResponseDto = mapper.map(parkingSpot.getParking(), ParkingResponseDto.class);
-
-        parkingSpotResponseDto.setParkingResponseDto(parkingResponseDto);
-
-        return parkingSpotResponseDto;
+    ParkingSpotResponseDto fullMap(ParkingSpot parkingSpot) {
+        ParkingSpotResponseDto responseDto = mapper.map(parkingSpot, ParkingSpotResponseDto.class);
+        if (parkingSpot.getOffice() != null)
+            responseDto.setOfficeResponseDto(mapper.map(parkingSpot.getOffice(), OfficeResponseDto.class));
+        return responseDto;
     }
 }

@@ -18,28 +18,28 @@ public class BookingController {
 
 
     @GetMapping("list")
-    List<BookingResponseDto> getBookings(){
+    List<BookingResponseDto> getBookings() {
         return bookingService.getBookings();
     }
 
     @GetMapping("{id}")
-    BookingResponseDto getBookingById(@PathVariable("id") Long id){
+    BookingResponseDto getBookingById(@PathVariable("id") Long id) {
         return bookingService.getBookingById(id);
     }
 
     @PostMapping()
-    BookingResponseDto createBooking(@RequestBody BookingCreateDto bookingCreateDTO){
+    BookingResponseDto createBooking(@RequestBody BookingCreateDto bookingCreateDTO) {
         return bookingService.create(bookingCreateDTO);
     }
 
     @DeleteMapping("{id}")
-    void deleteById(@PathVariable("id") Long id){
+    void deleteById(@PathVariable("id") Long id) {
         bookingService.deleteById(id);
     }
 
     @PutMapping("{id}")
     BookingResponseDto updateBooking(@PathVariable("id") Long id,
-                                     @RequestBody BookingUpdateDto bookingUpdateDTO){
+                                     @RequestBody BookingUpdateDto bookingUpdateDTO) {
         return bookingService.update(id, bookingUpdateDTO);
     }
 

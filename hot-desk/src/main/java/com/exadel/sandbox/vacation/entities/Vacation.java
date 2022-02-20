@@ -22,10 +22,6 @@ public class Vacation {
     @Column(name = "va_id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "em_id")
-    private Employee employee;
-
     @Column(name = "va_start", nullable = false)
     private LocalDateTime start;
 
@@ -39,4 +35,8 @@ public class Vacation {
     @LastModifiedDate
     @Column(name = "va_modified")
     private LocalDateTime modified;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "em_id")
+    private Employee employee;
 }

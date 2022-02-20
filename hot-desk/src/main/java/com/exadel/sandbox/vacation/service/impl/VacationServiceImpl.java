@@ -1,22 +1,22 @@
 package com.exadel.sandbox.vacation.service.impl;
 
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.sandbox.employee.entity.Employee;
+import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.vacation.dto.VacationCreateDto;
 import com.exadel.sandbox.vacation.dto.VacationResponseDto;
-import com.exadel.sandbox.vacation.repository.VacationRepository;
-import com.exadel.sandbox.vacation.service.VacationService;
-import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
 import com.exadel.sandbox.vacation.entities.Vacation;
+import com.exadel.sandbox.vacation.repository.VacationRepository;
+import com.exadel.sandbox.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -24,18 +24,18 @@ import java.util.Optional;
 public class VacationServiceImpl implements VacationService {
 
     private final VacationRepository vacationRepository;
+    private final EmployeeRepository employeeRepository;
     private final ModelMapper mapper;
 
     @Override
     public List<VacationResponseDto> getVacations() {
         List<Vacation> vacations = vacationRepository.findAll();
-
-        List<VacationResponseDto> vacationResponseDtos = new ArrayList<>();
-
-        for (Vacation vacation: vacations) {
-            vacationResponseDtos.add(fullMap(vacation));
-        }
-
+        List<VacationResponseDto> vacationResponseDtos = vacations.stream().map(vacation -> {
+            VacationResponseDto mapped = mapper.map(vacation, VacationResponseDto.class);
+            if (vacation.getEmployee() != null)
+                mapped.setEmployeeId(vacation.getEmployee().getId());
+            return mapped;
+        }).collect(Collectors.toList());
         return vacationResponseDtos;
     }
 
@@ -45,17 +45,22 @@ public class VacationServiceImpl implements VacationService {
 
         Vacation vacation = byId.orElseThrow(() -> new EntityNotFoundException("Vacation with id: " + id + " not found"));
 
-        return fullMap(vacation);
+        VacationResponseDto mapped = mapper.map(vacation, VacationResponseDto.class);
+        mapped.setEmployeeId(vacation.getEmployee().getId());
+        return mapped;
     }
 
 
     @Override
     public VacationResponseDto create(VacationCreateDto vacationCreateDto) {
         Vacation vacation = mapper.map(vacationCreateDto, Vacation.class);
-        if (vacation.getEmployee() != null)
-            vacation.setEmployee(mapper.map(vacationCreateDto.getEmployeeResponseDto(), Employee.class));
+        Employee employee = employeeRepository.findById(vacationCreateDto.getEmployeeId()).orElseThrow(() -> new EntityNotFoundException("Employee with id: " + vacationCreateDto.getEmployeeId() + " nor found"));
 
-        return fullMap(vacationRepository.save(vacation));
+        vacation.setEmployee(employee);
+        vacationRepository.save(vacation);
+        VacationResponseDto mapped = mapper.map(vacation, VacationResponseDto.class);
+        mapped.setEmployeeId(vacation.getEmployee().getId());
+        return mapped;
     }
 
     @Override
@@ -65,23 +70,14 @@ public class VacationServiceImpl implements VacationService {
 
     @Override
     public VacationResponseDto update(Long id, VacationUpdateDto vacationUpdateDto) {
-
         Vacation vacation = vacationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Vacation with id: " + id + " not found"));
+        Employee employee = employeeRepository.findById(vacationUpdateDto.getEmployeeId()).orElseThrow(() -> new EntityNotFoundException("employee with id" + vacationUpdateDto.getEmployeeId() + " not found"));
 
         mapper.map(vacationUpdateDto, vacation);
-
-        return fullMap(vacationRepository.save(vacation));
-    }
-
-    private VacationResponseDto fullMap(Vacation vacation) {
-        VacationResponseDto vacationResponseDto = mapper.map(vacation, VacationResponseDto.class);
-        EmployeeResponseDto employeeResponseDto = null;
-
-        if (vacation.getEmployee() != null)
-            employeeResponseDto = mapper.map(vacation.getEmployee(), EmployeeResponseDto.class);
-
-        vacationResponseDto.setEmployeeResponseDto(employeeResponseDto);
-
-        return vacationResponseDto;
+        vacation.setEmployee(employee);
+        vacationRepository.save(vacation);
+        VacationResponseDto map = mapper.map(vacation, VacationResponseDto.class);
+        map.setEmployeeId(vacation.getEmployee().getId());
+        return map;
     }
 }

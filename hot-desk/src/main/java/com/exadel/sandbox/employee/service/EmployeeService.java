@@ -16,4 +16,8 @@ public interface EmployeeService {
     void deleteById(Long id);
 
     EmployeeResponseDto update(Long id, EmployeeUpdateDto employeeUpdateDto);
+
+    EmployeeResponseDto setTgInfo(Long id, Long tgInfoId);
+
+    EmployeeResponseDto addRole(Long id, Long roleId);
 }

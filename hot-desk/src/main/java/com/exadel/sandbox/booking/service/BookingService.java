@@ -7,7 +7,6 @@ import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import java.util.List;
 
 public interface BookingService {
-
     List<BookingResponseDto> getBookings();
 
     BookingResponseDto getBookingById(Long id);
@@ -17,5 +16,4 @@ public interface BookingService {
     void deleteById(Long id);
 
     BookingResponseDto update(Long id, BookingUpdateDto bookingUpdateDto);
-
 }

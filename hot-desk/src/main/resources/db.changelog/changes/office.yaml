@@ -28,14 +28,6 @@ databaseChangeLog:
                     foreignKeyName: fk_ad_id
                     references: address(ad_id)
               - column:
-                  name: pa_id
-                  type: bigint
-                  constraints:
-                    unique: true
-                    nullable: true
-                    foreignKeyName: fk_pa_id
-                    references: parking(pa_id)
-              - column:
                   name: of_status
                   type: varchar(255)
               - column:

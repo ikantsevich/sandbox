@@ -1,11 +1,12 @@
 package com.exadel.sandbox.vacation.dto;
 
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class VacationCreateDto extends VacationBaseDto {
-    private EmployeeResponseDto employeeResponseDto;
+    @JsonProperty("employee-id")
+    private Long employeeId;
 }

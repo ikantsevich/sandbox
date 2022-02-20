@@ -30,6 +30,9 @@ public class TgInfo {
     @Column(name = "username")
     private String username;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tgInfo")
+    private Employee employee;
+
     @CreatedDate
     @Column(name = "info_created")
     private LocalDateTime created;

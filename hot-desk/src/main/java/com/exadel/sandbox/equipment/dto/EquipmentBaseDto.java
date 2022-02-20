@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EquipmentBaseDto {
     private String name;
-    private String type;
 }

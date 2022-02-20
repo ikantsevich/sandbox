@@ -22,15 +22,12 @@ public class Equipment {
     @Column(name = "eq_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="seat_id", nullable=false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "seat_id")
     private Seat seat;
 
     @Column(name = "eq_name", nullable = false)
     private String name;
-
-    @Column(name = "eq_type")
-    private String type;
 
     @CreatedDate
     @Column(name = "eq_created")

@@ -1,6 +1,5 @@
 package com.exadel.sandbox.equipment.service;
 
-import com.exadel.sandbox.equipment.dto.EquipmentBaseDto;
 import com.exadel.sandbox.equipment.dto.EquipmentCreateDto;
 import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
 import com.exadel.sandbox.equipment.dto.EquipmentUpdateDto;

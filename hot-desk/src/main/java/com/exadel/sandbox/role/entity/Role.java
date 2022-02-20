@@ -1,5 +1,6 @@
 package com.exadel.sandbox.role.entity;
 
+import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.permission.entity.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,4 +40,7 @@ public class Role {
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "role_per", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id"),})
     List<Permission> permissions = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private List<Employee> employees = new ArrayList<>();
 }

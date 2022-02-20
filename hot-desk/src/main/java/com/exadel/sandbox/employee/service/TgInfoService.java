@@ -16,5 +16,4 @@ public interface TgInfoService {
     void deleteById(Long id);
 
     TgInfoResponseDto update(Long id, TgInfoUpdateDto tgInfoUpdateDto);
-
 }
