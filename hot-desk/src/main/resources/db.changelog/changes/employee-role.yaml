@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: employee-role teble init
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: employee_role
+      changes:
+        - createTable:
+            tableName: employee_role
+            columns:
+              - column:
+                  name: em_id
+                  type: int
+                  constraints:
+                    foreignKeyName: em_role_fk_em_id
+                    references: employee(em_id)
+              - column:
+                  name: role_id
+                  type: int
+                  constraints:
+                    foreignKeyName: em_role_fk_role_id
+                    references: role(role_id)
+              - column:
+                  name: created
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: modified
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP

@@ -30,3 +30,7 @@ spring:
     parameters.env: '${spring.profiles.active}'
     enabled: true
     change-log: '/db.changelog/db.changelog-master.yaml'
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

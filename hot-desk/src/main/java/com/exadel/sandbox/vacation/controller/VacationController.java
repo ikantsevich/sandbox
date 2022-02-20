@@ -2,8 +2,8 @@ package com.exadel.sandbox.vacation.controller;
 
 import com.exadel.sandbox.vacation.dto.VacationCreateDto;
 import com.exadel.sandbox.vacation.dto.VacationResponseDto;
-import com.exadel.sandbox.vacation.service.VacationService;
 import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
+import com.exadel.sandbox.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

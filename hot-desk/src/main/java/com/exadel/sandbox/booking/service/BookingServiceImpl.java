@@ -4,12 +4,12 @@ import com.exadel.sandbox.booking.dto.BookingCreateDto;
 import com.exadel.sandbox.booking.dto.BookingResponseDto;
 import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.entity.Booking;
+import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
-import com.exadel.sandbox.booking.repository.BookingRepository;
-import com.exadel.sandbox.employee.entity.Employee;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -47,10 +47,10 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponseDto create(BookingCreateDto bookingCreateDto) {
         Booking booking = mapper.map(bookingCreateDto, Booking.class);
 
-        if(bookingCreateDto.getParkingSpotResponseDto() != null)
+        if (bookingCreateDto.getParkingSpotResponseDto() != null)
             booking.setParkingSpot(mapper.map(bookingCreateDto.getParkingSpotResponseDto(), ParkingSpot.class));
 
-        if(bookingCreateDto.getEmployeeResponseDto() != null)
+        if (bookingCreateDto.getEmployeeResponseDto() != null)
             booking.setEmployee(mapper.map(bookingCreateDto.getEmployeeResponseDto(), Employee.class));
 
         return fullMap(bookingRepository.save(booking));

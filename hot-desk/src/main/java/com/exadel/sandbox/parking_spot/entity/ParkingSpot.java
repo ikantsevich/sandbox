@@ -1,6 +1,6 @@
 package com.exadel.sandbox.parking_spot.entity;
 
-import com.exadel.sandbox.parking.entity.Parking;
+import com.exadel.sandbox.officeFloor.entities.Office;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,9 +22,9 @@ public class ParkingSpot {
     @Column(name = "spot_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "pa_id")
-    private Parking parking;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "of_id")
+    private Office office;
 
     @Column(name = "spot_status")
     private String status;

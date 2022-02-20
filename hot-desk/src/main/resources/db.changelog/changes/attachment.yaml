@@ -21,17 +21,17 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_at_id
               - column:
-                  name: chat_id
-                  type: varchar(32)
+                  name: original_name
+                  type: varchar(100)
               - column:
-                  name: message_id
-                  type: int
-              - column:
-                  name: at_name
+                  name: name
                   type: varchar(100)
               - column:
                   name: at_size
                   type: long
+              - column:
+                  name: content_type
+                  type: varchar(100)
               - column:
                   name: at_created
                   type: datetime

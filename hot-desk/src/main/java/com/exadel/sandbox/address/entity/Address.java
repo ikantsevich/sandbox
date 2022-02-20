@@ -1,5 +1,6 @@
 package com.exadel.sandbox.address.entity;
 
+import com.exadel.sandbox.officeFloor.entities.Office;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,9 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ad_id")
     private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
+    private Office office;
 
     @Column(name = "country", nullable = false)
     private String country;

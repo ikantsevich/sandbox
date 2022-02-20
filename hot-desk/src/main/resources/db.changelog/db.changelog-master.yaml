@@ -6,14 +6,6 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/seat.yaml
-      relativeToChangelogFile: true
-
-  - include:
-      file: changes/equipment.yaml
-      relativeToChangelogFile: true
-
-  - include:
       file: changes/tg_info.yaml
       relativeToChangelogFile: true
 
@@ -42,7 +34,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/parking.yaml
+      file: changes/office.yaml
       relativeToChangelogFile: true
 
   - include:
@@ -58,10 +50,17 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/office.yaml
-      relativeToChangelogFile: true
-
-  - include:
       file: changes/floor.yaml
       relativeToChangelogFile: true
 
+  - include:
+      file: changes/seat.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/equipment.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/employee-role.yaml
+      relativeToChangelogFile: true

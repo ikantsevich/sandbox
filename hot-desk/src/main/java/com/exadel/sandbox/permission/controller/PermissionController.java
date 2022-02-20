@@ -3,7 +3,7 @@ package com.exadel.sandbox.permission.controller;
 import com.exadel.sandbox.permission.dto.PermissionCreateDto;
 import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
-import com.exadel.sandbox.role.service.CrudService;
+import com.exadel.sandbox.permission.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("permission")
 @RequiredArgsConstructor
 public class PermissionController {
-    private final CrudService<PermissionCreateDto, PermissionUpdateDto, PermissionResponseDto> permissionService;
+    private final PermissionService permissionService;
 
     @GetMapping("list")
     List<PermissionResponseDto> getPermissions() {

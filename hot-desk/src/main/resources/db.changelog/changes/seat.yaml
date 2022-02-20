@@ -24,10 +24,9 @@ databaseChangeLog:
                   name: fl_id
                   type: int
                   constraints:
-                    unique: true
                     nullable: false
                     foreignKeyName: fk_fl
-                    references: fl(fl_id)
+                    references: floor(fl_id)
               - column:
                   name: seat_num
                   type: int
@@ -45,7 +44,9 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: seat_created
-                  type: CURRENT_TIMESTAMP
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: seat_modified
-                  type: CURRENT_TIMESTAMP
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP

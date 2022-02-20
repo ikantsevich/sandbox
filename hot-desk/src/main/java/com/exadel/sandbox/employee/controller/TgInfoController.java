@@ -38,7 +38,7 @@ public class TgInfoController {
 
     @PutMapping("{id}")
     TgInfoResponseDto updateTgInfo(@PathVariable("id") Long id,
-                           @RequestBody TgInfoUpdateDto tgInfoUpdateDto) {
+                                   @RequestBody TgInfoUpdateDto tgInfoUpdateDto) {
 
         return tgInfoService.update(id, tgInfoUpdateDto);
     }

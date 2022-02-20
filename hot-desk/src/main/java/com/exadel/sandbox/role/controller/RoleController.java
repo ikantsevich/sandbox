@@ -1,9 +1,9 @@
 package com.exadel.sandbox.role.controller;
 
-import com.exadel.sandbox.role.service.CrudService;
 import com.exadel.sandbox.role.dto.RoleCreateDto;
 import com.exadel.sandbox.role.dto.RoleResponseDto;
 import com.exadel.sandbox.role.dto.RoleUpdateDto;
+import com.exadel.sandbox.role.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("role")
 @RequiredArgsConstructor
 public class RoleController {
-    private final CrudService<RoleCreateDto, RoleUpdateDto, RoleResponseDto> roleService;
+    private final RoleService<RoleCreateDto, RoleUpdateDto, RoleResponseDto> roleService;
 
     @GetMapping("list")
     List<RoleResponseDto> getRoles() {
@@ -38,5 +38,11 @@ public class RoleController {
     @PutMapping("{id}")
     RoleResponseDto updateRole(@PathVariable("id") Long id, @RequestBody RoleUpdateDto roleUpdateDto) {
         return roleService.update(id, roleUpdateDto);
+    }
+
+    @PutMapping("{id}/add-permissions")
+    RoleResponseDto addPermissions(@PathVariable("id") Long id,
+                                   @RequestBody List<Long> permissions) {
+        return roleService.addPermissions(id, permissions);
     }
 }

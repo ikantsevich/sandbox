@@ -18,28 +18,33 @@ public class ParkingSpotController {
 
 
     @GetMapping("list")
-    List<ParkingSpotResponseDto> getParkingSpots(){
+    List<ParkingSpotResponseDto> getParkingSpots() {
         return parkingSpotService.getParkingSpots();
     }
 
     @GetMapping("{id}")
-    ParkingSpotResponseDto getParkingSpotById(@PathVariable("id") Long id){
+    ParkingSpotResponseDto getParkingSpotById(@PathVariable("id") Long id) {
         return parkingSpotService.getParkingSpotById(id);
     }
 
+    @GetMapping("office-id/{id}")
+    ParkingSpotResponseDto getByOfficeId(@PathVariable("id") Long id) {
+        return parkingSpotService.findByOfficeId(id);
+    }
+
     @PostMapping()
-    ParkingSpotResponseDto createParkingSpot(@RequestBody ParkingSpotCreateDto parkingSpotCreateDTO){
+    ParkingSpotResponseDto createParkingSpot(@RequestBody ParkingSpotCreateDto parkingSpotCreateDTO) {
         return parkingSpotService.create(parkingSpotCreateDTO);
     }
 
     @DeleteMapping("{id}")
-    void deleteById(@PathVariable("id") Long id){
+    void deleteById(@PathVariable("id") Long id) {
         parkingSpotService.deleteById(id);
     }
 
     @PutMapping("{id}")
     ParkingSpotResponseDto updateParkingSpot(@PathVariable("id") Long id,
-                                         @RequestBody ParkingSpotUpdateDto parkingSpotUpdateDTO){
+                                             @RequestBody ParkingSpotUpdateDto parkingSpotUpdateDTO) {
         return parkingSpotService.update(id, parkingSpotUpdateDTO);
     }
 

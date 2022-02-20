@@ -18,4 +18,5 @@ public interface ParkingSpotService {
 
     ParkingSpotResponseDto update(Long id, ParkingSpotUpdateDto parkingSpotUpdateDto);
 
+    ParkingSpotResponseDto findByOfficeId(Long id);
 }

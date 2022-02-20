@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 public class BookingBaseDto {
-
     private String status;
     private EmployeeResponseDto employeeResponseDto;
-
 }

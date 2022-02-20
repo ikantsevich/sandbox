@@ -1,7 +1,8 @@
 package com.exadel.sandbox.equipment.controller;
 
-import com.exadel.sandbox.equipment.dto.EquipmentBaseDto;
+import com.exadel.sandbox.equipment.dto.EquipmentCreateDto;
 import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
+import com.exadel.sandbox.equipment.dto.EquipmentUpdateDto;
 import com.exadel.sandbox.equipment.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,8 @@ public class EquipmentController {
     }
 
     @PostMapping()
-    EquipmentResponseDto createEquipment(@RequestBody EquipmentBaseDto equipmentBaseDto) {
-        return equipmentService.create(equipmentBaseDto);
+    EquipmentResponseDto createEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto) {
+        return equipmentService.create(equipmentCreateDto);
     }
 
     @DeleteMapping("{id}")
@@ -36,8 +37,8 @@ public class EquipmentController {
 
     @PutMapping("{id}")
     EquipmentResponseDto updateEquipment(@PathVariable("id") Long id,
-                                   @RequestBody EquipmentBaseDto equipmentBaseDto) {
+                                         @RequestBody EquipmentUpdateDto equipmentUpdateDto) {
 
-        return equipmentService.update(id, equipmentBaseDto);
+        return equipmentService.update(id, equipmentUpdateDto);
     }
 }

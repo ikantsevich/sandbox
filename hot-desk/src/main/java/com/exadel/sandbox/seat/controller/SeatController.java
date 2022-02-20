@@ -1,7 +1,8 @@
 package com.exadel.sandbox.seat.controller;
 
-import com.exadel.sandbox.seat.dto.SeatBaseDto;
+import com.exadel.sandbox.seat.dto.SeatCreateDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
+import com.exadel.sandbox.seat.dto.SeatUpdateDto;
 import com.exadel.sandbox.seat.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,27 +21,29 @@ public class SeatController {
     }
 
     @GetMapping("{id}")
-    SeatResponseDto getById(@PathVariable("id") Long id) {
-
+    SeatResponseDto getById(@PathVariable Long id) {
         return seatService.getById(id);
     }
 
-    @PostMapping()
-    SeatResponseDto createSeat(@RequestBody SeatBaseDto seatBaseDto) {
+    @GetMapping("floor/{floorId}")
+    List<SeatResponseDto> getSeatsByFloorId(@PathVariable Long floorId) {
+        return seatService.getSeatsByFloorId(floorId);
+    }
 
+
+    @PostMapping()
+    SeatResponseDto createSeat(@RequestBody SeatCreateDto seatBaseDto) {
         return seatService.create(seatBaseDto);
     }
 
     @DeleteMapping("{id}")
-    void deleteSeatById(@PathVariable("id") Long id) {
+    void deleteSeatById(@PathVariable Long id) {
         seatService.deleteById(id);
     }
 
     @PutMapping("{id}")
     SeatResponseDto updateSeat(@PathVariable("id") Long id,
-                               @RequestBody SeatBaseDto seatBaseDto) {
-
-
-        return seatService.update(id, seatBaseDto);
+                               @RequestBody SeatUpdateDto seatUpdateDto) {
+        return seatService.update(id, seatUpdateDto);
     }
 }

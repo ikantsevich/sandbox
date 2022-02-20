@@ -1,6 +1,5 @@
 package com.exadel.sandbox.role.service.impl;
 
-import com.exadel.sandbox.role.service.CrudService;
 import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.entity.Permission;
@@ -10,6 +9,7 @@ import com.exadel.sandbox.role.dto.RoleResponseDto;
 import com.exadel.sandbox.role.dto.RoleUpdateDto;
 import com.exadel.sandbox.role.entity.Role;
 import com.exadel.sandbox.role.repository.RoleRepository;
+import com.exadel.sandbox.role.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Transactional
-public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto, RoleResponseDto> {
+public class RoleServiceImpl implements RoleService<RoleCreateDto, RoleUpdateDto, RoleResponseDto> {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
     private final ModelMapper mapper;
@@ -44,11 +44,6 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
     @Override
     public RoleResponseDto create(RoleCreateDto roleCreateDto) {
         Role role = mapper.map(roleCreateDto, Role.class);
-        List<Permission> permissions = roleCreateDto.getPermissionList()
-                .stream()
-                .map(perBaseDto -> permissionRepository.getByName(perBaseDto.getName()))
-                .collect(Collectors.toList());
-        role.setPermissions(permissions);
         Role savedRole = roleRepository.save(role);
         return entityToResponseDto(savedRole);
     }
@@ -69,12 +64,21 @@ public class RoleServiceImpl implements CrudService<RoleCreateDto, RoleUpdateDto
         role.setName(roleUpdateDto.getName());
         role.setPermissions(null);
         Role updated = roleRepository.save(role);
-        List<Permission> permissions = roleUpdateDto.getPermissionUpdateDtoList()
-                .stream()
-                .map(permissionUpdateDto -> permissionRepository.getByName(permissionUpdateDto.getName()))
-                .collect(Collectors.toList());
-        updated.setPermissions(permissions);
         return entityToResponseDto(roleRepository.save(updated));
+    }
+
+    @Override
+    public RoleResponseDto addPermissions(Long id, List<Long> permissions) {
+        Role role = roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found"));
+
+        List<Permission> permissionsList = permissions.stream().map(permission -> {
+            return permissionRepository.findById(permission).orElseThrow(() -> new EntityNotFoundException("Permission with id " + permission + " not found"));
+        }).collect(Collectors.toList());
+
+        role.setPermissions(permissionsList);
+        roleRepository.save(role);
+        return entityToResponseDto(role);
     }
 
     private RoleResponseDto entityToResponseDto(Role role) {

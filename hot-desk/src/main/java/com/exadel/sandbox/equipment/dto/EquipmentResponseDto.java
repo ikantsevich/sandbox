@@ -1,6 +1,5 @@
 package com.exadel.sandbox.equipment.dto;
 
-import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,9 +11,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EquipmentResponseDto extends EquipmentBaseDto{
+public class EquipmentResponseDto extends EquipmentBaseDto {
     private Long id;
-    private SeatResponseDto seatResponseDto;
+    private Long seatId;
     private LocalDateTime created;
     private LocalDateTime modified;
 }
