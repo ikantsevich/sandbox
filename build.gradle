@@ -42,5 +42,8 @@ dependencies {
     api('org.testng:testng:7.5')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
 }
 test { useTestNG() }
