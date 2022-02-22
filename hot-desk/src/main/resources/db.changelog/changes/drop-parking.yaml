@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: drop parking table
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: parking
+      changes:
+        - dropTable:
+            tableName: parking

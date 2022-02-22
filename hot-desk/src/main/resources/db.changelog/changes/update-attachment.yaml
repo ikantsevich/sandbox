@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: 1. Update
+      comment: dropped chat_id and message_id, added original_name and content_type, altered at_name -> name
+      author: asilbekdev@gmail.com
+      changes:
+        - dropColumn:
+            columnName: chat_id
+            tableName: attachment
+        - dropColumn:
+            columnName: message_id
+            tableName: attachment
+        - addColumn:
+            tableName: attachment
+            columns:
+              - column:
+                  name: original_name
+                  type: varchar(100)
+              - column:
+                  name: content_type
+                  type: varchar(100)
+        - renameColumn:
+            columnDataType: varchar(100)
+            newColumnName: name
+            oldColumnName: at_name
+            tableName: attachment

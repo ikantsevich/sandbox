@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: update office
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          schemaName:
+          tableName: office
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: office
+            constraintName: fk_pa_id
+        - dropColumn:
+            columnName: pa_id
+            tableName: office
