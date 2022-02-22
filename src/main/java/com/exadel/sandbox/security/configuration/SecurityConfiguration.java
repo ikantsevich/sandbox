@@ -2,6 +2,8 @@ package com.exadel.sandbox.security.configuration;
 
 import com.exadel.sandbox.security.service.UserDetailServiceImp;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

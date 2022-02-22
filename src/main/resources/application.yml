@@ -6,7 +6,7 @@ datasource:
   host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
   username: 'root'
-  password: ''
+  password: '09102003'
 spring:
   autoconfigure:
     exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
@@ -30,3 +30,8 @@ spring:
     parameters.env: '${spring.profiles.active}'
     enabled: true
     change-log: '/db.changelog/db.changelog-master.yaml'
+
+
+authorization:
+  secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
+  expiration: 3600

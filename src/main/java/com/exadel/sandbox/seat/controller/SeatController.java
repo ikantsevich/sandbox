@@ -1,7 +1,9 @@
 package com.exadel.sandbox.seat.controller;
 
 import com.exadel.sandbox.seat.dto.SeatBaseDto;
+import com.exadel.sandbox.seat.dto.SeatCreateDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
+import com.exadel.sandbox.seat.dto.SeatUpdateDto;
 import com.exadel.sandbox.seat.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,7 @@ public class SeatController {
     }
 
     @PostMapping()
-    SeatResponseDto createSeat(@RequestBody SeatBaseDto seatBaseDto) {
+    SeatResponseDto createSeat(@RequestBody SeatCreateDto seatBaseDto) {
 
         return seatService.create(seatBaseDto);
     }
@@ -38,7 +40,7 @@ public class SeatController {
 
     @PutMapping("{id}")
     SeatResponseDto updateSeat(@PathVariable("id") Long id,
-                               @RequestBody SeatBaseDto seatBaseDto) {
+                               @RequestBody SeatUpdateDto seatBaseDto) {
 
 
         return seatService.update(id, seatBaseDto);

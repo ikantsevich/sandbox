@@ -40,7 +40,8 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: eq_created
-                  type: CURRENT_TIMESTAMP
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: eq_modified
-                  type: CURRENT_TIMESTAMP
+                  type: datetime
