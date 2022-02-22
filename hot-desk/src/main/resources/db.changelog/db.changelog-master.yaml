@@ -1,0 +1,86 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+
+  - include:
+      file: changes/init.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/tg-info.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/employee.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/vacation.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/create-permission-table.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/create-role-table.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/create-role-per-relationTables.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/address.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/parking.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/office.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/parking-spot.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/booking.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/attachment.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/floor.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/seat.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/equipment.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/employee-role.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/update-parking-spot.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/update-office.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/drop-parking.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/update-attachment.yaml
+      relativeToChangelogFile: true

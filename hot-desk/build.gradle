@@ -1,0 +1,8 @@
+dependencies {
+    api('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.mariadb.jdbc:mariadb-java-client')
+    compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
+
+    implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
+}
