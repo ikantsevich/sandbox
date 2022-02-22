@@ -1,5 +1,6 @@
 package com.exadel.sandbox.seat.entity;
 
+import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.equipment.entity.Equipment;
 import com.exadel.sandbox.officeFloor.entities.Floor;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,9 @@ public class Seat {
 
     @Column(name = "seat_desc", nullable = false)
     private String description;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "preferredSeat")
+    private List<Employee> employees;
 
     @CreatedDate
     @Column(name = "seat_created")

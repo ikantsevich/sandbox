@@ -18,7 +18,6 @@ import java.util.List;
 @JsonPropertyOrder({"id"})
 public class RoleResponseDto extends RoleBaseDto {
     private Long id;
-    @JsonProperty("permissions")
     private List<PermissionResponseDto> perResponseDtoList;
     private LocalDateTime created;
     private LocalDateTime modified;

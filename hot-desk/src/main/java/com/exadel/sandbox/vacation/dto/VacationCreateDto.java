@@ -7,6 +7,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class VacationCreateDto extends VacationBaseDto {
-    @JsonProperty("employee-id")
     private Long employeeId;
 }

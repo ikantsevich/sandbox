@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: update parking spot
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          schemaName:
+          tableName: parking_spot
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: parking_spot
+            constraintName: spot_pa_fk
+        - dropColumn:
+            columnName: pa_id
+            tableName: parking_spot
+        - addColumn:
+            tableName: parking_spot
+            columns:
+              - column:
+                  name: of_id
+                  type: int
+                  remarks: 'Office foreign key'
+                  constraints:
+                    nullable: false
+                    foreignKeyName: of_id_fk
+                    references: office(of_id)

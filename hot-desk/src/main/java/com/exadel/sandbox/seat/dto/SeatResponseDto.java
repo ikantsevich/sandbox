@@ -19,9 +19,7 @@ import java.util.List;
 @JsonPropertyOrder({"id"})
 public class SeatResponseDto extends SeatBaseDto {
     private Long id;
-    @JsonProperty("floor")
     private FloorResponseDto floorResponseDto;
-    @JsonProperty("equipments")
     private List<EquipmentResponseDto> equipmentResponseDtos;
     private LocalDateTime created;
     private LocalDateTime modified;

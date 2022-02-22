@@ -19,22 +19,16 @@ import java.util.List;
         "email",
         "position",
         "roles",
-        "tg-info",
-        "preferred-seat"})
+        "preferredSeat"})
 public class EmployeeResponseDto extends EmployeeBaseDto {
-    private Long id;
 
-    @JsonProperty("tg-info")
+    private Long id;
     private TgInfoResponseDto tgInfoResponseDto;
     private List<RoleResponseDto> roles;
     private List<VacationResponseDto> vacations;
-    @JsonProperty("preferred-seat")
-    private Integer preferredSeat;
     private LocalDateTime created;
     private LocalDateTime modified;
-    @JsonProperty("employment-start")
     private LocalDateTime employmentStart;
-
-    @JsonProperty("employment-end")
     private LocalDateTime employmentEnd;
+
 }

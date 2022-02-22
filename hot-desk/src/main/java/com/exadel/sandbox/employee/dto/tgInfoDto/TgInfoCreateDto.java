@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class TgInfoCreateDto extends TgInfoBaseDto {
-    @JsonProperty("chat-state")
     private String chatState;
 }

@@ -1,4 +1,4 @@
-package com.exadel.sandbox.parking_spot.service;
+package com.exadel.sandbox.parking_spot.service.impl;
 
 import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
@@ -8,6 +8,7 @@ import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotUpdateDto;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import com.exadel.sandbox.parking_spot.repository.ParkingSpotRepository;
+import com.exadel.sandbox.parking_spot.service.ParkingSpotService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package com.exadel.sandbox.employee.entity;
 
 import com.exadel.sandbox.role.entity.Role;
+import com.exadel.sandbox.seat.entity.Seat;
 import com.exadel.sandbox.vacation.entities.Vacation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,8 +46,9 @@ public class Employee {
     @Column(name = "em_position", nullable = false)
     private String position;
 
-    @Column(name = "preferred_seat")
-    private Integer preferredSeat;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "preferred_seat")
+    private Seat preferredSeat;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "employee_role", joinColumns = {@JoinColumn(name = "em_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id"),})

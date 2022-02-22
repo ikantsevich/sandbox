@@ -22,13 +22,13 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: spot_id_pk
               - column:
-                  name: of_id
-                  type: int
-                  remarks: 'Office foreign key'
+                  name: pa_id
+                  type: bigint
+                  remarks: 'Parking foreign key'
                   constraints:
                     nullable: false
-                    foreignKeyName: of_id_fk
-                    references: office(of_id)
+                    foreignKeyName: spot_pa_fk
+                    references: parking(pa_id)
               - column:
                   name: spot_status
                   type: varchar(50)

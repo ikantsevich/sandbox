@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OfficeBaseDto {
-    @JsonProperty("office-status")
     private String officeStatus;
 }

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TgInfoBaseDto {
-    @JsonProperty("chat-id")
     private String chatId;
     private String username;
 }
