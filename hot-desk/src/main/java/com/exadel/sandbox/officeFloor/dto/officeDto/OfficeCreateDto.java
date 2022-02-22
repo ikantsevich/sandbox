@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder({"address-id"})
+@JsonPropertyOrder({"addressId"})
 @EqualsAndHashCode(callSuper = false)
 public class OfficeCreateDto extends OfficeBaseDto {
-    @JsonProperty("address-id")
     private Long addressId;
 }

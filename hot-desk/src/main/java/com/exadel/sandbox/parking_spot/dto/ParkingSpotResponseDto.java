@@ -14,10 +14,9 @@ import java.time.LocalDateTime;
         "spotNum",
         "status",
         "hasCharger",
-        "office"})
+        "officeResponseDto"})
 public class ParkingSpotResponseDto extends ParkingSpotBaseDto {
     private Long id;
-    @JsonProperty("office")
     private OfficeResponseDto officeResponseDto;
     private LocalDateTime created;
     private LocalDateTime modified;

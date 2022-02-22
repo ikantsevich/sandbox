@@ -6,7 +6,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/tg_info.yaml
+      file: changes/tg-info.yaml
       relativeToChangelogFile: true
 
   - include:
@@ -34,11 +34,15 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
+      file: changes/parking.yaml
+      relativeToChangelogFile: true
+
+  - include:
       file: changes/office.yaml
       relativeToChangelogFile: true
 
   - include:
-      file: changes/parking_spot.yaml
+      file: changes/parking-spot.yaml
       relativeToChangelogFile: true
 
   - include:
@@ -63,4 +67,20 @@ databaseChangeLog:
 
   - include:
       file: changes/employee-role.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/update-parking-spot.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/update-office.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/drop-parking.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/update-attachment.yaml
       relativeToChangelogFile: true

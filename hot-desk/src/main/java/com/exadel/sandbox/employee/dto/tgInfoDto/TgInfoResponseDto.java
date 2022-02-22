@@ -12,10 +12,9 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @JsonPropertyOrder({"id",
-        "chat-id",})
+        "chatId",})
 public class TgInfoResponseDto extends TgInfoBaseDto {
     private Long id;
-    @JsonProperty("chat-state")
     private String chatState;
     private LocalDateTime created;
     private LocalDateTime modified;
