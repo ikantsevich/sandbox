@@ -24,17 +24,11 @@ databaseChangeLog:
                   name: seat_id
                   type: int
                   constraints:
-                    unique: true
                     nullable: true
                     foreignKeyName: fk_seat
                     references: seat(seat_id)
               - column:
                   name: eq_name
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: eq_type
                   type: varchar(255)
                   constraints:
                     nullable: false
@@ -45,3 +39,4 @@ databaseChangeLog:
               - column:
                   name: eq_modified
                   type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP

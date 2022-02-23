@@ -8,6 +8,9 @@ datasource:
   username: 'root'
   password: ''
 spring:
+  autoconfigure:
+    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC
@@ -27,8 +30,7 @@ spring:
     parameters.env: '${spring.profiles.active}'
     enabled: true
     change-log: '/db.changelog/db.changelog-master.yaml'
-
-
-authorization:
-  secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
-  expiration: 3600
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
