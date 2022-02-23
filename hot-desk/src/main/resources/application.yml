@@ -34,3 +34,14 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hotdesktcompany@gmail.com
+    password: dgfrdelghyzxgdmn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
