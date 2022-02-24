@@ -22,4 +22,6 @@ public interface KeyboardService {
     ReplyKeyboardMarkup getReplyKeyboard(List<List<String>> buttons,
                                          List<List<Boolean>> requestContact,
                                          List<List<Boolean>> requestLocation);
+
+    ReplyKeyboardMarkup getReplyForMainMenu();
 }
