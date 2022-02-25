@@ -5,7 +5,6 @@ dependencies {
 
     implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
-    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-
 }
