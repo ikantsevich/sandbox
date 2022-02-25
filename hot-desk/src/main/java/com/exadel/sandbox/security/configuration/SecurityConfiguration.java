@@ -1,6 +1,7 @@
 package com.exadel.sandbox.security.configuration;
 
 import com.exadel.sandbox.security.service.UserDetailServiceImp;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,16 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(
         prePostEnabled = true
 )
+@RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
     private final JwtTokenProvider tokenProvider;
     private final UserDetailServiceImp userService;
 
-    public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler, JwtTokenProvider tokenProvider, UserDetailServiceImp userService) {
-        this.userService = userService;
-        this.tokenProvider = tokenProvider;
-        this.unauthorizedHandler = unauthorizedHandler;
-    }
     @Bean
     public JwtAuthenticationTokenFilter authenticationJwtTokenFilter() {
         return new JwtAuthenticationTokenFilter(tokenProvider,userService);
@@ -55,7 +52,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("config");
         http
                 .csrf()
                 .disable()

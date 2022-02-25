@@ -1,6 +1,8 @@
 package com.exadel.sandbox.security.configuration;
 
 import com.exadel.sandbox.security.service.UserDetailServiceImp;
+import com.exadel.sandbox.security.service.UserPrincipal;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider tokenProvider;
 
@@ -22,10 +25,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
 
-    public JwtAuthenticationTokenFilter(JwtTokenProvider tokenProvider, UserDetailServiceImp userService) {
-        this.tokenProvider = tokenProvider;
-        this.userService = userService;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

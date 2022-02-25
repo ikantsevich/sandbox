@@ -2,7 +2,7 @@ package com.exadel.telegrambot.bot.feign;
 
 import com.exadel.telegrambot.bot.dto.GetMeDto;
 import com.exadel.telegrambot.bot.dto.InitialDto;
-import com.exadel.telegrambot.bot.utils.TelegramUtils;
+import com.exadel.telegrambot.bot.utils.Urls;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
@@ -10,10 +10,9 @@ import org.telegram.telegrambots.meta.api.methods.GetUserProfilePhotos;
 import org.telegram.telegrambots.meta.api.methods.StopMessageLiveLocation;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.*;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.polls.Poll;
 
-@FeignClient(name = "TelegramFeign", url = TelegramUtils.URL)
+@FeignClient(name = "TelegramFeign", url = Urls.FULL_REQUEST)
 public interface TelegramFeign {
     @PostMapping("{token}/sendMessage")
     void sendMessage(@PathVariable String token,
