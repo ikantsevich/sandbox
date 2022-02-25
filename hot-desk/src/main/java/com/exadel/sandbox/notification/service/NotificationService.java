@@ -8,6 +8,7 @@ import com.exadel.sandbox.notification.entity.Notification;
 import com.exadel.sandbox.notification.repository.NotificationRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,6 +21,8 @@ import java.util.List;
 @Transactional
 public class NotificationService extends BaseCrudService<Notification, NotificationResponseDto, Notification, NotificationCreateDto, NotificationRepository> {
     private final MailSender mailSender;
+    @Value(value = "${spring.mail.from}")
+    private String from;
 
     public NotificationService(ModelMapper mapper, NotificationRepository repository, MailSender mailSender) {
         super(mapper, repository);
@@ -39,7 +42,7 @@ public class NotificationService extends BaseCrudService<Notification, Notificat
 
     private Notification sendMail(Notification notification) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("hotdesktcompany@gmail.com");
+        message.setFrom(from);
         message.setSubject(notification.getTitle());
         message.setTo(notification.getEmployee().getEmail());
         message.setText(notification.getMessage());
