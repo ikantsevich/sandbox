@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"id"})
 public class FloorResponseDto extends FloorBaseDto {
     private Long id;
-    private OfficeResponseDto officeResponseDto;
-    private AttachmentResponseDto attachmentResponseDto;
+    private Long officeId;
+    private Long attachmentId;
 }

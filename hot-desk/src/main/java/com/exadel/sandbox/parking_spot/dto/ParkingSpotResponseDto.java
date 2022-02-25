@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
         "officeResponseDto"})
 public class ParkingSpotResponseDto extends ParkingSpotBaseDto {
     private Long id;
-    private OfficeResponseDto officeResponseDto;
+    private Long officeId;
     private LocalDateTime created;
     private LocalDateTime modified;
 }

@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class EquipmentResponseDto extends EquipmentBaseDto {
     private Long id;
-    private Long seatId;
     private LocalDateTime created;
     private LocalDateTime modified;
 }

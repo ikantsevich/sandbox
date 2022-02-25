@@ -5,6 +5,7 @@ import com.exadel.sandbox.address.dto.AddressResponseDto;
 import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import com.exadel.sandbox.address.service.AddressService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,27 +18,27 @@ public class AddressController {
     private final AddressService addressService;
 
     @GetMapping("list")
-    List<AddressResponseDto> getAddresses() {
-        return addressService.getAddresses();
+    ResponseEntity<List<AddressResponseDto>> getAddresses() {
+        return addressService.getList();
     }
 
     @GetMapping("{id}")
-    AddressResponseDto getAddressById(@PathVariable("id") Long id) {
-        return addressService.getAddressById(id);
+    ResponseEntity<AddressResponseDto> getAddressById(@PathVariable("id") Long id) {
+        return addressService.getById(id);
     }
 
     @PostMapping()
-    AddressResponseDto createAddress(@RequestBody AddressCreateDto addressCreateDTO) {
+    ResponseEntity<AddressResponseDto> createAddress(@RequestBody AddressCreateDto addressCreateDTO) {
         return addressService.create(addressCreateDTO);
     }
 
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
-        addressService.deleteById(id);
+        addressService.delete(id);
     }
 
     @PutMapping("{id}")
-    AddressResponseDto updateAddress(@PathVariable("id") Long id,
+    ResponseEntity<AddressResponseDto> updateAddress(@PathVariable("id") Long id,
                                      @RequestBody AddressUpdateDto addressUpdateDTO) {
         return addressService.update(id, addressUpdateDTO);
     }

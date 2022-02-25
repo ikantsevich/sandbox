@@ -5,6 +5,7 @@ import com.exadel.sandbox.role.dto.RoleResponseDto;
 import com.exadel.sandbox.role.dto.RoleUpdateDto;
 import com.exadel.sandbox.role.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,35 +14,35 @@ import java.util.List;
 @RequestMapping("role")
 @RequiredArgsConstructor
 public class RoleController {
-    private final RoleService<RoleCreateDto, RoleUpdateDto, RoleResponseDto> roleService;
+    private final RoleService roleService;
 
     @GetMapping("list")
-    List<RoleResponseDto> getRoles() {
-        return roleService.getAll();
+    ResponseEntity<List<RoleResponseDto>> getRoles() {
+        return roleService.getList();
     }
 
     @GetMapping("{id}")
-    RoleResponseDto getRoleById(@PathVariable("id") Long id) {
+    ResponseEntity<RoleResponseDto> getRoleById(@PathVariable("id") Long id) {
         return roleService.getById(id);
     }
 
     @PostMapping()
-    RoleResponseDto createRole(@RequestBody RoleCreateDto roleCreateDto) {
+    ResponseEntity<RoleResponseDto> createRole(@RequestBody RoleCreateDto roleCreateDto) {
         return roleService.create(roleCreateDto);
     }
 
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
-        roleService.deleteById(id);
+        roleService.delete(id);
     }
 
     @PutMapping("{id}")
-    RoleResponseDto updateRole(@PathVariable("id") Long id, @RequestBody RoleUpdateDto roleUpdateDto) {
+    ResponseEntity<RoleResponseDto> updateRole(@PathVariable("id") Long id, @RequestBody RoleUpdateDto roleUpdateDto) {
         return roleService.update(id, roleUpdateDto);
     }
 
     @PutMapping("{id}/add-permissions")
-    RoleResponseDto addPermissions(@PathVariable("id") Long id,
+    ResponseEntity<RoleResponseDto> addPermissions(@PathVariable("id") Long id,
                                    @RequestBody List<Long> permissions) {
         return roleService.addPermissions(id, permissions);
     }

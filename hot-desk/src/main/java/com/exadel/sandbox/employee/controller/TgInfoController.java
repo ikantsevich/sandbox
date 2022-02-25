@@ -5,6 +5,7 @@ import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoResponseDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.employee.service.TgInfoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,27 +18,27 @@ public class TgInfoController {
     private final TgInfoService tgInfoService;
 
     @GetMapping("list")
-    List<TgInfoResponseDto> getTgInfos() {
-        return tgInfoService.getTgInfos();
+    ResponseEntity<List<TgInfoResponseDto>> getTgInfos() {
+        return tgInfoService.getList();
     }
 
     @GetMapping("{id}")
-    TgInfoResponseDto getTgInfoById(@PathVariable("id") Long id) {
-        return tgInfoService.getTgInfoById(id);
+    ResponseEntity<TgInfoResponseDto> getTgInfoById(@PathVariable("id") Long id) {
+        return tgInfoService.getById(id);
     }
 
     @PostMapping()
-    TgInfoResponseDto createTgInfo(@RequestBody TgInfoCreateDto tgInfoCreateDto) {
+    ResponseEntity<TgInfoResponseDto> createTgInfo(@RequestBody TgInfoCreateDto tgInfoCreateDto) {
         return tgInfoService.create(tgInfoCreateDto);
     }
 
     @DeleteMapping("{id}")
     void deleteTgInfo(@PathVariable("id") Long id) {
-        tgInfoService.deleteById(id);
+        tgInfoService.delete(id);
     }
 
     @PutMapping("{id}")
-    TgInfoResponseDto updateTgInfo(@PathVariable("id") Long id,
+    ResponseEntity<TgInfoResponseDto> updateTgInfo(@PathVariable("id") Long id,
                                    @RequestBody TgInfoUpdateDto tgInfoUpdateDto) {
 
         return tgInfoService.update(id, tgInfoUpdateDto);

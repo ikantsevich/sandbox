@@ -5,6 +5,7 @@ import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
 import com.exadel.sandbox.equipment.dto.EquipmentUpdateDto;
 import com.exadel.sandbox.equipment.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +17,27 @@ public class EquipmentController {
     private final EquipmentService equipmentService;
 
     @GetMapping("list")
-    List<EquipmentResponseDto> getEquipments() {
-        return equipmentService.getAll();
+    ResponseEntity<List<EquipmentResponseDto>> getEquipments() {
+        return equipmentService.getList();
     }
 
     @GetMapping("{id}")
-    EquipmentResponseDto getEquipmentById(@PathVariable("id") Long id) {
+    ResponseEntity<EquipmentResponseDto> getEquipmentById(@PathVariable("id") Long id) {
         return equipmentService.getById(id);
     }
 
     @PostMapping()
-    EquipmentResponseDto createEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto) {
+    ResponseEntity<EquipmentResponseDto> createEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto) {
         return equipmentService.create(equipmentCreateDto);
     }
 
     @DeleteMapping("{id}")
     void deleteEquipment(@PathVariable("id") Long id) {
-        equipmentService.deleteById(id);
+        equipmentService.delete(id);
     }
 
     @PutMapping("{id}")
-    EquipmentResponseDto updateEquipment(@PathVariable("id") Long id,
+    ResponseEntity<EquipmentResponseDto> updateEquipment(@PathVariable("id") Long id,
                                          @RequestBody EquipmentUpdateDto equipmentUpdateDto) {
 
         return equipmentService.update(id, equipmentUpdateDto);

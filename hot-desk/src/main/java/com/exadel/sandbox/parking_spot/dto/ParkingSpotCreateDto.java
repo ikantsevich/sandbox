@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@JsonPropertyOrder({"officeId", "has-charger", "spot-num"})
+@JsonPropertyOrder({"officeId", "hasECharger", "spotNum"})
 public class ParkingSpotCreateDto extends ParkingSpotBaseDto {
     private Long officeId;
 }
