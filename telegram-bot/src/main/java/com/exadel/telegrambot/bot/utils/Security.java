@@ -1,5 +1,5 @@
 package com.exadel.telegrambot.bot.utils;
 
 public interface Security {
-    String TOKEN = "5114863523:AAGUj56vwP6r5xu1rO4JB-UKb5hJbTIkrSU";
+    String TOKEN = "5040544405:AAFKigDE5Q7j2JKBUuNZVkD35KZJVvMGlMs";
 }

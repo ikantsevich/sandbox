@@ -10,6 +10,6 @@ public interface Urls {
 
 
 
-    String GLOBAL="https://006c-185-163-27-82.ngrok.io/";
+    String GLOBAL="https://fb4b-185-163-26-69.ngrok.io/";
 
 }
