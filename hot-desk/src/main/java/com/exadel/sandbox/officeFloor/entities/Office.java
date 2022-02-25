@@ -40,11 +40,11 @@ public class Office {
 
     @CreatedDate
     @Column(name = "of_created")
-    private LocalDateTime officeCreated;
+    private LocalDateTime created;
 
     @LastModifiedDate
     @Column(name = "of_modified")
-    private LocalDateTime officeModified;
+    private LocalDateTime modified;
 
 
 }

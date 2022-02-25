@@ -5,6 +5,7 @@ import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.service.PermissionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +17,27 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @GetMapping("list")
-    List<PermissionResponseDto> getPermissions() {
-        return permissionService.getAll();
+    ResponseEntity<List<PermissionResponseDto>> getPermissions() {
+        return permissionService.getList();
     }
 
     @GetMapping("{id}")
-    PermissionResponseDto getPermissionById(@PathVariable("id") Long id) {
+    ResponseEntity<PermissionResponseDto> getPermissionById(@PathVariable("id") Long id) {
         return permissionService.getById(id);
     }
 
     @PostMapping()
-    PermissionResponseDto createPermission(@RequestBody PermissionCreateDto permissionCreateDto) {
+    ResponseEntity<PermissionResponseDto> createPermission(@RequestBody PermissionCreateDto permissionCreateDto) {
         return permissionService.create(permissionCreateDto);
     }
 
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
-        permissionService.deleteById(id);
+        permissionService.delete(id);
     }
 
     @PutMapping("{id}")
-    PermissionResponseDto updateRole(@PathVariable("id") Long id, @RequestBody PermissionUpdateDto permissionUpdateDto) {
+    ResponseEntity<PermissionResponseDto> updateRole(@PathVariable("id") Long id, @RequestBody PermissionUpdateDto permissionUpdateDto) {
         return permissionService.update(id, permissionUpdateDto);
     }
 }

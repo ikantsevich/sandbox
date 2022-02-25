@@ -1,5 +1,12 @@
 package com.exadel.sandbox.config;
 
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.sandbox.employee.entity.Employee;
+import com.exadel.sandbox.employee.repository.EmployeeRepository;
+import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
+import com.exadel.sandbox.equipment.entity.Equipment;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -18,13 +25,6 @@ import java.util.Optional;
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 @EnableSwagger2
 public class Config {
-
-    @Bean
-    ModelMapper mapper() {
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return mapper;
-    }
 
     @Bean
     AuditorAware<String> auditorProvider() {

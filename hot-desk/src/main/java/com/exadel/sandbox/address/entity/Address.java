@@ -22,7 +22,7 @@ public class Address {
     @Column(name = "ad_id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "address")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "address", fetch = FetchType.LAZY)
     private Office office;
 
     @Column(name = "country", nullable = false)

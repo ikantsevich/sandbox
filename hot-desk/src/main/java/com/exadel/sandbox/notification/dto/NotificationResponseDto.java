@@ -1,4 +1,4 @@
-package com.exadel.sandbox.permission.dto;
+package com.exadel.sandbox.notification.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@JsonPropertyOrder({"id"})
-public class PermissionResponseDto extends PermissionBaseDto {
+@Data
+@JsonPropertyOrder({"id", "employeeId"})
+public class NotificationResponseDto extends NotificationBaseDto {
     private Long id;
+    private Long employeeId;
     private LocalDateTime created;
     private LocalDateTime modified;
 }

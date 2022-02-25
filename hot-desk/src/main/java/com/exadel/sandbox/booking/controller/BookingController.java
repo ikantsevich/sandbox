@@ -5,6 +5,7 @@ import com.exadel.sandbox.booking.dto.BookingResponseDto;
 import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,27 +19,27 @@ public class BookingController {
 
 
     @GetMapping("list")
-    List<BookingResponseDto> getBookings() {
-        return bookingService.getBookings();
+    ResponseEntity<List<BookingResponseDto>> getBookings() {
+        return bookingService.getList();
     }
 
     @GetMapping("{id}")
-    BookingResponseDto getBookingById(@PathVariable("id") Long id) {
-        return bookingService.getBookingById(id);
+    ResponseEntity<BookingResponseDto> getBookingById(@PathVariable("id") Long id) {
+        return bookingService.getById(id);
     }
 
     @PostMapping()
-    BookingResponseDto createBooking(@RequestBody BookingCreateDto bookingCreateDTO) {
+    ResponseEntity<BookingResponseDto> createBooking(@RequestBody BookingCreateDto bookingCreateDTO) {
         return bookingService.create(bookingCreateDTO);
     }
 
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
-        bookingService.deleteById(id);
+        bookingService.delete(id);
     }
 
     @PutMapping("{id}")
-    BookingResponseDto updateBooking(@PathVariable("id") Long id,
+    ResponseEntity<BookingResponseDto> updateBooking(@PathVariable("id") Long id,
                                      @RequestBody BookingUpdateDto bookingUpdateDTO) {
         return bookingService.update(id, bookingUpdateDTO);
     }

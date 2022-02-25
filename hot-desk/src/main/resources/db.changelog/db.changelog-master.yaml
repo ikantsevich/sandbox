@@ -84,3 +84,7 @@ databaseChangeLog:
   - include:
       file: changes/update-attachment.yaml
       relativeToChangelogFile: true
+
+  - include:
+      file: changes/notification.yaml
+      relativeToChangelogFile: true
