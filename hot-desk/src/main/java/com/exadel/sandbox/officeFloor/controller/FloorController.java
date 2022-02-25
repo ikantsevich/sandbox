@@ -5,6 +5,7 @@ import com.exadel.sandbox.officeFloor.dto.floorDto.FloorResponseDto;
 import com.exadel.sandbox.officeFloor.dto.floorDto.FloorUpdateDto;
 import com.exadel.sandbox.officeFloor.service.FloorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -19,32 +20,32 @@ public class FloorController {
     FloorService floorService;
 
     @GetMapping("/list")
-    List<FloorResponseDto> getFloors() {
-        return floorService.getFloors();
+    ResponseEntity<List<FloorResponseDto>> getFloors() {
+        return floorService.getList();
     }
 
     @GetMapping("/offcie-id/{id}")
-    FloorResponseDto getById(@RequestParam("id") Long id) {
+    ResponseEntity<FloorResponseDto> getById(@RequestParam("id") Long id) {
         return floorService.getById(id);
     }
 
     @GetMapping("{id}")
-    List<FloorResponseDto> getFloorById(@PathVariable("id") Long id) {
+    ResponseEntity<List<FloorResponseDto>> getFloorById(@PathVariable("id") Long id) {
         return floorService.getFloorsByOfId(id);
     }
 
     @PostMapping()
-    FloorResponseDto createFloor(@RequestBody FloorCreateDto floorCreateDto) {
+    ResponseEntity<FloorResponseDto> createFloor(@RequestBody FloorCreateDto floorCreateDto) {
         return floorService.create(floorCreateDto);
     }
 
     @DeleteMapping("{id}")
     void deleteById(@PathVariable Long id) {
-        floorService.deleteById(id);
+        floorService.delete(id);
     }
 
     @PutMapping("{id}")
-    FloorResponseDto updateFloor(@PathVariable("id") Long id, @RequestBody FloorUpdateDto floorUpdateDto) {
+    ResponseEntity<FloorResponseDto> updateFloor(@PathVariable("id") Long id, @RequestBody FloorUpdateDto floorUpdateDto) {
         return floorService.update(id, floorUpdateDto);
     }
 

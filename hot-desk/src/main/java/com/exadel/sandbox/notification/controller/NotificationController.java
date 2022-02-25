@@ -1,9 +1,11 @@
 package com.exadel.sandbox.notification.controller;
 
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.notification.dto.NotificationCreateDto;
 import com.exadel.sandbox.notification.dto.NotificationResponseDto;
 import com.exadel.sandbox.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,17 +17,17 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping("list")
-    List<NotificationResponseDto> getNotificationList(){
-        return notificationService.getAll();
+    ResponseEntity<List<NotificationResponseDto>> getNotificationList(){
+        return notificationService.getList();
     }
 
     @GetMapping("{id}")
-    NotificationResponseDto findById(@PathVariable Long id){
-        return notificationService.findById(id);
+    ResponseEntity<NotificationResponseDto> findById(@PathVariable Long id){
+        return notificationService.getById(id);
     }
 
     @GetMapping("employee/{id}")
-    List<NotificationResponseDto> findByEmployeeId(@PathVariable Long id){
+    ResponseEntity<EmployeeResponseDto> findByEmployeeId(@PathVariable Long id){
         return notificationService.findByEmployeeId(id);
     }
 

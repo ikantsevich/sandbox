@@ -1,19 +1,19 @@
 package com.exadel.sandbox.vacation.service;
 
+import com.exadel.sandbox.base.BaseCrudService;
 import com.exadel.sandbox.vacation.dto.VacationCreateDto;
 import com.exadel.sandbox.vacation.dto.VacationResponseDto;
 import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
+import com.exadel.sandbox.vacation.entities.Vacation;
+import com.exadel.sandbox.vacation.repository.VacationRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-public interface VacationService {
-    List<VacationResponseDto> getVacations();
-
-    VacationResponseDto getVacationById(Long id);
-
-    VacationResponseDto create(VacationCreateDto vacationCreateDto);
-
-    void deleteById(Long id);
-
-    VacationResponseDto update(Long id, VacationUpdateDto vacationUpdateDto);
+@Component
+@Transactional
+public class VacationService extends BaseCrudService<Vacation, VacationResponseDto, VacationUpdateDto, VacationCreateDto, VacationRepository> {
+    public VacationService(ModelMapper mapper, VacationRepository repository) {
+        super(mapper, repository);
+    }
 }

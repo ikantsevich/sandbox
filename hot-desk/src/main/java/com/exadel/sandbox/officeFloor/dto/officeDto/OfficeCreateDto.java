@@ -1,5 +1,6 @@
 package com.exadel.sandbox.officeFloor.dto.officeDto;
 
+import com.exadel.sandbox.address.dto.AddressCreateDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
@@ -13,5 +14,5 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"addressId"})
 @EqualsAndHashCode(callSuper = false)
 public class OfficeCreateDto extends OfficeBaseDto {
-    private Long addressId;
+    private AddressCreateDto address;
 }

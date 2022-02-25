@@ -35,10 +35,10 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   mail:
-    host: smtp.gmail.com
+    host: 'smtp.gmail.com'
     port: 587
-    username: hotdesktcompany@gmail.com
-    password: dgfrdelghyzxgdmn
+    username: 'hotdesktcompany@gmail.com'
+    password: ''
     properties:
       mail:
         smtp:

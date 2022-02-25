@@ -1,19 +1,24 @@
 package com.exadel.sandbox.officeFloor.service;
 
+import com.exadel.sandbox.address.dto.AddressResponseDto;
+import com.exadel.sandbox.address.repository.AddressRepository;
+import com.exadel.sandbox.base.BaseCrudService;
+import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeCreateDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeUpdateDto;
+import com.exadel.sandbox.officeFloor.entities.Office;
+import com.exadel.sandbox.officeFloor.repositories.OfficeRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public interface OfficeService {
-    List<OfficeResponseDto> getOffices();
-
-    OfficeResponseDto getById(Long id);
-
-    OfficeResponseDto create(OfficeCreateDto officeCreateDto);
-
-    void deleteById(Long id);
-
-    OfficeResponseDto update(Long id, OfficeUpdateDto officeUpdateDto);
+@Component
+public class OfficeService extends BaseCrudService<Office, OfficeResponseDto, OfficeUpdateDto, OfficeCreateDto, OfficeRepository> {
+    public OfficeService(ModelMapper mapper, OfficeRepository repository) {
+        super(mapper, repository);
+    }
 }

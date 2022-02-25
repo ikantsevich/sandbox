@@ -5,6 +5,7 @@ import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
 import com.exadel.sandbox.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,42 +18,36 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("list")
-    List<EmployeeResponseDto> getEmployees() {
-        return employeeService.getEmployees();
+    ResponseEntity<List<EmployeeResponseDto>> getEmployees() {
+        return employeeService.getList();
     }
 
     @GetMapping("{id}")
-    EmployeeResponseDto getEmployeeById(@PathVariable("id") Long id) {
+    ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable("id") Long id) {
 
-        return employeeService.getEmployeeByID(id);
+        return employeeService.getById(id);
     }
 
     @PostMapping()
-    EmployeeResponseDto createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
+    ResponseEntity<EmployeeResponseDto> createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
 
         return employeeService.create(employeeCreateDto);
     }
 
     @DeleteMapping("{id}")
     void deleteEmployeeById(@PathVariable("id") Long id) {
-        employeeService.deleteById(id);
+        employeeService.delete(id);
     }
 
     @PutMapping("{id}")
-    EmployeeResponseDto updateEmployee(@PathVariable("id") Long id,
+    ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable("id") Long id,
                                        @RequestBody EmployeeUpdateDto employeeUpdateDto) {
 
         return employeeService.update(id, employeeUpdateDto);
     }
 
-    @PutMapping("{id}/set-tg-info/{tgInfoId}")
-    EmployeeResponseDto setTgInfo(@PathVariable Long id,
-                                  @PathVariable Long tgInfoId) {
-        return employeeService.setTgInfo(id, tgInfoId);
-    }
-
     @PutMapping("{id}/addRole/{roleId}")
-    EmployeeResponseDto addRole(@PathVariable Long id,
+    ResponseEntity<EmployeeResponseDto> addRole(@PathVariable Long id,
                                 @PathVariable Long roleId) {
         return employeeService.addRole(id, roleId);
     }

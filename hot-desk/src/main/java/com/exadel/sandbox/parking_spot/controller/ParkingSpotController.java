@@ -5,6 +5,7 @@ import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotUpdateDto;
 import com.exadel.sandbox.parking_spot.service.ParkingSpotService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,32 +19,32 @@ public class ParkingSpotController {
 
 
     @GetMapping("list")
-    List<ParkingSpotResponseDto> getParkingSpots() {
-        return parkingSpotService.getParkingSpots();
+    ResponseEntity<List<ParkingSpotResponseDto>> getParkingSpots() {
+        return parkingSpotService.getList();
     }
 
     @GetMapping("{id}")
-    ParkingSpotResponseDto getParkingSpotById(@PathVariable("id") Long id) {
-        return parkingSpotService.getParkingSpotById(id);
+    ResponseEntity<ParkingSpotResponseDto> getParkingSpotById(@PathVariable("id") Long id) {
+        return parkingSpotService.getById(id);
     }
 
     @GetMapping("office-id/{id}")
-    ParkingSpotResponseDto getByOfficeId(@PathVariable("id") Long id) {
+    ResponseEntity<ParkingSpotResponseDto> getByOfficeId(@PathVariable("id") Long id) {
         return parkingSpotService.findByOfficeId(id);
     }
 
     @PostMapping()
-    ParkingSpotResponseDto createParkingSpot(@RequestBody ParkingSpotCreateDto parkingSpotCreateDTO) {
+    ResponseEntity<ParkingSpotResponseDto> createParkingSpot(@RequestBody ParkingSpotCreateDto parkingSpotCreateDTO) {
         return parkingSpotService.create(parkingSpotCreateDTO);
     }
 
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
-        parkingSpotService.deleteById(id);
+        parkingSpotService.delete(id);
     }
 
     @PutMapping("{id}")
-    ParkingSpotResponseDto updateParkingSpot(@PathVariable("id") Long id,
+    ResponseEntity<ParkingSpotResponseDto> updateParkingSpot(@PathVariable("id") Long id,
                                              @RequestBody ParkingSpotUpdateDto parkingSpotUpdateDTO) {
         return parkingSpotService.update(id, parkingSpotUpdateDTO);
     }
