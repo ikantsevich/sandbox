@@ -1,9 +1,9 @@
 package com.exadel.sandbox.address.controller;
 
-import com.exadel.sandbox.address.dto.AddressCreateDto;
-import com.exadel.sandbox.address.dto.AddressResponseDto;
-import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import com.exadel.sandbox.address.service.AddressService;
+import dtos.address.dto.AddressCreateDto;
+import dtos.address.dto.AddressResponseDto;
+import dtos.address.dto.AddressUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +39,7 @@ public class AddressController {
 
     @PutMapping("{id}")
     ResponseEntity<AddressResponseDto> updateAddress(@PathVariable("id") Long id,
-                                     @RequestBody AddressUpdateDto addressUpdateDTO) {
+                                                     @RequestBody AddressUpdateDto addressUpdateDTO) {
         return addressService.update(id, addressUpdateDTO);
     }
 

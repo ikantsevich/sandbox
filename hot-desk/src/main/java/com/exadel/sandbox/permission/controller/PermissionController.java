@@ -1,9 +1,9 @@
 package com.exadel.sandbox.permission.controller;
 
-import com.exadel.sandbox.permission.dto.PermissionCreateDto;
-import com.exadel.sandbox.permission.dto.PermissionResponseDto;
-import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.service.PermissionService;
+import dtos.permission.dto.PermissionCreateDto;
+import dtos.permission.dto.PermissionResponseDto;
+import dtos.permission.dto.PermissionUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

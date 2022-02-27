@@ -1,9 +1,9 @@
 package com.exadel.sandbox.parking_spot.controller;
 
-import com.exadel.sandbox.parking_spot.dto.ParkingSpotCreateDto;
-import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
-import com.exadel.sandbox.parking_spot.dto.ParkingSpotUpdateDto;
 import com.exadel.sandbox.parking_spot.service.ParkingSpotService;
+import dtos.parkingSpot.dto.ParkingSpotCreateDto;
+import dtos.parkingSpot.dto.ParkingSpotResponseDto;
+import dtos.parkingSpot.dto.ParkingSpotUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +45,7 @@ public class ParkingSpotController {
 
     @PutMapping("{id}")
     ResponseEntity<ParkingSpotResponseDto> updateParkingSpot(@PathVariable("id") Long id,
-                                             @RequestBody ParkingSpotUpdateDto parkingSpotUpdateDTO) {
+                                                             @RequestBody ParkingSpotUpdateDto parkingSpotUpdateDTO) {
         return parkingSpotService.update(id, parkingSpotUpdateDTO);
     }
 

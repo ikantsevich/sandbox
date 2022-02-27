@@ -1,9 +1,9 @@
 package com.exadel.sandbox.role.controller;
 
-import com.exadel.sandbox.role.dto.RoleCreateDto;
-import com.exadel.sandbox.role.dto.RoleResponseDto;
-import com.exadel.sandbox.role.dto.RoleUpdateDto;
 import com.exadel.sandbox.role.service.RoleService;
+import dtos.role.dto.RoleCreateDto;
+import dtos.role.dto.RoleResponseDto;
+import dtos.role.dto.RoleUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +43,7 @@ public class RoleController {
 
     @PutMapping("{id}/add-permissions")
     ResponseEntity<RoleResponseDto> addPermissions(@PathVariable("id") Long id,
-                                   @RequestBody List<Long> permissions) {
+                                                   @RequestBody List<Long> permissions) {
         return roleService.addPermissions(id, permissions);
     }
 }

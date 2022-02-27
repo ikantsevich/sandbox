@@ -1,11 +1,11 @@
 package com.exadel.sandbox.notification.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
-import com.exadel.sandbox.notification.dto.NotificationCreateDto;
-import com.exadel.sandbox.notification.dto.NotificationResponseDto;
 import com.exadel.sandbox.notification.entity.Notification;
 import com.exadel.sandbox.notification.repository.NotificationRepository;
+import dtos.employee.dto.employeeDto.EmployeeResponseDto;
+import dtos.notification.dto.NotificationCreateDto;
+import dtos.notification.dto.NotificationResponseDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +31,8 @@ public class NotificationService extends BaseCrudService<Notification, Notificat
 
     public ResponseEntity<EmployeeResponseDto> findByEmployeeId(Long id) {
         List<Notification> notifications = repository.findNotificationsByEmployeeId(id);
-        return ResponseEntity.ok(mapper.map(notifications, new TypeToken<List<EmployeeResponseDto>>() {}.getType()));
+        return ResponseEntity.ok(mapper.map(notifications, new TypeToken<List<EmployeeResponseDto>>() {
+        }.getType()));
     }
 
     public NotificationResponseDto send(NotificationCreateDto notificationCreateDto) {

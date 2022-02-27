@@ -1,18 +1,16 @@
 package com.exadel.sandbox.officeFloor.service;
 
-import com.exadel.sandbox.attachment.dto.AttachmentResponseDto;
 import com.exadel.sandbox.attachment.entity.Attachment;
 import com.exadel.sandbox.attachment.repository.AttachmentRepository;
 import com.exadel.sandbox.attachment.service.AttachmentService;
 import com.exadel.sandbox.base.BaseCrudService;
 import com.exadel.sandbox.exception.EntityNotFoundException;
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorCreateDto;
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorResponseDto;
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorUpdateDto;
-import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.officeFloor.entities.Floor;
 import com.exadel.sandbox.officeFloor.repositories.FloorRepository;
-import lombok.RequiredArgsConstructor;
+import dtos.attachment.dto.AttachmentResponseDto;
+import dtos.officeFloor.dto.floorDto.FloorCreateDto;
+import dtos.officeFloor.dto.floorDto.FloorResponseDto;
+import dtos.officeFloor.dto.floorDto.FloorUpdateDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,8 @@ public class FloorService extends BaseCrudService<Floor, FloorResponseDto, Floor
 
     public ResponseEntity<List<FloorResponseDto>> getFloorsByOfId(Long id) {
         List<Floor> floors = repository.findFloorsByOfficeId(id);
-        return ResponseEntity.ok(mapper.map(floors, new TypeToken<List<FloorResponseDto>>(){}.getType()));
+        return ResponseEntity.ok(mapper.map(floors, new TypeToken<List<FloorResponseDto>>() {
+        }.getType()));
     }
 
     public void setMap(Long id, MultipartHttpServletRequest request) {

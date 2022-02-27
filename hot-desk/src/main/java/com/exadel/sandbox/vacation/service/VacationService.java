@@ -1,11 +1,11 @@
 package com.exadel.sandbox.vacation.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
-import com.exadel.sandbox.vacation.dto.VacationCreateDto;
-import com.exadel.sandbox.vacation.dto.VacationResponseDto;
-import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
 import com.exadel.sandbox.vacation.entities.Vacation;
 import com.exadel.sandbox.vacation.repository.VacationRepository;
+import dtos.vacation.dto.VacationCreateDto;
+import dtos.vacation.dto.VacationResponseDto;
+import dtos.vacation.dto.VacationUpdateDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

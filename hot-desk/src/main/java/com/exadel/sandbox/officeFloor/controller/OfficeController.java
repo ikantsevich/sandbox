@@ -1,9 +1,9 @@
 package com.exadel.sandbox.officeFloor.controller;
 
-import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeCreateDto;
-import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
-import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeUpdateDto;
 import com.exadel.sandbox.officeFloor.service.OfficeService;
+import dtos.officeFloor.dto.officeDto.OfficeCreateDto;
+import dtos.officeFloor.dto.officeDto.OfficeResponseDto;
+import dtos.officeFloor.dto.officeDto.OfficeUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

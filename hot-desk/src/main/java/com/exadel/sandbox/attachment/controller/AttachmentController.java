@@ -1,7 +1,7 @@
 package com.exadel.sandbox.attachment.controller;
 
-import com.exadel.sandbox.attachment.dto.AttachmentResponseDto;
 import com.exadel.sandbox.attachment.service.AttachmentService;
+import dtos.attachment.dto.AttachmentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;

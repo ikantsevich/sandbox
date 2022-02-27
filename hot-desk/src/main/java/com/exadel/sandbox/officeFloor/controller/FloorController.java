@@ -1,9 +1,9 @@
 package com.exadel.sandbox.officeFloor.controller;
 
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorCreateDto;
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorResponseDto;
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorUpdateDto;
 import com.exadel.sandbox.officeFloor.service.FloorService;
+import dtos.officeFloor.dto.floorDto.FloorCreateDto;
+import dtos.officeFloor.dto.floorDto.FloorResponseDto;
+import dtos.officeFloor.dto.floorDto.FloorUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

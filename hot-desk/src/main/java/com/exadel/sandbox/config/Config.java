@@ -1,14 +1,5 @@
 package com.exadel.sandbox.config;
 
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
-import com.exadel.sandbox.employee.entity.Employee;
-import com.exadel.sandbox.employee.repository.EmployeeRepository;
-import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
-import com.exadel.sandbox.equipment.entity.Equipment;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

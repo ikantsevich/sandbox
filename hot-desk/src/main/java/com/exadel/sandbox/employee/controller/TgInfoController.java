@@ -1,9 +1,9 @@
 package com.exadel.sandbox.employee.controller;
 
-import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoCreateDto;
-import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoResponseDto;
-import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.employee.service.TgInfoService;
+import dtos.employee.dto.tgInfoDto.TgInfoCreateDto;
+import dtos.employee.dto.tgInfoDto.TgInfoResponseDto;
+import dtos.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +39,7 @@ public class TgInfoController {
 
     @PutMapping("{id}")
     ResponseEntity<TgInfoResponseDto> updateTgInfo(@PathVariable("id") Long id,
-                                   @RequestBody TgInfoUpdateDto tgInfoUpdateDto) {
+                                                   @RequestBody TgInfoUpdateDto tgInfoUpdateDto) {
 
         return tgInfoService.update(id, tgInfoUpdateDto);
     }

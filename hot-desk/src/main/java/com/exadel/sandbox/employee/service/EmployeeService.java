@@ -1,15 +1,15 @@
 package com.exadel.sandbox.employee.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.employee.repository.TgInfoRepository;
 import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.role.entity.Role;
 import com.exadel.sandbox.role.repository.RoleRepository;
+import dtos.employee.dto.employeeDto.EmployeeCreateDto;
+import dtos.employee.dto.employeeDto.EmployeeResponseDto;
+import dtos.employee.dto.employeeDto.EmployeeUpdateDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
 package com.exadel.sandbox.vacation.controller;
 
-import com.exadel.sandbox.vacation.dto.VacationCreateDto;
-import com.exadel.sandbox.vacation.dto.VacationResponseDto;
-import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
 import com.exadel.sandbox.vacation.service.VacationService;
+import dtos.vacation.dto.VacationCreateDto;
+import dtos.vacation.dto.VacationResponseDto;
+import dtos.vacation.dto.VacationUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +38,7 @@ public class VacationController {
 
     @PutMapping("{id}")
     ResponseEntity<VacationResponseDto> updateTgInfo(@PathVariable("id") Long id,
-                                     @RequestBody VacationUpdateDto vacationUpdateDto) {
+                                                     @RequestBody VacationUpdateDto vacationUpdateDto) {
 
         return vacationService.update(id, vacationUpdateDto);
     }

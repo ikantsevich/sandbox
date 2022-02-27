@@ -1,3 +1,5 @@
 rootProject.name = 'sandbox'
 include 'telegram-bot'
 include 'hot-desk'
+include 'dtos'
+

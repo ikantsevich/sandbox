@@ -1,10 +1,10 @@
 package com.exadel.sandbox.seat.controller;
 
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorResponseDto;
-import com.exadel.sandbox.seat.dto.SeatCreateDto;
-import com.exadel.sandbox.seat.dto.SeatResponseDto;
-import com.exadel.sandbox.seat.dto.SeatUpdateDto;
 import com.exadel.sandbox.seat.service.SeatService;
+import dtos.officeFloor.dto.floorDto.FloorResponseDto;
+import dtos.seat.dto.SeatCreateDto;
+import dtos.seat.dto.SeatResponseDto;
+import dtos.seat.dto.SeatUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +45,7 @@ public class SeatController {
 
     @PutMapping("{id}")
     ResponseEntity<SeatResponseDto> updateSeat(@PathVariable("id") Long id,
-                               @RequestBody SeatUpdateDto seatUpdateDto) {
+                                               @RequestBody SeatUpdateDto seatUpdateDto) {
         return seatService.update(id, seatUpdateDto);
     }
 }
