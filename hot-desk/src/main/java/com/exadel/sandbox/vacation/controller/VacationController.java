@@ -39,7 +39,6 @@ public class VacationController {
     @PutMapping("{id}")
     ResponseEntity<VacationResponseDto> updateTgInfo(@PathVariable("id") Long id,
                                      @RequestBody VacationUpdateDto vacationUpdateDto) {
-
         return vacationService.update(id, vacationUpdateDto);
     }
 }
