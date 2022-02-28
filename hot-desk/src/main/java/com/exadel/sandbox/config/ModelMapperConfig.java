@@ -58,7 +58,7 @@ public class ModelMapperConfig {
 
 //        EMPLOYEE -> EMPLOYEE_RESPONSE_DTO
         mapper.typeMap(Employee.class, EmployeeResponseDto.class).addMappings(m -> {
-            m.map(employee -> employee.getTgInfo().getId(), EmployeeResponseDto::setTgInfoId);
+            m.map(Employee::getTgInfo, EmployeeResponseDto::setTgInfo);
             m.map(Employee::getRoles, EmployeeResponseDto::setRoles);
             m.map(Employee::getVacations, EmployeeResponseDto::setVacations);
         });

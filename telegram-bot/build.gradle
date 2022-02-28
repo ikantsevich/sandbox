@@ -1,4 +1,5 @@
 dependencies {
     implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
+    implementation project(':hot-desk')
 }

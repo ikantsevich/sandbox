@@ -80,4 +80,8 @@ subprojects {
     }
 
     test { useTestNG() }
+
+    jar {
+        enabled = true
+    }
 }

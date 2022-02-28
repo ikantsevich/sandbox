@@ -22,7 +22,7 @@ import java.util.List;
         "preferredSeat"})
 public class EmployeeResponseDto extends EmployeeBaseDto {
     private Long id;
-    private Long tgInfoId;
+    private TgInfoResponseDto tgInfo;
     private List<RoleResponseDto> roles;
     private List<VacationResponseDto> vacations;
     private LocalDateTime created;
