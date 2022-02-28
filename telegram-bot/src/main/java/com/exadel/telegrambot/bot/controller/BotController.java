@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static com.exadel.telegrambot.bot.utils.Urls.*;
+
 @RestController
-@RequestMapping("telegram")
+@RequestMapping(BASE_WEBHOOK)
 @RequiredArgsConstructor
 public class BotController {
 

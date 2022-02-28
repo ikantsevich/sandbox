@@ -7,8 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+
+import static com.exadel.telegrambot.bot.utils.Constants.*;
 
 @Component
 public class KeyboardServiceImpl implements KeyboardService {
@@ -103,5 +105,51 @@ public class KeyboardServiceImpl implements KeyboardService {
         }
 
         return keyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup createDate(LocalDate date) {
+        String dateStr = date.toString();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(Collections.singletonList(getButton(SKIP, date.getMonth().name() + " " + date.getYear())));
+        List<InlineKeyboardButton> weeks = new ArrayList<>();
+        for (String week : Arrays.asList("M", "T", "W", "R", "F", "S", "U"))
+            weeks.add(getButton(SKIP, week));
+        rowList.add(weeks);
+
+        int monthValue = date.getMonthValue();
+        date = date.minusDays(date.getDayOfMonth() - 1);
+        Map<String, String> days = new LinkedHashMap<>();
+        while (date.getMonthValue() == monthValue) {
+            for (int i = 1; i <= 7; i++) {
+                if (i == date.getDayOfWeek().getValue() && date.getMonthValue() == monthValue) {
+                    days.put(DATE + date, String.valueOf(date.getDayOfMonth()));
+                    date = date.plusDays(1);
+                } else
+                    days.put(SKIP + i, " ");
+            }
+            rowList.add(getRow(days));
+            days = new LinkedHashMap<>();
+        }
+        LinkedHashMap<String, String> floor = new LinkedHashMap<>();
+        floor.put(PREV + dateStr, PREV);
+        floor.put(BACK_TO_GET_OFFICE, BACK);
+        floor.put(NEXT + dateStr, NEXT);
+        rowList.add(getRow(floor));
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardButton getButton(String callBackData, String text) {
+        InlineKeyboardButton button = new InlineKeyboardButton(text);
+        button.setCallbackData(callBackData);
+        return button;
+    }
+
+    public List<InlineKeyboardButton> getRow(Map<String, String> buttons) {
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        for (String data : buttons.keySet())
+            row.add(getButton(data, buttons.get(data)));
+        return row;
     }
 }

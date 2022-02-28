@@ -6,7 +6,7 @@ import com.exadel.telegrambot.bot.feign.TelegramFeign;
 import com.exadel.telegrambot.bot.service.BotService;
 import com.exadel.telegrambot.bot.service.CallbackQueryHandler;
 import com.exadel.telegrambot.bot.service.MessageHandler;
-import com.exadel.telegrambot.bot.utils.TelegramUtils;
+import com.exadel.telegrambot.bot.utils.Urls;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -28,11 +28,11 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public GetMeDto getMe() {
-        return telegramFeign.getMe(TelegramUtils.TOKEN);
+        return telegramFeign.getMe(Urls.TOKEN);
     }
 
     @Override
     public InitialDto initializeBot(String url) {
-        return telegramFeign.initializeBot(TelegramUtils.TOKEN, url);
+        return telegramFeign.initializeBot(Urls.TOKEN, url);
     }
 }

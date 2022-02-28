@@ -7,13 +7,29 @@ import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
 import com.exadel.sandbox.vacation.entities.Vacation;
 import com.exadel.sandbox.vacation.repository.VacationRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
 public class VacationService extends BaseCrudService<Vacation, VacationResponseDto, VacationUpdateDto, VacationCreateDto, VacationRepository> {
+    @Autowired
+    private VacationRepository vacationRepository;
+
     public VacationService(ModelMapper mapper, VacationRepository repository) {
         super(mapper, repository);
+    }
+
+    @Override
+    public ResponseEntity<VacationResponseDto> create(VacationCreateDto vacationCreateDto) {
+//        Optional<Vacation> byEmployeeId = vacationRepository.findByEmployeeId(vacationCreateDto.getEmployeeId());
+//        if (byEmployeeId.isPresent()) {
+//            Vacation vacation = byEmployeeId.get();
+//            if (vacation.getEnd().isAfter(vacationCreateDto.getStart()))
+//                return null;
+//        }
+        return null;
     }
 }

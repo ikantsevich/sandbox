@@ -8,9 +8,6 @@ datasource:
   username: 'root'
   password: ''
 spring:
-  autoconfigure:
-    exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
-    exclude[1]: org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC
@@ -34,15 +31,18 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-  mail:
-    from: 'hotdesktcompany@gmail.com'
-    host: 'smtp.gmail.com'
-    port: 587
-    username: 'hotdesktcompany@gmail.com'
-    password: ''
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+mail:
+  from: 'hotdesktcompany@gmail.com'
+  host: 'smtp.gmail.com'
+  port: 587
+  username: 'hotdesktcompany@gmail.com'
+  password: ''
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+authorization:
+  secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
+  expiration: 3600
