@@ -50,6 +50,10 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
+      file: changes/change-booking-dates.yaml
+      relativeToChangelogFile: true
+
+  - include:
       file: changes/attachment.yaml
       relativeToChangelogFile: true
 

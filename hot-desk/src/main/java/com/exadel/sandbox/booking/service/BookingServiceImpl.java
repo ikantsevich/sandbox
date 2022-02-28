@@ -70,8 +70,9 @@ public class BookingServiceImpl implements BookingService {
         }
 
         List<Booking> bookings = bookingRepository.findByStartDateBetween(booking.getStartDate(), booking.getEndDate());
+        System.out.println("----------------------------------------");
         System.out.println(bookings);
-
+        System.out.println("----------------------------------------");
         return fullMap(bookingRepository.save(booking));
     }
 

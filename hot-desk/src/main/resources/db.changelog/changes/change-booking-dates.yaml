@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: add not null constraints
+      author: basiashvilin@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          schemaName:
+          tableName: booking
+      changes:
+        - modifyDataType:
+            columnName: bo_start_date
+            newDataType: date
+            tableName: booking
+        - modifyDataType:
+            columnName: bo_end_date
+            newDataType: date
+            tableName: booking
+  - changeSet:
+      id: update booking dates
+      author: basiashvilin@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          schemaName:
+          tableName: booking
+      changes:
+        - addNotNullConstraint:
+            columnDataType: date
+            columnName: bo_start_date
+            tableName: booking
+            validate: true
+        - addNotNullConstraint:
+            columnDataType: date
+            columnName: bo_end_date
+            tableName: booking
+            validate: true
