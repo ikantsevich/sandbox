@@ -51,4 +51,10 @@ public class EmployeeController {
                                 @PathVariable Long roleId) {
         return employeeService.addRole(id, roleId);
     }
+
+    @GetMapping("chat-id/{chatId}")
+    ResponseEntity<EmployeeResponseDto> getByChatId(@PathVariable String chatId) {
+        return employeeService.getByChatId(chatId);
+    }
+
 }

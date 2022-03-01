@@ -36,4 +36,10 @@ public class EmployeeService extends BaseCrudService<Employee, EmployeeResponseD
         EmployeeResponseDto employeeResponseDto = mapper.map(repository.save(employee), EmployeeResponseDto.class);
         return ResponseEntity.ok(employeeResponseDto);
     }
+
+    public ResponseEntity<EmployeeResponseDto> getByChatId(String chatId) {
+        Employee employee = repository.findEmployeeByTgInfoChatId(chatId).orElseThrow(() -> new EntityNotFoundException("Employee with id: " + chatId + " not found"));
+
+        return ResponseEntity.ok(mapper.map(employee, EmployeeResponseDto.class));
+    }
 }
