@@ -3,6 +3,7 @@ package com.exadel.sandbox.security.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.cloudfoundry.Token;
 
 @Data
 @AllArgsConstructor

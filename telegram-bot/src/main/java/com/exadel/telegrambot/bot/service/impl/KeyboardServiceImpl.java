@@ -103,7 +103,6 @@ public class KeyboardServiceImpl implements KeyboardService {
             for (int j = 0; j < buttons.get(i).size(); j++)
                 keyboardButtons.get(j).setRequestLocation(requestLocation.get(i).get(j));
         }
-
         return keyboardMarkup;
     }
 
