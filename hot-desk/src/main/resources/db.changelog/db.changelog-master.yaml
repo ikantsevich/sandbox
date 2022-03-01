@@ -88,3 +88,7 @@ databaseChangeLog:
   - include:
       file: changes/notification.yaml
       relativeToChangelogFile: true
+
+  - include:
+      file: changes/booking-dates.yaml
+      relativeToChangelogFile: true

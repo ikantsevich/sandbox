@@ -2,6 +2,7 @@ package com.exadel.sandbox.booking.entity;
 
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
+import com.exadel.sandbox.seat.entity.Seat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,25 +25,21 @@ public class Booking {
     @Column(name = "bo_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "em_id")
     private Employee employee;
 
-    @Column(name = "seat_id")
-    private Long seat;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seat_id")
+    private Seat seat;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "spot_id")
     private ParkingSpot parkingSpot;
 
-    @Column(name = "bo_status", nullable = false)
-    private String status;
-
-    @Column(name = "bo_start_date", nullable = false)
-    private LocalDateTime startDate;
-
-    @Column(name = "bo_end_date")
-    private LocalDateTime endDate;
+    @ElementCollection
+    @CollectionTable(name = "booking_dates", joinColumns = @JoinColumn(name = "bo_id"))
+    private List<BookingDates> dates;
 
     @CreatedDate
     @Column(name = "bo_created")
