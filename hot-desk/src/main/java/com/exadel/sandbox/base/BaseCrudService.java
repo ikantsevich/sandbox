@@ -5,6 +5,7 @@ import com.google.common.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Type;
@@ -23,7 +24,7 @@ public abstract class BaseCrudService<ENTITY, RESPONSE, UPDATE, CREATE, REPOSITO
     protected final REPOSITORY repository;
 
     public ResponseEntity<List<RESPONSE>> getList() {
-        return ResponseEntity.ok(mapper.map(repository.findAll(), responseListType));
+        return new ResponseEntity<>(mapper.map(repository.findAll(), responseListType), HttpStatus.CREATED);
     }
 
     public ResponseEntity<RESPONSE> getById(Long id) {

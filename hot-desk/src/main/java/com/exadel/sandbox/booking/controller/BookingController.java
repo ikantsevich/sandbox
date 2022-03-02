@@ -1,8 +1,8 @@
 package com.exadel.sandbox.booking.controller;
 
-import com.exadel.sandbox.booking.dto.booking.BookingCreateDto;
-import com.exadel.sandbox.booking.dto.booking.BookingResponseDto;
-import com.exadel.sandbox.booking.dto.booking.BookingUpdateDto;
+import com.exadel.sandbox.booking.dto.BookingCreateDto;
+import com.exadel.sandbox.booking.dto.BookingResponseDto;
+import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

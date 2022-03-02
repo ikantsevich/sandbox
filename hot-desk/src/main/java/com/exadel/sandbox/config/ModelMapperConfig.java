@@ -1,7 +1,7 @@
 package com.exadel.sandbox.config;
 
-import com.exadel.sandbox.booking.dto.booking.BookingCreateDto;
-import com.exadel.sandbox.booking.dto.booking.BookingResponseDto;
+import com.exadel.sandbox.booking.dto.BookingCreateDto;
+import com.exadel.sandbox.booking.dto.BookingResponseDto;
 import com.exadel.sandbox.booking.entity.Booking;
 import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
@@ -37,11 +37,9 @@ import com.exadel.sandbox.seat.repository.SeatRepository;
 import com.exadel.sandbox.vacation.dto.VacationCreateDto;
 import com.exadel.sandbox.vacation.dto.VacationResponseDto;
 import com.exadel.sandbox.vacation.entities.Vacation;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +48,6 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Configuration
 @RequiredArgsConstructor

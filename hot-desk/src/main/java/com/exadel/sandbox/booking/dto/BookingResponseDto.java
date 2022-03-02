@@ -1,4 +1,4 @@
-package com.exadel.sandbox.booking.dto.booking;
+package com.exadel.sandbox.booking.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

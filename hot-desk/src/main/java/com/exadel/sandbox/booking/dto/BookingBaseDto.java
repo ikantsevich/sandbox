@@ -1,4 +1,4 @@
-package com.exadel.sandbox.booking.dto.booking;
+package com.exadel.sandbox.booking.dto;
 
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import lombok.Data;

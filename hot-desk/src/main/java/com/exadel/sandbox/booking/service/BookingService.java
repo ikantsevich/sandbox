@@ -1,22 +1,24 @@
 package com.exadel.sandbox.booking.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
-import com.exadel.sandbox.booking.dto.booking.BookingCreateDto;
-import com.exadel.sandbox.booking.dto.booking.BookingResponseDto;
-import com.exadel.sandbox.booking.dto.booking.BookingUpdateDto;
+import com.exadel.sandbox.booking.dto.BookingCreateDto;
+import com.exadel.sandbox.booking.dto.BookingResponseDto;
+import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.entity.Booking;
-import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.booking.repository.BookingRepository;
+import com.exadel.sandbox.exception.DateOutOfBoundException;
 import com.exadel.sandbox.exception.DoubleBookingInADayException;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -33,46 +35,49 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
 
         checkNewBooking(booking);
 
-        repository.save(booking);
+        BookingResponseDto bookingResponseDto = mapper.map(repository.save(booking), BookingResponseDto.class);
 
-        return null;
+        return new ResponseEntity<>(bookingResponseDto, HttpStatus.CREATED);
     }
 
-//    For new booking if employee, seat or parking_spot has booked before throws DoubleBookingInADayException
+//    Throws exception if any of the objects already booked
     private void checkNewBooking(Booking booking){
-        checkEmployeeBookings(booking);
-        checkSeatBookings(booking);
-        checkParkingSpotBookings(booking);
+        List<Date> dates = booking.getDates().stream().map(date -> mapper.map(date, Date.class)).collect(Collectors.toList());
+        System.out.println(Arrays.toString(dates.toArray()));
+
+        checkTheDates(dates);
+
+        if (repository.checkIfSeatIsFree(booking.getSeat().getId(), dates) == 0)
+            throwException("Seat " + booking.getSeat().getId());
+
+        if (repository.checkIfEmployeeNotBooked(booking.getEmployee().getId(), dates) == 0)
+            throwException("Employee " + booking.getEmployee().getId());
+
+        if (booking.getParkingSpot() != null)
+            if (repository.checkIfParkingSpotIsFree(booking.getParkingSpot().getId(), dates) == 0)
+                throwException("Parking Spot " + booking.getParkingSpot().getId());
     }
 
-//    Why do we need this? Because employee should not do more than one booking in a day.
-    private void checkEmployeeBookings(Booking booking){
-        List<Booking> bookingsByEmployeeId = repository.findBookingsByEmployeeId(booking.getEmployee().getId());
-        checkBookedDatesContainsNewDates(booking, bookingsByEmployeeId);
-    }
+//    Checks if Date is in valid range
+    private void checkTheDates(List<Date> dates){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
-//    Seat cannot be booked more than one in a day.
-    private void checkSeatBookings(Booking booking) {
-        List<Booking> bookingsBySeatId = repository.findBookingsBySeatId(booking.getSeat().getId());
-        checkBookedDatesContainsNewDates(booking, bookingsBySeatId);
-    }
+        Date today = calendar.getTime();
 
-//    Parking spot cannot be booked more than one in a day.
-    private void checkParkingSpotBookings(Booking booking){
-        List<Booking> bookingsByParkingSpotId = repository.findBookingsByParkingSpotId(booking.getParkingSpot().getId());
-        checkBookedDatesContainsNewDates(booking, bookingsByParkingSpotId);
-    }
+        calendar.add(Calendar.MONTH, 3);
+        Date dateLimit = calendar.getTime();
 
-//    Checks if any booking is done for the entity before;
-    private void checkBookedDatesContainsNewDates(Booking newBooking, List<Booking> oldBookings){
-        List<List<Date>> allBookedDates = oldBookings.stream().map(booking1 -> booking1.getDates().stream().map(BookingDates::getDate).collect(Collectors.toList())).collect(Collectors.toList());
-
-        List<Date> newBookingDates = newBooking.getDates().stream().map(BookingDates::getDate).collect(Collectors.toList());
-        allBookedDates.forEach(bookedDates -> {
-            newBookingDates.forEach(newBookingDate -> {
-                if (bookedDates.contains(newBookingDate))
-                    throw new DoubleBookingInADayException("Double Booking in a day not allowed");
-            });
+        dates.forEach(date -> {
+            if (date.before(today) || date.after(dateLimit))
+                throw new DateOutOfBoundException("Date is not in the range");
         });
+    }
+
+//    Throws exception;
+    private void throwException(String object){
+        throw new DoubleBookingInADayException(object + " already booked on these days");
     }
 }
