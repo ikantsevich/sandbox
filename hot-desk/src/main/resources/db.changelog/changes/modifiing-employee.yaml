@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: add-columns
+      author: saidaminqambarov408@gmail.com
+      changes:
+        - addColumn:
+            tableName: employee
+            columns:
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(50)
+                  constraints:
+                    nullable: false

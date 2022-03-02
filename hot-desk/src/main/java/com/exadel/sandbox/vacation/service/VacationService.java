@@ -22,14 +22,5 @@ public class VacationService extends BaseCrudService<Vacation, VacationResponseD
         super(mapper, repository);
     }
 
-    @Override
-    public ResponseEntity<VacationResponseDto> create(VacationCreateDto vacationCreateDto) {
-//        Optional<Vacation> byEmployeeId = vacationRepository.findByEmployeeId(vacationCreateDto.getEmployeeId());
-//        if (byEmployeeId.isPresent()) {
-//            Vacation vacation = byEmployeeId.get();
-//            if (vacation.getEnd().isAfter(vacationCreateDto.getStart()))
-//                return null;
-//        }
-        return null;
-    }
+
 }
