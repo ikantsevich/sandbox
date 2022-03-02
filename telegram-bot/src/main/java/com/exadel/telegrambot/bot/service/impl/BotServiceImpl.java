@@ -20,8 +20,9 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public void updateHandler(Update update) {
-        if (update.hasMessage())
+        if (update.hasMessage()){
             messageHandler.handle(update.getMessage());
+        }
         else if (update.hasCallbackQuery())
             callbackQueryHandler.handle(update.getCallbackQuery());
     }
