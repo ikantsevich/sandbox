@@ -14,6 +14,21 @@ import static com.exadel.telegrambot.bot.utils.Constants.*;
 
 @Component
 public class KeyboardServiceImpl implements KeyboardService {
+
+    @Override
+    public ReplyKeyboardMarkup getReplyForMainMenu() {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        replyKeyboardMarkup.setKeyboard(keyboardRows);
+        KeyboardRow keyboardButtons = new KeyboardRow();
+        keyboardButtons.add("MY BOOKINGS");
+        keyboardButtons.add("BOOK WORKPLACE");
+        keyboardRows.add(keyboardButtons);
+        return replyKeyboardMarkup;
+    }
+
     @Override
     public InlineKeyboardMarkup getInlineKeyboard(List<List<String>> name, List<List<String>> callbackData) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -29,11 +44,16 @@ public class KeyboardServiceImpl implements KeyboardService {
             }
             inlineKeyboard.add(row);
         }
-
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setText("⏭️");
+        button.setCallbackData("Next");
+        row.add(button);
+        inlineKeyboard.add(row);
         inlineKeyboardMarkup.setKeyboard(inlineKeyboard);
-
         return inlineKeyboardMarkup;
     }
+
 
     @Override
     public InlineKeyboardMarkup getInlineKeyboard(List<List<String>> name, List<List<String>> callbackData, List<List<String>> urls) {

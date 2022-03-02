@@ -1,6 +1,6 @@
 server:
-  port: 8080
-  servlet.context-path: /sandbox
+  port: 80
+#  servlet.context-path:
 spring:
   autoconfigure:
     exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
