@@ -14,8 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public abstract class BaseCrudService<ENTITY, RESPONSE, UPDATE, CREATE, REPOSITORY extends JpaRepository<ENTITY, Long>> {
 
-
-
     private final Type responseType = new TypeToken<RESPONSE>(getClass()){}.getType();
     private final Type entityType = new TypeToken<ENTITY>(getClass()) {}.getType();
     private final Type responseListType = new TypeToken<List<RESPONSE>>(getClass()) {}.getType();
@@ -24,7 +22,7 @@ public abstract class BaseCrudService<ENTITY, RESPONSE, UPDATE, CREATE, REPOSITO
     protected final REPOSITORY repository;
 
     public ResponseEntity<List<RESPONSE>> getList() {
-        return new ResponseEntity<>(mapper.map(repository.findAll(), responseListType), HttpStatus.CREATED);
+        return ResponseEntity.ok(mapper.map(repository.findAll(), responseListType));
     }
 
     public ResponseEntity<RESPONSE> getById(Long id) {
@@ -43,7 +41,7 @@ public abstract class BaseCrudService<ENTITY, RESPONSE, UPDATE, CREATE, REPOSITO
     public ResponseEntity<RESPONSE> create(CREATE create) {
         ENTITY entity = mapper.map(create, entityType);
         RESPONSE response = mapper.map(repository.save(entity), responseType);
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     public void delete(Long id) {

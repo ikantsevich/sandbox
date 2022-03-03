@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +14,5 @@ import java.util.Date;
 public class BookingDates {
 
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 }

@@ -4,10 +4,13 @@ import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeCreateDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeUpdateDto;
 import com.exadel.sandbox.officeFloor.service.OfficeService;
+import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -40,5 +43,10 @@ public class OfficeController {
     @PutMapping("{id}")
     ResponseEntity<OfficeResponseDto> updateOffice(@PathVariable("id") Long id, @RequestBody OfficeUpdateDto officeUpdateDto) {
         return officeService.update(id, officeUpdateDto);
+    }
+
+    @PutMapping("{id}/free-seats")
+    ResponseEntity<List<SeatResponseDto>> getFreeSeats(@PathVariable Long id, @RequestBody List<LocalDate> dates) {
+        return officeService.getFreeSeats(id, dates);
     }
 }

@@ -45,7 +45,7 @@ import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,7 +118,7 @@ public class ModelMapperConfig {
 
 //        SEAT -> SEAT_RESPONSE_DTO
         mapper.typeMap(Seat.class, SeatResponseDto.class).addMappings(m -> {
-            m.map(seat -> seat.getFloor().getId(), SeatResponseDto::setFloorId);
+            m.map(seat -> seat.getFloor().getFloorNum(), SeatResponseDto::setFloorNum);
             m.map(Seat::getEquipments, SeatResponseDto::setEquipmentResponseDtos);
         });
 
@@ -262,13 +262,8 @@ public class ModelMapperConfig {
 
                 Booking booking = m.map(context.getSource(), Booking.class);
 
-                List<BookingDates> bookingDates = context.getSource().getDates().stream().map(date -> {
-                        BookingDates dates = new BookingDates();
-                        dates.setDate(date);
-                        return dates;
-                }).collect(Collectors.toList());
 
-                booking.setDates(bookingDates);
+                booking.setDates(context.getSource().getDates().stream().map(BookingDates::new).collect(Collectors.toList()));
 
                 booking.setEmployee(employeeRepository.findById(context.getSource().getEmployeeId())
                         .orElseThrow(() -> new EntityNotFoundException("Employee with id: " + context.getSource().getEmployeeId() + " not found")
@@ -293,17 +288,20 @@ public class ModelMapperConfig {
             m.map(booking -> booking.getSeat().getId(), BookingResponseDto::setSeatId);
             m.map(booking -> booking.getParkingSpot().getId(), BookingResponseDto::setParkingSpotId);
             m.map(Booking::getDates, BookingResponseDto::setDates);
+            m.map(booking -> booking.getSeat().getFloor().getFloorNum(), BookingResponseDto::setFloorNumber);
+            m.map(booking -> booking.getSeat().getFloor().getOffice(), BookingResponseDto::setOffice);
         });
 
-//        BOOKING_DATES -> DATE
-        Converter<BookingDates, Date> bookingDatesDateConverter = new Converter<>() {
+//        BOOKING_DATES -> LOCAL_DATE
+        Converter<BookingDates, LocalDate> bookingDatesDateConverter = new Converter<>() {
             private final ModelMapper m = new ModelMapper();
 
             @Override
-            public Date convert(MappingContext<BookingDates, Date> context) {
+            public LocalDate convert(MappingContext<BookingDates, LocalDate> context) {
                 return context.getSource().getDate();
             }
         };
+
 
 
 

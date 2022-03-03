@@ -44,4 +44,14 @@ public class BookingController {
         return bookingService.update(id, bookingUpdateDTO);
     }
 
+    @GetMapping("list/current")
+    ResponseEntity<List<BookingResponseDto>> getCurrentBookings() {
+        return bookingService.getCurrentBookings();
+    }
+
+    @GetMapping("offices/{officeId}/list")
+    ResponseEntity<List<BookingResponseDto>> getBookingsByOfficeId(@PathVariable Long officeId){
+        return bookingService.getBookingsByOfficeId(officeId);
+    }
+
 }

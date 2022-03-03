@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -57,4 +58,13 @@ public class EmployeeController {
         return employeeService.getByChatId(chatId);
     }
 
+    @GetMapping("{id}/booked-dates")
+    ResponseEntity<List<LocalDate>> getEmployeesBookedDates(@PathVariable Long id){
+        return employeeService.getEmployeeBookedDates(id);
+    }
+
+    @GetMapping("{id}/booked-dates/list")
+    ResponseEntity<List<LocalDate>> getEmployeesBookedDatesAll(@PathVariable Long id){
+        return employeeService.getEmployeeBookedDatesAll(id);
+    }
 }

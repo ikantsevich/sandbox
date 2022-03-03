@@ -1,6 +1,7 @@
 package com.exadel.sandbox.employee.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
+import com.exadel.sandbox.booking.service.BookingService;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
@@ -14,6 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @Transactional
@@ -41,5 +45,20 @@ public class EmployeeService extends BaseCrudService<Employee, EmployeeResponseD
         Employee employee = repository.findEmployeeByTgInfoChatId(chatId).orElseThrow(() -> new EntityNotFoundException("Employee with id: " + chatId + " not found"));
 
         return ResponseEntity.ok(mapper.map(employee, EmployeeResponseDto.class));
+    }
+
+    public ResponseEntity<List<LocalDate>> getEmployeeBookedDates(Long id) {
+        LocalDate today = LocalDate.now();
+        LocalDate finishLimit = today.plusMonths(BookingService.MAX_MONTH);
+
+        List<LocalDate> employeeBookedDates = repository.findEmployeeBookedDates(id, today, finishLimit);
+
+        return ResponseEntity.ok(employeeBookedDates);
+    }
+
+    public ResponseEntity<List<LocalDate>> getEmployeeBookedDatesAll(Long id) {
+        List<LocalDate> employeeBookedDates = repository.findEmployeeBookedDates(id);
+
+        return ResponseEntity.ok(employeeBookedDates);
     }
 }

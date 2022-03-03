@@ -1,5 +1,6 @@
 package com.exadel.sandbox.seat.entity;
 
+import com.exadel.sandbox.booking.entity.Booking;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.equipment.entity.Equipment;
 import com.exadel.sandbox.officeFloor.entities.Floor;
@@ -28,6 +29,9 @@ public class Seat {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "fl_id")
     private Floor floor;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "seat")
+    private List<Booking> bookings;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "seat")
     private List<Equipment> equipments;

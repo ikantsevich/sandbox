@@ -29,7 +29,7 @@ public class Booking {
     @JoinColumn(name = "em_id")
     private Employee employee;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id")
     private Seat seat;
 

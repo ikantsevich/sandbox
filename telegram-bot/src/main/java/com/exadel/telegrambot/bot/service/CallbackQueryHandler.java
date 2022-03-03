@@ -49,7 +49,6 @@ public class CallbackQueryHandler implements EmployeeState {
                 employeeService.updateState(OFFICE, employee);
                 break;
             case OFFICE:
-
         }
     }
 }

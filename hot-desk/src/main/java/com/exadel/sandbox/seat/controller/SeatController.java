@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -47,5 +48,10 @@ public class SeatController {
     ResponseEntity<SeatResponseDto> updateSeat(@PathVariable("id") Long id,
                                @RequestBody SeatUpdateDto seatUpdateDto) {
         return seatService.update(id, seatUpdateDto);
+    }
+
+    @GetMapping("{id}/booked-dates")
+    ResponseEntity<List<LocalDate>> getSeatsBookedDates(@PathVariable Long id){
+        return seatService.getSeatsBookedDatesById(id);
     }
 }

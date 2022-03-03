@@ -50,3 +50,17 @@ databaseChangeLog:
               - column:
                   name: fl_modified
                   type: datetime
+  - changeSet:
+      id: 1. Adding unique for floor_num and office id
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          indexExists:
+            indexName: floor_num_of_id_unique
+            tableName: floor
+      changes:
+        addUniqueConstraint:
+          columnNames: 'of_id, fl_num'
+          constraintName: floor_num_of_id_unique
+          tableName: floor

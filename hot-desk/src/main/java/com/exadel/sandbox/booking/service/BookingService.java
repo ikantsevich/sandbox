@@ -5,18 +5,18 @@ import com.exadel.sandbox.booking.dto.BookingCreateDto;
 import com.exadel.sandbox.booking.dto.BookingResponseDto;
 import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.entity.Booking;
+import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.exception.DateOutOfBoundException;
 import com.exadel.sandbox.exception.DoubleBookingInADayException;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +27,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
     public BookingService(ModelMapper mapper, BookingRepository repository) {
         super(mapper, repository);
     }
+    public final static int MAX_MONTH = 3;
 
 
     @Override
@@ -40,14 +41,14 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         return new ResponseEntity<>(bookingResponseDto, HttpStatus.CREATED);
     }
 
-//    Throws exception if any of the objects already booked
-    private void checkNewBooking(Booking booking){
-        List<Date> dates = booking.getDates().stream().map(date -> mapper.map(date, Date.class)).collect(Collectors.toList());
-        System.out.println(Arrays.toString(dates.toArray()));
+    //    Throws exception if any of the objects already booked
+    private void checkNewBooking(Booking booking) {
+        List<LocalDate> dates = booking.getDates().stream().map(BookingDates::getDate).collect(Collectors.toList());
 
         checkTheDates(dates);
 
-        if (repository.checkIfSeatIsFree(booking.getSeat().getId(), dates) == 0)
+        Integer integer = repository.checkIfSeatIsFree(booking.getSeat().getId(), dates);
+        if (integer == 0)
             throwException("Seat " + booking.getSeat().getId());
 
         if (repository.checkIfEmployeeNotBooked(booking.getEmployee().getId(), dates) == 0)
@@ -58,26 +59,35 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
                 throwException("Parking Spot " + booking.getParkingSpot().getId());
     }
 
-//    Checks if Date is in valid range
-    private void checkTheDates(List<Date> dates){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+    //    Checks if Date is in valid range
+    private void checkTheDates(List<LocalDate> dates) {
+        LocalDate today = LocalDate.now();
 
-        Date today = calendar.getTime();
-
-        calendar.add(Calendar.MONTH, 3);
-        Date dateLimit = calendar.getTime();
+        LocalDate dateLimit = today.plusMonths(MAX_MONTH);
 
         dates.forEach(date -> {
-            if (date.before(today) || date.after(dateLimit))
-                throw new DateOutOfBoundException("Date is not in the range");
+            if (!(date.isAfter(today) && date.isBefore(dateLimit)) && !(date.equals(today) || date.equals(dateLimit)))
+                throw new DateOutOfBoundException("Date " + date + " is not in the range ");
         });
     }
 
-//    Throws exception;
-    private void throwException(String object){
+    //    Throws exception;
+    private void throwException(String object) {
         throw new DoubleBookingInADayException(object + " already booked on these days");
+    }
+
+    public ResponseEntity<List<BookingResponseDto>> getCurrentBookings() {
+        LocalDate today = LocalDate.now();
+        LocalDate limitDates = today.plusMonths(MAX_MONTH);
+
+        List<Booking> bookingsInTimePeriod = repository.findBookingsInTimePeriod(today, limitDates);
+
+        return ResponseEntity.ok(mapper.map(bookingsInTimePeriod, new TypeToken<List<BookingResponseDto>>(){}.getType()));
+    }
+
+    public ResponseEntity<List<BookingResponseDto>> getBookingsByOfficeId(Long officeId) {
+        List<Booking> bookingsByOfficeId = repository.findBookingsByOfficeId(officeId);
+
+        return ResponseEntity.ok(mapper.map(bookingsByOfficeId, new TypeToken<List<BookingResponseDto>>(){}.getType()));
     }
 }

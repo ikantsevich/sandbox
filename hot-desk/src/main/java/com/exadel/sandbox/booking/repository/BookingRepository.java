@@ -4,6 +4,7 @@ import com.exadel.sandbox.booking.entity.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "                                from booking b\n" +
             "                                         inner join booking_dates bd on b.bo_id = bd.bo_id\n" +
             "                                where bd.date in (:dates))")
-    Integer checkIfSeatIsFree(Long seatId, List<Date> dates);
+    Integer checkIfSeatIsFree(Long seatId, List<LocalDate> dates);
 
 //    Returns 1 if parking spot is free those days else 0
     @Query(nativeQuery = true,
@@ -33,7 +34,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "                        from booking b\n" +
             "                                 inner join booking_dates bd on b.bo_id = bd.bo_id\n" +
             "                        where bd.date in (:dates) and b.spot_id is not null)")
-    Integer checkIfParkingSpotIsFree(Long parkingId, List<Date> dates);
+    Integer checkIfParkingSpotIsFree(Long parkingId, List<LocalDate> dates);
 
 //    returns 1 if Employee not booked on those days else 0
     @Query(nativeQuery = true,
@@ -45,5 +46,11 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "                      from booking b\n" +
             "                               inner join booking_dates bd on b.bo_id = bd.bo_id\n" +
             "                      where bd.date in (:dates))")
-    Integer checkIfEmployeeNotBooked(Long employeeId, List<Date> dates);
+    Integer checkIfEmployeeNotBooked(Long employeeId, List<LocalDate> dates);
+
+    @Query(value = "select b from Booking b join b.dates d where d.date >= :startDate and d.date <= :endDate")
+    List<Booking> findBookingsInTimePeriod(LocalDate startDate, LocalDate endDate);
+
+    @Query(value = "select b from Booking b join b.seat s join s.floor f join f.office o where o.id = :officeId")
+    List<Booking> findBookingsByOfficeId(Long officeId);
 }
