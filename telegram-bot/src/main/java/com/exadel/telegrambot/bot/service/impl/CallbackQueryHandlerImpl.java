@@ -3,13 +3,13 @@ package com.exadel.telegrambot.bot.service.impl;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
 import com.exadel.telegrambot.bot.service.CallbackQueryHandler;
 import com.exadel.telegrambot.bot.service.KeyboardService;
-import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,18 +60,33 @@ public class CallbackQueryHandlerImpl implements CallbackQueryHandler {
         if (data.startsWith("Country:")) {
             editMessageText.setText("Select City");
             editMessageReplyMarkup.setReplyMarkup(keyboardService.getInlineKeyboard(cities, citiesRollbackData));
-            telegramFeign.editMessageText(TelegramUtils.TOKEN, editMessageText);
-            telegramFeign.editMessageReplyMarkup(TelegramUtils.TOKEN, editMessageReplyMarkup);
+            telegramFeign.editMessageText(editMessageText);
+            telegramFeign.editMessageReplyMarkup(editMessageReplyMarkup);
         } else if (data.startsWith("City:")) {
             editMessageText.setText("Select Office");
             editMessageReplyMarkup.setReplyMarkup(keyboardService.getInlineKeyboard(offices, officesRollbackData));
-            telegramFeign.editMessageText(TelegramUtils.TOKEN, editMessageText);
-            telegramFeign.editMessageReplyMarkup(TelegramUtils.TOKEN, editMessageReplyMarkup);
-        } else {
+            telegramFeign.editMessageText(editMessageText);
+            telegramFeign.editMessageReplyMarkup(editMessageReplyMarkup);
+        } else if (data.startsWith("Office")){
             editMessageText.setText("Select BookingType");
             editMessageReplyMarkup.setReplyMarkup(keyboardService.getInlineKeyboard(bookingTypes, bookingTypes));
-            telegramFeign.editMessageText(TelegramUtils.TOKEN, editMessageText);
-            telegramFeign.editMessageReplyMarkup(TelegramUtils.TOKEN, editMessageReplyMarkup);
+            telegramFeign.editMessageText(editMessageText);
+            telegramFeign.editMessageReplyMarkup(editMessageReplyMarkup);
+        } else if (data.startsWith("One-Day")){
+            editMessageText.setText("Select day");
+            editMessageReplyMarkup.setReplyMarkup(keyboardService.createDate(LocalDate.now()));
+            telegramFeign.editMessageText(editMessageText);
+            telegramFeign.editMessageReplyMarkup(editMessageReplyMarkup);
+        } else if (data.startsWith("Continuous")){
+            editMessageText.setText("Select beginning day of your booking");
+            editMessageReplyMarkup.setReplyMarkup(keyboardService.createDate(LocalDate.now()));
+            telegramFeign.editMessageText(editMessageText);
+            telegramFeign.editMessageReplyMarkup(editMessageReplyMarkup);
+        } else if (data.startsWith("Recurring")){
+            editMessageText.setText("Select beginning day of your booking");
+            editMessageReplyMarkup.setReplyMarkup(keyboardService.createDate(LocalDate.now()));
+            telegramFeign.editMessageText(editMessageText);
+            telegramFeign.editMessageReplyMarkup(editMessageReplyMarkup);
         }
 
     }

@@ -3,6 +3,7 @@ package com.exadel.telegrambot.bot.service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -24,4 +25,6 @@ public interface KeyboardService {
                                          List<List<Boolean>> requestLocation);
 
     ReplyKeyboardMarkup getReplyForMainMenu();
+
+    InlineKeyboardMarkup createDate(LocalDate date);
 }

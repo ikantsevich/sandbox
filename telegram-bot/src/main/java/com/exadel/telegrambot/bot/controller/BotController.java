@@ -1,13 +1,14 @@
 package com.exadel.telegrambot.bot.controller;
 
-import com.exadel.telegrambot.bot.dto.GetMeDto;
-import com.exadel.telegrambot.bot.dto.InitialDto;
 import com.exadel.telegrambot.bot.service.BotService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static com.exadel.telegrambot.bot.utils.Urls.*;
+import static com.exadel.telegrambot.bot.utils.Urls.BASE_WEBHOOK;
 
 @RestController
 @RequestMapping(BASE_WEBHOOK)
@@ -21,13 +22,4 @@ public class BotController {
         botService.updateHandler(update);
     }
 
-    @GetMapping("getMe")
-    public GetMeDto getMe() {
-        return botService.getMe();
-    }
-
-    @PostMapping("initialize")
-    public InitialDto initialize(@RequestParam String url) {
-        return botService.initializeBot(url);
-    }
 }

@@ -3,12 +3,10 @@ package com.exadel.telegrambot.bot.service.impl;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
 import com.exadel.telegrambot.bot.service.KeyboardService;
 import com.exadel.telegrambot.bot.service.MessageHandler;
-import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,14 +49,14 @@ public class MessageHandlerImpl implements MessageHandler {
                 sendMessage.setChatId(chatId);
                 sendMessage.setText("Welcome, "+message.getFrom().getFirstName());
                 sendMessage.setReplyMarkup(keyboardService.getReplyForMainMenu());
-                telegramFeign.sendMessage(TelegramUtils.TOKEN, sendMessage);
+                telegramFeign.sendMessage(sendMessage);
                 break;
             case "BOOK WORKPLACE":
                 SendMessage sendMessage1 = new SendMessage();
                 sendMessage1.setChatId(chatId);
                 sendMessage1.setText("Select Country ");
                 sendMessage1.setReplyMarkup(keyboardService.getInlineKeyboard(countries,countriesRollbackData));
-                telegramFeign.sendMessage(TelegramUtils.TOKEN, sendMessage1);
+                telegramFeign.sendMessage(sendMessage1);
                 break;
         }
     }

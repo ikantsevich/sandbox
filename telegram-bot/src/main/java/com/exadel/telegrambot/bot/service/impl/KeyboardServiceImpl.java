@@ -26,6 +26,7 @@ public class KeyboardServiceImpl implements KeyboardService {
         keyboardButtons.add("MY BOOKINGS");
         keyboardButtons.add("BOOK WORKPLACE");
         keyboardRows.add(keyboardButtons);
+        replyKeyboardMarkup.setResizeKeyboard(true);
         return replyKeyboardMarkup;
     }
 
@@ -126,6 +127,7 @@ public class KeyboardServiceImpl implements KeyboardService {
         return keyboardMarkup;
     }
 
+    @Override
     public InlineKeyboardMarkup createDate(LocalDate date) {
         String dateStr = date.toString();
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
