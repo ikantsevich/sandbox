@@ -1,7 +1,6 @@
 package com.exadel.telegrambot.bot.service;
 
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
-import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -27,7 +26,7 @@ public class Executor {
     }
 
     public void sendMessage(SendMessage sendMessage) {
-        telegramFeign.sendMessage(TelegramUtils.TOKEN, sendMessage);
+        telegramFeign.sendMessage(sendMessage);
     }
 
     private void sendMessage(Long chatId, String text, ReplyKeyboardMarkup replyKeyboardMarkup, InlineKeyboardMarkup inlineKeyboardMarkup) {
@@ -39,7 +38,7 @@ public class Executor {
             sendMessage.setReplyMarkup(replyKeyboardMarkup);
         if (inlineKeyboardMarkup != null)
             sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-        telegramFeign.sendMessage(TelegramUtils.TOKEN, sendMessage);
+        telegramFeign.sendMessage(sendMessage);
     }
 
     public void updateMessage(Long chatId, Integer messageId,  String text){
@@ -53,6 +52,6 @@ public class Executor {
         editMessageText.setText(text);
         if (inlineKeyboardMarkup != null)
             editMessageText.setReplyMarkup(inlineKeyboardMarkup);
-        telegramFeign.editMessageText(TelegramUtils.TOKEN, editMessageText);
+        telegramFeign.editMessageText(editMessageText);
     }
 }

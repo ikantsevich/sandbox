@@ -1,6 +1,6 @@
 package com.exadel.sandbox.officeFloor.entities;
 
-import com.exadel.sandbox.address.entity.Address;
+import com.exadel.sandbox.attachment.repository.address.entity.Address;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import lombok.AllArgsConstructor;
 import lombok.Data;

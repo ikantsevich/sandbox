@@ -1,4 +1,4 @@
-package com.exadel.sandbox.address.dto;
+package com.exadel.sandbox.attachment.repository.address.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

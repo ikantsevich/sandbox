@@ -1,31 +1,38 @@
 package com.exadel.telegrambot.bot.controller;
 
-import com.exadel.telegrambot.bot.dto.GetMeDto;
+import com.exadel.telegrambot.bot.bot.Bot;
 import com.exadel.telegrambot.bot.dto.InitialDto;
 import com.exadel.telegrambot.bot.service.BotService;
+import com.exadel.telegrambot.bot.utils.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static com.exadel.telegrambot.bot.utils.TelegramUtils.BASE_WEBHOOK;
+
 @RestController
-@RequestMapping("telegram")
+@RequestMapping(BASE_WEBHOOK)
 @RequiredArgsConstructor
 public class BotController {
 
+    private final Bot bot;
     private final BotService botService;
 
     @PostMapping()
     public void getUpdate(@RequestBody Update update) {
-        botService.updateHandler(update);
+        if (update.hasCallbackQuery()) {
+            String data = update.getCallbackQuery().getData();
+            if (data.equals(Constant.SKIP)) return;
+            if (data.equals(Constant.DELETE)){
+                botService.deleteMessage(update);
+                return;
+            }
+            if (data.startsWith(Constant.PREV) || data.startsWith(Constant.NEXT)) {
+                botService.switchDate(update);
+                return;
+            }
+        }
+        bot.updateHandler(update);
     }
 
-    @GetMapping("getMe")
-    public GetMeDto getMe() {
-        return botService.getMe();
-    }
-
-    @PostMapping("initialize")
-    public InitialDto initialize(@RequestParam String url) {
-        return botService.initializeBot(url);
-    }
 }

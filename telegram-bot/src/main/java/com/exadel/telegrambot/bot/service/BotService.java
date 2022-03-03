@@ -1,34 +1,46 @@
 package com.exadel.telegrambot.bot.service;
 
-import com.exadel.telegrambot.bot.dto.GetMeDto;
-import com.exadel.telegrambot.bot.dto.InitialDto;
-import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
-import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.time.LocalDate;
+
+import static com.exadel.telegrambot.bot.utils.Constant.*;
 
 @RequiredArgsConstructor
 @Component
 public class BotService {
-    private final MessageHandler messageHandler;
-    private final CallbackQueryHandler callbackQueryHandler;
     private final TelegramFeign telegramFeign;
-    private final HotDeskFeign hotDeskFeign;
+    private final KeyboardService keyboardService;
 
-    public void updateHandler(Update update) {
-        if (update.hasMessage())
-            messageHandler.handle(update.getMessage());
-        else if (update.hasCallbackQuery())
-            callbackQueryHandler.handle(update.getCallbackQuery());
+    public void deleteMessage(Update update){
+        Message message = getMessage(update);
+        telegramFeign.deleteMessage(message.getChatId().toString(), message.getMessageId());
     }
 
-    public GetMeDto getMe() {
-        return telegramFeign.getMe(TelegramUtils.TOKEN);
+    public void switchDate(Update update){
+        final CallbackQuery callbackQuery = update.getCallbackQuery();
+        boolean isPrev = callbackQuery.getData().startsWith(PREV);
+        LocalDate date = LocalDate.parse(callbackQuery.getData().substring(isPrev ? PREV.length() : NEXT.length()));
+        getDate(update, isPrev ? date.minusMonths(1) : date.plusMonths(1));
     }
 
-    public InitialDto initializeBot(String url) {
-        return telegramFeign.initializeBot(TelegramUtils.TOKEN, url);
+    public void getDate(Update update, LocalDate date) {
+        Message message = getMessage(update);
+        EditMessageText editMessageText = new EditMessageText(GET_DATE_TEXT);
+        editMessageText.setReplyMarkup(keyboardService.createDate(date));
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    private Message getMessage(Update update){
+        return update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
     }
 }

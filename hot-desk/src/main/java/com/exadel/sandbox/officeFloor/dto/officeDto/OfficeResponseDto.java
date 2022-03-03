@@ -1,6 +1,6 @@
 package com.exadel.sandbox.officeFloor.dto.officeDto;
 
-import com.exadel.sandbox.address.dto.AddressResponseDto;
+import com.exadel.sandbox.attachment.repository.address.dto.AddressResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

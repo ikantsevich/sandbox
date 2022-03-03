@@ -1,6 +1,6 @@
 package com.exadel.telegrambot.bot.service;
 
-import com.exadel.sandbox.address.dto.AddressBaseDto;
+import com.exadel.sandbox.attachment.repository.address.dto.AddressBaseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.utils.KeyboardUtils;
 import feign.FeignException;
@@ -11,10 +11,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.exadel.telegrambot.bot.utils.Constant.*;
 
 @Component
 @RequiredArgsConstructor
@@ -160,5 +161,55 @@ public class KeyboardService implements KeyboardUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public InlineKeyboardMarkup createDate(LocalDate date) {
+        String dateStr = date.toString();
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(Collections.singletonList(getButton(SKIP, date.getMonth().name() + " " + date.getYear())));
+        List<InlineKeyboardButton> weeks = new ArrayList<>();
+        for (String week : Arrays.asList("M", "T", "W", "R", "F", "S", "U"))
+            weeks.add(getButton(SKIP, week));
+        rowList.add(weeks);
+
+        int monthValue = date.getMonthValue();
+        date = date.minusDays(date.getDayOfMonth() - 1);
+        Map<String, String> days = new LinkedHashMap<>();
+        while (date.getMonthValue() == monthValue) {
+            for (int i = 1; i <= 7; i++) {
+                if (i == date.getDayOfWeek().getValue() && date.getMonthValue() == monthValue) {
+                    days.put(DATE + date, String.valueOf(date.getDayOfMonth()));
+                    date = date.plusDays(1);
+                } else
+                    days.put(SKIP + i, " ");
+            }
+            rowList.add(getRow(days));
+            days = new LinkedHashMap<>();
+        }
+        LinkedHashMap<String, String> floor = new LinkedHashMap<>();
+        floor.put(PREV + dateStr, PREV);
+        floor.put(BACK_TO_GET_TO_OFFICE, BACK);
+        floor.put(NEXT + dateStr, NEXT);
+        rowList.add(getRow(floor));
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
+    protected InlineKeyboardButton getButton(String callBackData, String text) {
+        InlineKeyboardButton button = new InlineKeyboardButton(text);
+        button.setCallbackData(callBackData);
+        return button;
+    }
+
+    protected List<InlineKeyboardButton> getRow(InlineKeyboardButton... buttons) {
+        return new ArrayList<>(Arrays.asList(buttons));
+    }
+
+    protected List<InlineKeyboardButton> getRow(Map<String, String> buttons) {
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        for (String data : buttons.keySet())
+            row.add(getButton(data, buttons.get(data)));
+        return row;
     }
 }
