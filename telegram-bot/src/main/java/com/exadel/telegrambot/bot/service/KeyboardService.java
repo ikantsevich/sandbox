@@ -2,7 +2,6 @@ package com.exadel.telegrambot.bot.service;
 
 import com.exadel.sandbox.attachment.repository.address.dto.AddressBaseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
-import com.exadel.telegrambot.bot.utils.KeyboardUtils;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ import static com.exadel.telegrambot.bot.utils.Constant.*;
 
 @Component
 @RequiredArgsConstructor
-public class KeyboardService implements KeyboardUtils {
+public class KeyboardService {
     private final HotDeskFeign hotDeskFeign;
 
     private InlineKeyboardMarkup getInlineKeyboard(List<List<String>> name, List<List<String>> callbackData) {

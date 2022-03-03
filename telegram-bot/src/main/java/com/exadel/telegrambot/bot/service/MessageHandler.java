@@ -3,16 +3,17 @@ package com.exadel.telegrambot.bot.service;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.utils.EmployeeState;
-import com.exadel.telegrambot.bot.utils.KeyboardUtils;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import static com.exadel.telegrambot.bot.utils.Constant.*;
+
 @Component
 @RequiredArgsConstructor
-public class MessageHandler implements KeyboardUtils, EmployeeState {
+public class MessageHandler implements EmployeeState {
     private final ModelMapper mapper;
     private final HotDeskFeign hotDeskFeign;
     private final Executor executor;

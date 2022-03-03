@@ -1,6 +1,5 @@
 package com.exadel.telegrambot.bot.feign;
 
-import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,83 +12,86 @@ import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.*;
 import org.telegram.telegrambots.meta.api.objects.polls.Poll;
 
-@FeignClient(name = "TelegramFeign", url = TelegramUtils.FULL_REQUEST)
+import static com.exadel.telegrambot.bot.utils.TelegramUtils.FULL_REQUEST;
+
+@FeignClient(url = FULL_REQUEST, name = "TelegramFeign")
 public interface TelegramFeign {
-    @PostMapping("/sendMessage")
+
+    @PostMapping("sendMessage")
     void sendMessage(@RequestBody SendMessage sendMessage);
 
-    @PostMapping("/sendPhoto")
+    @PostMapping("sendPhoto")
     void sendPhoto(@RequestBody SendPhoto sendPhoto);
 
-    @PostMapping("/sendAudio")
+    @PostMapping("sendAudio")
     void sendAudio(@RequestBody SendAudio sendAudio);
 
-    @PostMapping("/sendDocument")
+    @PostMapping("sendDocument")
     void sendDocument(@RequestBody SendDocument sendDocument);
 
-    @PostMapping("/sendVideo")
+    @PostMapping("sendVideo")
     void sendVideo(@RequestBody SendVideo sendVideo);
 
-    @PostMapping("/sendAnimation")
+    @PostMapping("sendAnimation")
     void sendAnimation(@RequestBody SendAnimation sendAnimation);
 
-    @PostMapping("/sendVoice")
+    @PostMapping("sendVoice")
     void sendVoice(@RequestBody SendVoice sendVoice);
 
-    @PostMapping("/sendVideoNote")
+    @PostMapping("sendVideoNote")
     void sendVideoNote(@RequestBody SendVideoNote sendVideoNote);
 
-    @PostMapping("/sendMediaGroup")
+    @PostMapping("sendMediaGroup")
     void sendMediaGroup(@RequestBody SendMediaGroup sendMediaGroup);
 
-    @PostMapping("/sendLocation")
+    @PostMapping("sendLocation")
     void sendLocation(@RequestBody SendLocation sendLocation);
 
-    @PostMapping("/editMessageLiveLocation")
+    @PostMapping("editMessageLiveLocation")
     void editMessageLiveLocation(@RequestBody EditMessageLiveLocation editMessageLiveLocation);
 
-    @PostMapping("/stopMessageLiveLocation")
+    @PostMapping("stopMessageLiveLocation")
     void stopMessageLiveLocation(@RequestBody StopMessageLiveLocation stopMessageLiveLocation);
 
-    @PostMapping("/sendVenue")
+    @PostMapping("sendVenue")
     void sendVenue(@RequestBody SendVenue sendVenue);
 
-    @PostMapping("/sendContact")
+    @PostMapping("sendContact")
     void sendContact(@RequestBody SendContact sendContact);
 
     //    Can't find sendPoll so need to look another time
-    @PostMapping("/sendPoll")
+    @PostMapping("sendPoll")
     void sendPoll(@RequestBody Poll poll);
 
-    @PostMapping("/sendDice")
+    @PostMapping("sendDice")
     void sendDice(@RequestBody SendDice sendDice);
 
-    @PostMapping("/sendChatAction")
+    @PostMapping("sendChatAction")
     void sendChatAction(@RequestBody SendChatAction sendChatAction);
 
-    @PostMapping("/getUserProfilePhotos")
+    @PostMapping("getUserProfilePhotos")
     void getUserProfilePhotos(@RequestBody GetUserProfilePhotos getUserProfilePhotos);
 
-    @PostMapping("/getFile")
+    @PostMapping("getFile")
     void getFile(@RequestBody GetFile getFile);
 
-    @PostMapping("/editMessageText")
+    @PostMapping("editMessageText")
     void editMessageText(@RequestBody EditMessageText editMessageText);
 
-    @PostMapping("/editMessageCaption")
+    @PostMapping("editMessageCaption")
     void editMessageCaption(@RequestBody EditMessageCaption editMessageCaption);
 
-    @PostMapping("/editMessageMedia")
+    @PostMapping("editMessageMedia")
     void editMessageMedia(@RequestBody EditMessageMedia editMessageMedia);
 
-    @PostMapping("/editMessageReplyMarkup")
+    @PostMapping("editMessageReplyMarkup")
     void editMessageReplyMarkup(@RequestBody EditMessageReplyMarkup editMessageReplyMarkup);
 
-    @PostMapping("/stopPoll")
+    @PostMapping("stopPoll")
     void stopPoll(@RequestBody Poll poll);
 
     //                        Delete message
-    @DeleteMapping("/deleteMessage")
+    @DeleteMapping("deleteMessage")
     void deleteMessage(@RequestParam(name = "chat_id") String chatId,
                        @RequestParam(name = "message_id") Integer messageId);
 

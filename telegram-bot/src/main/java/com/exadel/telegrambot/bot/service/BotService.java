@@ -1,9 +1,12 @@
 package com.exadel.telegrambot.bot.service;
 
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -18,6 +21,43 @@ import static com.exadel.telegrambot.bot.utils.Constant.*;
 public class BotService {
     private final TelegramFeign telegramFeign;
     private final KeyboardService keyboardService;
+    private final HotDeskFeign hotDeskFeign;
+    private final Executor executor;
+
+    public void checkEmployee(Update update){
+        Message message = getMessage(update);
+        try {
+           hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
+        } catch (FeignException e) {
+            e.printStackTrace();
+            executor.sendMessage(message.getChatId(), "You are not our employee");
+        }
+    }
+
+    public void getCountry(Update update){
+        Message message = getMessage(update);
+        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), CHOOSE_COUNTRY);
+        sendMessage.setReplyMarkup(keyboardService.countryMenu());
+        telegramFeign.sendMessage(sendMessage);
+    }
+
+    public void getMainMenuSend(Update update){
+        Message message = getMessage(update);
+        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), MENU_TEXT);
+        sendMessage.setReplyMarkup(keyboardService.homeMenu());
+        telegramFeign.sendMessage(sendMessage);
+    }
+
+    public String getAndCheck(Update update){
+        Message message = getMessage(update);
+        EmployeeResponseDto employeeByChatId = hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
+        return employeeByChatId.getTgInfo().getChatState();
+    }
+
+    public void hello(Update update){
+        Message message = getMessage(update);
+        telegramFeign.sendMessage(new SendMessage(message.getChatId().toString(), "Hello"));
+    }
 
     public void deleteMessage(Update update){
         Message message = getMessage(update);

@@ -19,7 +19,7 @@ public class TelegramBotApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(TelegramBotApplication.class, args);
-        System.out.println(restTemplate().postForObject(FULL_REQUEST + SET_WEBHOOK, new SetWebhook(GLOBAL + BASE_WEBHOOK), InitialDto.class));
+        System.out.println(restTemplate().postForObject(FULL_REQUEST + SET_WEBHOOK, new SetWebhook(GLOBAL + "sandbox/" + BASE_WEBHOOK), InitialDto.class));
     }
 
     @Bean

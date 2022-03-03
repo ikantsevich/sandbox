@@ -9,4 +9,10 @@ public interface Constant {
     String BACK = "⬅️ Back";
     String DATE="DATE";
     String GET_DATE_TEXT="Please,choose a date";
+    String MENU_TEXT = "Welcome...";
+
+    String CHOOSE_COUNTRY = "Choose country";
+
+    String NEW_BOOKING = "New booking";
+    String MY_BOOKINGS = "My bookings";
 }

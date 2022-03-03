@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("employee")
+@RequestMapping("/employee")
 @RequiredArgsConstructor
 public class EmployeeController {
 
@@ -52,7 +52,7 @@ public class EmployeeController {
         return employeeService.addRole(id, roleId);
     }
 
-    @GetMapping("chat-id/{chatId}")
+    @GetMapping("/chat-id/{chatId}")
     ResponseEntity<EmployeeResponseDto> getByChatId(@PathVariable String chatId) {
         return employeeService.getByChatId(chatId);
     }
