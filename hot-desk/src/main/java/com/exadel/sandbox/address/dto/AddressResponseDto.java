@@ -1,4 +1,4 @@
-package com.exadel.sandbox.attachment.repository.address.dto;
+package com.exadel.sandbox.address.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;

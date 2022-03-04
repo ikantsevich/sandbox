@@ -1,9 +1,9 @@
-package com.exadel.sandbox.attachment.repository.address.controller;
+package com.exadel.sandbox.address.controller;
 
-import com.exadel.sandbox.attachment.repository.address.dto.AddressCreateDto;
-import com.exadel.sandbox.attachment.repository.address.dto.AddressResponseDto;
-import com.exadel.sandbox.attachment.repository.address.dto.AddressUpdateDto;
-import com.exadel.sandbox.attachment.repository.address.service.AddressService;
+import com.exadel.sandbox.address.service.AddressService;
+import com.exadel.sandbox.address.dto.AddressCreateDto;
+import com.exadel.sandbox.address.dto.AddressResponseDto;
+import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

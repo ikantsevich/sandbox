@@ -3,9 +3,8 @@ package com.exadel.telegrambot.bot.service;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
+import com.exadel.telegrambot.bot.utils.Constant;
 import feign.FeignException;
-import liquibase.pro.packaged.E;
-import liquibase.pro.packaged.U;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,12 +15,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 
-import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @RequiredArgsConstructor
 @Component
-public class BotService {
+public class BotService extends Constant {
     private final TelegramFeign telegramFeign;
     private final KeyboardService keyboardService;
     private final HotDeskFeign hotDeskFeign;

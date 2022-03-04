@@ -1,4 +1,4 @@
-package com.exadel.sandbox.attachment.repository.address.entity;
+package com.exadel.sandbox.address.entity;
 
 import com.exadel.sandbox.officeFloor.entities.Office;
 import lombok.AllArgsConstructor;

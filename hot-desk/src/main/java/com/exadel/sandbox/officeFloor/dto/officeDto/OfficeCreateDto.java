@@ -1,6 +1,6 @@
 package com.exadel.sandbox.officeFloor.dto.officeDto;
 
-import com.exadel.sandbox.attachment.repository.address.dto.AddressCreateDto;
+import com.exadel.sandbox.address.dto.AddressCreateDto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;

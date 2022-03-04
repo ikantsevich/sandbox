@@ -15,7 +15,7 @@ import static com.exadel.telegrambot.bot.utils.TelegramUtils.BASE_WEBHOOK;
 @RestController
 @RequestMapping(BASE_WEBHOOK)
 @RequiredArgsConstructor
-public class BotController {
+public class BotController extends Constant{
 
     private final Bot bot;
     private final BotService botService;
@@ -24,12 +24,12 @@ public class BotController {
     public void getUpdate(@RequestBody Update update) {
         if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
-            if (data.equals(Constant.SKIP)) return;
-            if (data.equals(Constant.DELETE)){
+            if (data.equals(SKIP)) return;
+            if (data.equals(DELETE)){
                 botService.deleteMessage(update);
                 return;
             }
-            if (data.startsWith(Constant.PREV) || data.startsWith(Constant.NEXT)) {
+            if (data.startsWith(PREV) || data.startsWith(NEXT)) {
                 botService.switchDate(update);
                 return;
             }

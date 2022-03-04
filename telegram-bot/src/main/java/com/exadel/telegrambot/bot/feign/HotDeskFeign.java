@@ -1,6 +1,6 @@
 package com.exadel.telegrambot.bot.feign;
 
-import com.exadel.sandbox.attachment.repository.address.dto.AddressResponseDto;
+import com.exadel.sandbox.address.dto.AddressResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
