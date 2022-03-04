@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.TelegramUtils.BASE_WEBHOOK;
 
 @RestController
 @RequestMapping(BASE_WEBHOOK)
 @RequiredArgsConstructor
-public class BotController extends Constant{
+public class BotController{
 
     private final Bot bot;
     private final BotService botService;

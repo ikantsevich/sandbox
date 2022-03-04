@@ -15,11 +15,12 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @Component
 @RequiredArgsConstructor
-public class KeyboardService extends Constant{
+public class KeyboardService{
     private final HotDeskFeign hotDeskFeign;
 
     private InlineKeyboardMarkup getInlineKeyboard(String callback, List<List<String>> name, List<List<String>> callbackData) {

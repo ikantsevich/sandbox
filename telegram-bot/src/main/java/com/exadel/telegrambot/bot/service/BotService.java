@@ -15,11 +15,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 
+import static com.exadel.telegrambot.bot.utils.Constant.*;
+import static com.exadel.telegrambot.bot.utils.Constant.CHOOSE_BOOKING_TYPE;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @RequiredArgsConstructor
 @Component
-public class BotService extends Constant {
+public class BotService {
     private final TelegramFeign telegramFeign;
     private final KeyboardService keyboardService;
     private final HotDeskFeign hotDeskFeign;
