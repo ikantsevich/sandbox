@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: booking dates table init
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            schemaName:
+            tableName: booking_dates
+      changes:
+        createTable:
+          tableName: booking_dates
+          columns:
+            - column:
+                name: bo_id
+                type: bigint
+                constraints:
+                  nullable: false
+                  foreignKeyName: bo_date_booking_id
+                  references: booking(bo_id)
+            - column:
+                name: date
+                type: date
+                constraints:
+                  nullable: false

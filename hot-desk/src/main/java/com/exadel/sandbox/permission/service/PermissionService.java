@@ -1,21 +1,14 @@
 package com.exadel.sandbox.permission.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
-import com.exadel.sandbox.exception.EntityNotFoundException;
 import com.exadel.sandbox.permission.dto.PermissionCreateDto;
 import com.exadel.sandbox.permission.dto.PermissionResponseDto;
 import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.entity.Permission;
 import com.exadel.sandbox.permission.repository.PermissionRepository;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @Transactional

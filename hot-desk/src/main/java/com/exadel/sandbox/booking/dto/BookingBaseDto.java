@@ -1,10 +1,13 @@
 package com.exadel.sandbox.booking.dto;
 
-import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 public class BookingBaseDto {
-    private String status;
-    private EmployeeResponseDto employeeResponseDto;
+    @NotNull(message = "cannot be null")
+    private Long employeeId;
+    @NotNull(message = "cannot be null")
+    private Long seatId;
 }

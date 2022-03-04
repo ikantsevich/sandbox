@@ -6,11 +6,13 @@ import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotUpdateDto;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import com.exadel.sandbox.parking_spot.repository.ParkingSpotRepository;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional
@@ -25,5 +27,10 @@ public class ParkingSpotService extends BaseCrudService<ParkingSpot, ParkingSpot
     public ResponseEntity<ParkingSpotResponseDto> findByOfficeId(Long id) {
         ParkingSpot parkingSpot = parkingSpotRepository.findParkingSpotByOfficeId(id);
         return ResponseEntity.ok(mapper.map(parkingSpot, ParkingSpotResponseDto.class));
+    }
+
+    public ResponseEntity<List<LocalDate>> getParkingSpotBookedDates(Long id) {
+        List<LocalDate> bookedDatesBySpotId = repository.findBookedDatesBySpotId(id);
+        return ResponseEntity.ok(bookedDatesBySpotId);
     }
 }

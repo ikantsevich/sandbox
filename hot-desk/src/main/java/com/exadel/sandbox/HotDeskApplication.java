@@ -1,6 +1,5 @@
 package com.exadel.sandbox;
 
-import com.exadel.sandbox.config.ModelMapperConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

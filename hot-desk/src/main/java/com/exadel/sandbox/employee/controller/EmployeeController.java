@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -29,7 +31,7 @@ public class EmployeeController {
     }
 
     @PostMapping()
-    ResponseEntity<EmployeeResponseDto> createEmployee(@RequestBody EmployeeCreateDto employeeCreateDto) {
+    ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeCreateDto employeeCreateDto) {
 
         return employeeService.create(employeeCreateDto);
     }
@@ -41,14 +43,14 @@ public class EmployeeController {
 
     @PutMapping("{id}")
     ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable("id") Long id,
-                                       @RequestBody EmployeeUpdateDto employeeUpdateDto) {
+                                                       @Valid @RequestBody EmployeeUpdateDto employeeUpdateDto) {
 
         return employeeService.update(id, employeeUpdateDto);
     }
 
     @PutMapping("{id}/addRole/{roleId}")
     ResponseEntity<EmployeeResponseDto> addRole(@PathVariable Long id,
-                                @PathVariable Long roleId) {
+                                                @PathVariable Long roleId) {
         return employeeService.addRole(id, roleId);
     }
 
@@ -57,4 +59,13 @@ public class EmployeeController {
         return employeeService.getByChatId(chatId);
     }
 
+    @GetMapping("{id}/booked-dates")
+    ResponseEntity<List<LocalDate>> getEmployeesBookedDates(@PathVariable Long id) {
+        return employeeService.getEmployeeBookedDates(id);
+    }
+
+    @GetMapping("{id}/booked-dates/list")
+    ResponseEntity<List<LocalDate>> getEmployeesBookedDatesAll(@PathVariable Long id) {
+        return employeeService.getEmployeeBookedDatesAll(id);
+    }
 }

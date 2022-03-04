@@ -3,7 +3,7 @@ package com.exadel.sandbox.attachment.service;
 import com.exadel.sandbox.attachment.dto.AttachmentResponseDto;
 import com.exadel.sandbox.attachment.entity.Attachment;
 import com.exadel.sandbox.attachment.repository.AttachmentRepository;
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

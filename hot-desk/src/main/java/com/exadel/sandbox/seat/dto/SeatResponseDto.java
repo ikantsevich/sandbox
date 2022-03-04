@@ -1,8 +1,6 @@
 package com.exadel.sandbox.seat.dto;
 
 import com.exadel.sandbox.equipment.dto.EquipmentResponseDto;
-import com.exadel.sandbox.officeFloor.dto.floorDto.FloorResponseDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +17,7 @@ import java.util.List;
 @JsonPropertyOrder({"id"})
 public class SeatResponseDto extends SeatBaseDto {
     private Long id;
-    private Long floorId;
+    private Integer floorNum;
     private List<EquipmentResponseDto> equipmentResponseDtos;
     private LocalDateTime created;
     private LocalDateTime modified;
