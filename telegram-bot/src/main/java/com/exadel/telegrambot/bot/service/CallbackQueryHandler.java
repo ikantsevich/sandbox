@@ -18,38 +18,38 @@ public class CallbackQueryHandler implements EmployeeState {
     private final KeyboardService keyboardService;
     private final EmployeeService employeeService;
 
-    public void handle(CallbackQuery callbackQuery) {
-        EmployeeResponseDto employee = null;
-        try {
-            employee = hotDeskFeign.getEmployeeByChatId(callbackQuery.getMessage().getChatId().toString());
-        } catch (FeignException e) {
-            e.printStackTrace();
-            System.out.println(callbackQuery.getMessage().getChatId());
-            executor.sendMessage(callbackQuery.getMessage().getChatId(), "You are not our employee");
-            return;
-        }
-
-        switch (employee.getTgInfo().getChatState()) {
-            case COUNTRIES:
-                executor.updateMessage(
-                        callbackQuery.getMessage().getChatId(),
-                        callbackQuery.getMessage().getMessageId(),
-                        "choose city",
-                        keyboardService.cityMenu(callbackQuery.getData()));
-
-                employeeService.updateState(CITIES, employee);
-                break;
-            case CITIES:
-                executor.updateMessage(
-                        callbackQuery.getMessage().getChatId(),
-                        callbackQuery.getMessage().getMessageId(),
-                        "choose office",
-                        keyboardService.officeMenu(callbackQuery.getData())
-                );
-                employeeService.updateState(OFFICE, employee);
-                break;
-            case OFFICE:
-
-        }
-    }
+//    public void handle(CallbackQuery callbackQuery) {
+//        EmployeeResponseDto employee = null;
+//        try {
+//            employee = hotDeskFeign.getEmployeeByChatId(callbackQuery.getMessage().getChatId().toString());
+//        } catch (FeignException e) {
+//            e.printStackTrace();
+//            System.out.println(callbackQuery.getMessage().getChatId());
+//            executor.sendMessage(callbackQuery.getMessage().getChatId(), "You are not our employee");
+//            return;
+//        }
+//
+//        switch (employee.getTgInfo().getChatState()) {
+//            case COUNTRIES:
+//                executor.updateMessage(
+//                        callbackQuery.getMessage().getChatId(),
+//                        callbackQuery.getMessage().getMessageId(),
+//                        "choose city",
+//                        keyboardService.cityMenu(callbackQuery.getData()));
+//
+//                employeeService.updateState(CITIES, employee);
+//                break;
+//            case CITIES:
+//                executor.updateMessage(
+//                        callbackQuery.getMessage().getChatId(),
+//                        callbackQuery.getMessage().getMessageId(),
+//                        "choose office",
+//                        keyboardService.officeMenu(callbackQuery.getData())
+//                );
+//                employeeService.updateState(OFFICE, employee);
+//                break;
+//            case OFFICE:
+//
+//        }
+//    }
 }

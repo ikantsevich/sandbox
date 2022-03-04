@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDate;
+
 import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
@@ -30,7 +32,16 @@ public class Bot {
 
             }
         } else if (update.hasCallbackQuery()){
-
+            String data = update.getCallbackQuery().getData();
+            if (data.startsWith(COUNTRIES)){
+                state = CITIES;
+            } else if (data.startsWith(CITIES)){
+                state = OFFICE;
+            } else if (data.startsWith(OFFICE)){
+                state = CHOOSE_BOOKING_TYPE;
+            } else if (data.endsWith(CHOOSE_BOOKING_TYPE)){
+                state = GET_DATE;
+            }
         }
 
         if (state.equals(SKIP_ACTION))
@@ -39,6 +50,10 @@ public class Bot {
         switch (state){
             case MAIN_MENU_SEND -> botService.getMainMenuSend(update);
             case COUNTRIES -> botService.getCountry(update);
+            case CITIES -> botService.getCity(update);
+            case OFFICE -> botService.getOffice(update);
+            case CHOOSE_BOOKING_TYPE -> botService.getDateType(update);
+            case GET_DATE -> botService.getDate(update, LocalDate.now());
         }
     }
 }

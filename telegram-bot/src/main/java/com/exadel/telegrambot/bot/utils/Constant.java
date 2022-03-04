@@ -1,5 +1,6 @@
 package com.exadel.telegrambot.bot.utils;
 
+
 public interface Constant {
     String SKIP = "Skip";
     String DELETE = "DELETE";
@@ -12,6 +13,13 @@ public interface Constant {
     String MENU_TEXT = "Welcome...";
 
     String CHOOSE_COUNTRY = "Choose country";
+    String CHOOSE_CITY = "Choose city";
+    String CHOOSE_OFFICE = "Choose office";
+    String CHOOSE_BOOKING_TYPE = "Choose booking type";
+
+    String ONE_DAY = "One Day";
+    String CONTINUOUS = "Continuous";
+    String RECURRING = "Recurring";
 
     String NEW_BOOKING = "New booking";
     String MY_BOOKINGS = "My bookings";

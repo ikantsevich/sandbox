@@ -3,6 +3,7 @@ package com.exadel.telegrambot.bot.service;
 import com.exadel.sandbox.attachment.repository.address.dto.AddressBaseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import feign.FeignException;
+import liquibase.pro.packaged.S;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -15,13 +16,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.exadel.telegrambot.bot.utils.Constant.*;
+import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @Component
 @RequiredArgsConstructor
 public class KeyboardService {
     private final HotDeskFeign hotDeskFeign;
 
-    private InlineKeyboardMarkup getInlineKeyboard(List<List<String>> name, List<List<String>> callbackData) {
+    private InlineKeyboardMarkup getInlineKeyboard(String callback, List<List<String>> name, List<List<String>> callbackData) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> inlineKeyboard = new ArrayList<>();
 
@@ -30,7 +32,7 @@ public class KeyboardService {
             for (int j = 0; j < name.get(i).size(); j++) {
                 InlineKeyboardButton button = new InlineKeyboardButton();
                 button.setText(name.get(i).get(j));
-                button.setCallbackData(callbackData.get(i).get(j));
+                button.setCallbackData(callback + callbackData.get(i).get(j));
                 row.add(button);
             }
             inlineKeyboard.add(row);
@@ -113,12 +115,11 @@ public class KeyboardService {
         return getReplyKeyboard(List.of(List.of(MY_BOOKINGS, NEW_BOOKING)));
     }
 
-    public InlineKeyboardMarkup countryMenu() {
+    public InlineKeyboardMarkup countryMenu(Long employeeId) {
         try {
             List<String> countries = hotDeskFeign.getAddresses().stream().map(AddressBaseDto::getCountry).distinct().collect(Collectors.toList());
             List<List<String>> countries1 = countries.stream().map(List::of).collect(Collectors.toList());
-            return getInlineKeyboard(countries1, countries1);
-
+            return getInlineKeyboard(COUNTRIES, countries1, countries1);
         } catch (FeignException e) {
             e.printStackTrace();
         }
@@ -134,7 +135,7 @@ public class KeyboardService {
             }).distinct().filter(Objects::nonNull).collect(Collectors.toList());
 
 
-            return getInlineKeyboard(cities, cities);
+            return getInlineKeyboard(CITIES, cities, cities);
         } catch (FeignException e) {
             e.printStackTrace();
         }
@@ -155,14 +156,21 @@ public class KeyboardService {
                 return null;
             }).distinct().filter(Objects::nonNull).collect(Collectors.toList());
 
-            return getInlineKeyboard(office, addressId);
+            return getInlineKeyboard(OFFICE, office, addressId);
         } catch (FeignException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public InlineKeyboardMarkup createDate(LocalDate date) {
+    public InlineKeyboardMarkup createDateType(String callback){
+        List<List<String>> dateType = new ArrayList<>();
+        List<String> list = new ArrayList<>(List.of(ONE_DAY, CONTINUOUS, RECURRING));
+        dateType.add(list);
+        return getInlineKeyboard(callback, dateType, dateType);
+    }
+
+    public InlineKeyboardMarkup createDate(LocalDate date, String data) {
         String dateStr = date.toString();
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(Collections.singletonList(getButton(SKIP, date.getMonth().name() + " " + date.getYear())));
@@ -177,7 +185,7 @@ public class KeyboardService {
         while (date.getMonthValue() == monthValue) {
             for (int i = 1; i <= 7; i++) {
                 if (i == date.getDayOfWeek().getValue() && date.getMonthValue() == monthValue) {
-                    days.put(DATE + date, String.valueOf(date.getDayOfMonth()));
+                    days.put(DATE + date + data.substring(OFFICE.length()), String.valueOf(date.getDayOfMonth()));
                     date = date.plusDays(1);
                 } else
                     days.put(SKIP + i, " ");

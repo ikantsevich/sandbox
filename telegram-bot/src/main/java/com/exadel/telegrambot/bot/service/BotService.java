@@ -4,6 +4,8 @@ import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
 import feign.FeignException;
+import liquibase.pro.packaged.E;
+import liquibase.pro.packaged.U;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.time.LocalDate;
 
 import static com.exadel.telegrambot.bot.utils.Constant.*;
+import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @RequiredArgsConstructor
 @Component
@@ -37,8 +40,42 @@ public class BotService {
     public void getCountry(Update update){
         Message message = getMessage(update);
         SendMessage sendMessage = new SendMessage(message.getChatId().toString(), CHOOSE_COUNTRY);
-        sendMessage.setReplyMarkup(keyboardService.countryMenu());
+        sendMessage.setReplyMarkup(keyboardService.countryMenu(getEmployeeId(message.getChatId().toString())));
         telegramFeign.sendMessage(sendMessage);
+    }
+
+    public void getCity(Update update){
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_CITY);
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.cityMenu(data.substring(COUNTRIES.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getOffice(Update update){
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_OFFICE);
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.officeMenu(data.substring(CITIES.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getDateType(Update update){
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_BOOKING_TYPE);
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.createDateType(CHOOSE_BOOKING_TYPE + data.substring(OFFICE.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    private Long getEmployeeId(String chatId){
+        return hotDeskFeign.getEmployeeByChatId(chatId).getId();
     }
 
     public void getMainMenuSend(Update update){
@@ -72,15 +109,16 @@ public class BotService {
     }
 
     public void getDate(Update update, LocalDate date) {
+        final String data = update.getCallbackQuery().getData();
         Message message = getMessage(update);
         EditMessageText editMessageText = new EditMessageText(GET_DATE_TEXT);
-        editMessageText.setReplyMarkup(keyboardService.createDate(date));
+        editMessageText.setReplyMarkup(keyboardService.createDate(date, data));
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
         telegramFeign.editMessageText(editMessageText);
     }
 
     private Message getMessage(Update update){
-        return update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage();
+        return (update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage());
     }
 }
