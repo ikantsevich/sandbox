@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class EquipmentController {
     }
 
     @PostMapping()
-    ResponseEntity<EquipmentResponseDto> createEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto) {
+    ResponseEntity<EquipmentResponseDto> createEquipment(@Valid @RequestBody EquipmentCreateDto equipmentCreateDto) {
         return equipmentService.create(equipmentCreateDto);
     }
 
@@ -38,7 +39,7 @@ public class EquipmentController {
 
     @PutMapping("{id}")
     ResponseEntity<EquipmentResponseDto> updateEquipment(@PathVariable("id") Long id,
-                                         @RequestBody EquipmentUpdateDto equipmentUpdateDto) {
+                                                         @Valid @RequestBody EquipmentUpdateDto equipmentUpdateDto) {
 
         return equipmentService.update(id, equipmentUpdateDto);
     }

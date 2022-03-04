@@ -1,7 +1,7 @@
 package com.exadel.sandbox.role.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import com.exadel.sandbox.permission.entity.Permission;
 import com.exadel.sandbox.permission.repository.PermissionRepository;
 import com.exadel.sandbox.role.dto.RoleCreateDto;

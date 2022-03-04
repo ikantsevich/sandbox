@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class SeatController {
 
 
     @PostMapping()
-    ResponseEntity<SeatResponseDto> createSeat(@RequestBody SeatCreateDto seatBaseDto) {
+    ResponseEntity<SeatResponseDto> createSeat(@Valid @RequestBody SeatCreateDto seatBaseDto) {
         return seatService.create(seatBaseDto);
     }
 
@@ -46,12 +47,12 @@ public class SeatController {
 
     @PutMapping("{id}")
     ResponseEntity<SeatResponseDto> updateSeat(@PathVariable("id") Long id,
-                               @RequestBody SeatUpdateDto seatUpdateDto) {
+                                               @Valid @RequestBody SeatUpdateDto seatUpdateDto) {
         return seatService.update(id, seatUpdateDto);
     }
 
     @GetMapping("{id}/booked-dates")
-    ResponseEntity<List<LocalDate>> getSeatsBookedDates(@PathVariable Long id){
+    ResponseEntity<List<LocalDate>> getSeatsBookedDates(@PathVariable Long id) {
         return seatService.getSeatsBookedDatesById(id);
     }
 }

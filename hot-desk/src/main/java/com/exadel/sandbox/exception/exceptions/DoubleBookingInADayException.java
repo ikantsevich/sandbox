@@ -1,4 +1,4 @@
-package com.exadel.sandbox.exception;
+package com.exadel.sandbox.exception.exceptions;
 
 public class DoubleBookingInADayException extends RuntimeException {
     public DoubleBookingInADayException() {

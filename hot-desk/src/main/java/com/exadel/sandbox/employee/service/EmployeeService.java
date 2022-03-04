@@ -8,7 +8,7 @@ import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.employee.repository.TgInfoRepository;
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import com.exadel.sandbox.role.entity.Role;
 import com.exadel.sandbox.role.repository.RoleRepository;
 import org.modelmapper.ModelMapper;

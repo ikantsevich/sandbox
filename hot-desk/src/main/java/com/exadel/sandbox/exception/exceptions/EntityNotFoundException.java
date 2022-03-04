@@ -1,4 +1,4 @@
-package com.exadel.sandbox.exception;
+package com.exadel.sandbox.exception.exceptions;
 
 public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException() {

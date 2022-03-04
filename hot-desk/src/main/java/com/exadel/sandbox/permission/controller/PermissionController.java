@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class PermissionController {
     }
 
     @PostMapping()
-    ResponseEntity<PermissionResponseDto> createPermission(@RequestBody PermissionCreateDto permissionCreateDto) {
+    ResponseEntity<PermissionResponseDto> createPermission(@Valid @RequestBody PermissionCreateDto permissionCreateDto) {
         return permissionService.create(permissionCreateDto);
     }
 
@@ -37,7 +38,7 @@ public class PermissionController {
     }
 
     @PutMapping("{id}")
-    ResponseEntity<PermissionResponseDto> updateRole(@PathVariable("id") Long id, @RequestBody PermissionUpdateDto permissionUpdateDto) {
+    ResponseEntity<PermissionResponseDto> updateRole(@PathVariable("id") Long id, @Valid @RequestBody PermissionUpdateDto permissionUpdateDto) {
         return permissionService.update(id, permissionUpdateDto);
     }
 }

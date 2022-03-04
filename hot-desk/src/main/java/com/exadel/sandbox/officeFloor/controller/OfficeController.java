@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.ws.rs.Path;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,7 +32,7 @@ public class OfficeController {
     }
 
     @PostMapping()
-    ResponseEntity<OfficeResponseDto> createOffice(@RequestBody OfficeCreateDto officeCreateDto) {
+    ResponseEntity<OfficeResponseDto> createOffice(@Valid @RequestBody OfficeCreateDto officeCreateDto) {
         return officeService.create(officeCreateDto);
     }
 
@@ -41,7 +42,7 @@ public class OfficeController {
     }
 
     @PutMapping("{id}")
-    ResponseEntity<OfficeResponseDto> updateOffice(@PathVariable("id") Long id, @RequestBody OfficeUpdateDto officeUpdateDto) {
+    ResponseEntity<OfficeResponseDto> updateOffice(@PathVariable("id") Long id, @Valid @RequestBody OfficeUpdateDto officeUpdateDto) {
         return officeService.update(id, officeUpdateDto);
     }
 

@@ -1,6 +1,6 @@
 package com.exadel.sandbox.base;
 
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import com.google.common.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

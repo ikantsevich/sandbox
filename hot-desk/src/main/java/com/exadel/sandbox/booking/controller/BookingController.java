@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class BookingController {
     }
 
     @PostMapping()
-    ResponseEntity<BookingResponseDto> createBooking(@RequestBody BookingCreateDto bookingCreateDTO) {
+    ResponseEntity<BookingResponseDto> createBooking(@Valid @RequestBody BookingCreateDto bookingCreateDTO) {
         return bookingService.create(bookingCreateDTO);
     }
 
@@ -40,7 +41,7 @@ public class BookingController {
 
     @PutMapping("{id}")
     ResponseEntity<BookingResponseDto> updateBooking(@PathVariable("id") Long id,
-                                     @RequestBody BookingUpdateDto bookingUpdateDTO) {
+                                                     @Valid @RequestBody BookingUpdateDto bookingUpdateDTO) {
         return bookingService.update(id, bookingUpdateDTO);
     }
 
@@ -50,7 +51,7 @@ public class BookingController {
     }
 
     @GetMapping("offices/{officeId}/list")
-    ResponseEntity<List<BookingResponseDto>> getBookingsByOfficeId(@PathVariable Long officeId){
+    ResponseEntity<List<BookingResponseDto>> getBookingsByOfficeId(@PathVariable Long officeId) {
         return bookingService.getBookingsByOfficeId(officeId);
     }
 

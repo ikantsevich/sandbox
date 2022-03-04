@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class VacationController {
     }
 
     @PostMapping()
-    ResponseEntity<VacationResponseDto> createTgInfo(@RequestBody VacationCreateDto vacationCreateDto) {
+    ResponseEntity<VacationResponseDto> createTgInfo(@Valid @RequestBody VacationCreateDto vacationCreateDto) {
         return vacationService.create(vacationCreateDto);
     }
 
@@ -38,7 +39,7 @@ public class VacationController {
 
     @PutMapping("{id}")
     ResponseEntity<VacationResponseDto> updateTgInfo(@PathVariable("id") Long id,
-                                     @RequestBody VacationUpdateDto vacationUpdateDto) {
+                                                     @Valid @RequestBody VacationUpdateDto vacationUpdateDto) {
 
         return vacationService.update(id, vacationUpdateDto);
     }

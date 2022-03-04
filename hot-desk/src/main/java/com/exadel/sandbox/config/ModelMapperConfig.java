@@ -11,8 +11,7 @@ import com.exadel.sandbox.employee.entity.TgInfo;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.equipment.dto.EquipmentUpdateDto;
 import com.exadel.sandbox.equipment.entity.Equipment;
-import com.exadel.sandbox.exception.CannotBeNullException;
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import com.exadel.sandbox.notification.dto.NotificationCreateDto;
 import com.exadel.sandbox.notification.dto.NotificationResponseDto;
 import com.exadel.sandbox.notification.entity.Notification;
@@ -128,8 +127,6 @@ public class ModelMapperConfig {
 
             @Override
             public Seat convert(MappingContext<SeatCreateDto, Seat> context) {
-                if (context.getSource().getFloorId() == null)
-                    throw new CannotBeNullException("Floor id can not be null");
 
                 m.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -210,8 +207,6 @@ public class ModelMapperConfig {
 
             @Override
             public Floor convert(MappingContext<FloorCreateDto, Floor> context) {
-                if (context.getSource().getOfficeId() == null)
-                    throw new CannotBeNullException("Office id cannot be null");
 
                 m.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -255,8 +250,6 @@ public class ModelMapperConfig {
 
             @Override
             public Booking convert(MappingContext<BookingCreateDto, Booking> context) {
-                if (context.getSource().getEmployeeId() == null || context.getSource().getSeatId() == null)
-                    throw new CannotBeNullException("Employee id and seat id can not be null");
 
                 m.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
