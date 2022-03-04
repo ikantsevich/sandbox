@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
     public BookingService(ModelMapper mapper, BookingRepository repository) {
         super(mapper, repository);
     }
+
     public final static int MAX_MONTH = 3;
 
 
@@ -47,16 +49,21 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
 
         checkTheDates(dates);
 
-        Integer integer = repository.checkIfSeatIsFree(booking.getSeat().getId(), dates);
-        if (integer == 0)
-            throw new DoubleBookingInADayException("Seat already booked on these days");
+        List<LocalDate> seatsBookedDates = repository.checkSeatBookingDates(booking.getSeat().getId(), dates);
+        List<LocalDate> employeeBookedDates = repository.checkEmployeeBookedDates(booking.getEmployee().getId(), dates);
 
-        if (repository.checkIfEmployeeNotBooked(booking.getEmployee().getId(), dates) == 0)
-            throw new DoubleBookingInADayException("Employee already booked on these days");
 
-        if (booking.getParkingSpot() != null)
-            if (repository.checkIfParkingSpotIsFree(booking.getParkingSpot().getId(), dates) == 0)
-                throw new DoubleBookingInADayException("Parking Spot already booked on these days");
+        if (!seatsBookedDates.isEmpty())
+            throw new DoubleBookingInADayException("Seat already booked on " + Arrays.toString(seatsBookedDates.toArray()));
+
+        if (!employeeBookedDates.isEmpty())
+            throw new DoubleBookingInADayException("Employee already booked on " + Arrays.toString(employeeBookedDates.toArray()));
+
+        if (booking.getParkingSpot() != null) {
+            List<LocalDate> parkingBooedDates = repository.checkParkingSpotBookedDates(booking.getParkingSpot().getId(), dates);
+            if (!parkingBooedDates.isEmpty())
+                throw new DoubleBookingInADayException("Parking Spot already booked on " + Arrays.toString(parkingBooedDates.toArray()));
+        }
     }
 
     //    Checks if Date is in valid range
