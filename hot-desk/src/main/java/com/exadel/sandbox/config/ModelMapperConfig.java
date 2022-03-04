@@ -1,5 +1,9 @@
 package com.exadel.sandbox.config;
 
+import com.exadel.sandbox.booking.dto.BookingCreateDto;
+import com.exadel.sandbox.booking.dto.BookingResponseDto;
+import com.exadel.sandbox.booking.entity.Booking;
+import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.entity.Employee;
@@ -7,7 +11,7 @@ import com.exadel.sandbox.employee.entity.TgInfo;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.equipment.dto.EquipmentUpdateDto;
 import com.exadel.sandbox.equipment.entity.Equipment;
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import com.exadel.sandbox.notification.dto.NotificationCreateDto;
 import com.exadel.sandbox.notification.dto.NotificationResponseDto;
 import com.exadel.sandbox.notification.entity.Notification;
@@ -21,6 +25,7 @@ import com.exadel.sandbox.officeFloor.repositories.OfficeRepository;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotCreateDto;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
+import com.exadel.sandbox.parking_spot.repository.ParkingSpotRepository;
 import com.exadel.sandbox.role.dto.RoleResponseDto;
 import com.exadel.sandbox.role.entity.Role;
 import com.exadel.sandbox.role.repository.RoleRepository;
@@ -39,6 +44,7 @@ import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +56,7 @@ public class ModelMapperConfig {
     private final SeatRepository seatRepository;
     private final FloorRepository floorRepository;
     private final OfficeRepository officeRepository;
+    private final ParkingSpotRepository parkingSpotRepository;
 
     @Bean
     ModelMapper mapper() {
@@ -79,7 +86,7 @@ public class ModelMapperConfig {
 
                     employee.setRoles(roles);
                 }
-                if (context.getSource().getRoles() != null) {
+                if (context.getSource().getTgInfoCreateDto() != null) {
                     employee.setTgInfo(m.map(context.getSource().getTgInfoCreateDto(), TgInfo.class));
                 }
 
@@ -110,7 +117,7 @@ public class ModelMapperConfig {
 
 //        SEAT -> SEAT_RESPONSE_DTO
         mapper.typeMap(Seat.class, SeatResponseDto.class).addMappings(m -> {
-            m.map(seat -> seat.getFloor().getId(), SeatResponseDto::setFloorId);
+            m.map(seat -> seat.getFloor().getFloorNum(), SeatResponseDto::setFloorNum);
             m.map(Seat::getEquipments, SeatResponseDto::setEquipmentResponseDtos);
         });
 
@@ -120,6 +127,7 @@ public class ModelMapperConfig {
 
             @Override
             public Seat convert(MappingContext<SeatCreateDto, Seat> context) {
+
                 m.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
                 Seat seat = m.map(context.getSource(), Seat.class);
@@ -199,6 +207,7 @@ public class ModelMapperConfig {
 
             @Override
             public Floor convert(MappingContext<FloorCreateDto, Floor> context) {
+
                 m.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
                 Floor floor = m.map(context.getSource(), Floor.class);
@@ -235,6 +244,60 @@ public class ModelMapperConfig {
             }
         };
 
+//        BOOKING_CREATE_DTO -> BOOKING
+        Converter<BookingCreateDto, Booking> bookingCreateDtoBookingConverter = new Converter<>() {
+            private final ModelMapper m = new ModelMapper();
+
+            @Override
+            public Booking convert(MappingContext<BookingCreateDto, Booking> context) {
+
+                m.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+                Booking booking = m.map(context.getSource(), Booking.class);
+
+
+                booking.setDates(context.getSource().getDates().stream().map(BookingDates::new).collect(Collectors.toList()));
+
+                booking.setEmployee(employeeRepository.findById(context.getSource().getEmployeeId())
+                        .orElseThrow(() -> new EntityNotFoundException("Employee with id: " + context.getSource().getEmployeeId() + " not found")
+                        ));
+
+                booking.setSeat(seatRepository.findById(context.getSource().getSeatId())
+                        .orElseThrow(() -> new EntityNotFoundException("Seat with id: " + context.getSource().getSeatId() + " not found"))
+                );
+
+                if (context.getSource().getParkingSpotId() != null)
+                    booking.setParkingSpot(parkingSpotRepository.findById(context.getSource().getParkingSpotId())
+                            .orElseThrow(() -> new EntityNotFoundException("Parking spot with id: " + context.getSource().getParkingSpotId() + " not found"))
+                    );
+
+                return booking;
+            }
+        };
+
+//        Booking -> BookingResponseDto
+        mapper.typeMap(Booking.class, BookingResponseDto.class).addMappings(m -> {
+            m.map(booking -> booking.getEmployee().getId(), BookingResponseDto::setEmployeeId);
+            m.map(booking -> booking.getSeat().getId(), BookingResponseDto::setSeatId);
+            m.map(booking -> booking.getParkingSpot().getId(), BookingResponseDto::setParkingSpotId);
+            m.map(Booking::getDates, BookingResponseDto::setDates);
+            m.map(booking -> booking.getSeat().getFloor().getFloorNum(), BookingResponseDto::setFloorNumber);
+            m.map(booking -> booking.getSeat().getFloor().getOffice(), BookingResponseDto::setOffice);
+        });
+
+//        BOOKING_DATES -> LOCAL_DATE
+        Converter<BookingDates, LocalDate> bookingDatesDateConverter = new Converter<>() {
+            private final ModelMapper m = new ModelMapper();
+
+            @Override
+            public LocalDate convert(MappingContext<BookingDates, LocalDate> context) {
+                return context.getSource().getDate();
+            }
+        };
+
+
+
+
         mapper.addConverter(equipmentUpdateDtoEquipmentConverter);
         mapper.addConverter(employeeCreateDtoEmployeeConverter);
         mapper.addConverter(seatCreateDtoSeatConverter);
@@ -242,6 +305,8 @@ public class ModelMapperConfig {
         mapper.addConverter(notificationCreateDtoNotificationConverter);
         mapper.addConverter(floorCreateDtoFloorConverter);
         mapper.addConverter(parkingSpotCreateDtoParkingSpotConverter);
+        mapper.addConverter(bookingCreateDtoBookingConverter);
+        mapper.addConverter(bookingDatesDateConverter);
 //
         return mapper;
     }

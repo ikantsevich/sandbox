@@ -1,10 +1,11 @@
 package com.exadel.sandbox.base;
 
-import com.exadel.sandbox.exception.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import com.google.common.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Type;
@@ -12,8 +13,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public abstract class BaseCrudService<ENTITY, RESPONSE, UPDATE, CREATE, REPOSITORY extends JpaRepository<ENTITY, Long>> {
-
-
 
     private final Type responseType = new TypeToken<RESPONSE>(getClass()){}.getType();
     private final Type entityType = new TypeToken<ENTITY>(getClass()) {}.getType();
@@ -42,7 +41,7 @@ public abstract class BaseCrudService<ENTITY, RESPONSE, UPDATE, CREATE, REPOSITO
     public ResponseEntity<RESPONSE> create(CREATE create) {
         ENTITY entity = mapper.map(create, entityType);
         RESPONSE response = mapper.map(repository.save(entity), responseType);
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     public void delete(Long id) {

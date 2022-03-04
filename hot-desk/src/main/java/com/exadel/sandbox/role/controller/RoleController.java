@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class RoleController {
     }
 
     @PostMapping()
-    ResponseEntity<RoleResponseDto> createRole(@RequestBody RoleCreateDto roleCreateDto) {
+    ResponseEntity<RoleResponseDto> createRole(@Valid @RequestBody RoleCreateDto roleCreateDto) {
         return roleService.create(roleCreateDto);
     }
 
@@ -37,7 +38,7 @@ public class RoleController {
     }
 
     @PutMapping("{id}")
-    ResponseEntity<RoleResponseDto> updateRole(@PathVariable("id") Long id, @RequestBody RoleUpdateDto roleUpdateDto) {
+    ResponseEntity<RoleResponseDto> updateRole(@PathVariable("id") Long id, @Valid @RequestBody RoleUpdateDto roleUpdateDto) {
         return roleService.update(id, roleUpdateDto);
     }
 

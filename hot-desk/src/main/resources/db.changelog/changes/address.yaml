@@ -55,3 +55,17 @@ databaseChangeLog:
                   type: datetime
                   remarks: 'Record modified timestamp'
 
+  - changeSet:
+      id: 1. Adding unique for all Address column
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          indexExists:
+            indexName: address_unique_for_all
+            tableName: address
+      changes:
+        addUniqueConstraint:
+          columnNames: 'building_num, street, city, country'
+          constraintName: address_unique_for_all
+          tableName: address

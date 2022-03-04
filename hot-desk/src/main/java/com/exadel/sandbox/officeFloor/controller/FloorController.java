@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class FloorController {
     }
 
     @PostMapping()
-    ResponseEntity<FloorResponseDto> createFloor(@RequestBody FloorCreateDto floorCreateDto) {
+    ResponseEntity<FloorResponseDto> createFloor(@Valid @RequestBody FloorCreateDto floorCreateDto) {
         return floorService.create(floorCreateDto);
     }
 
@@ -45,7 +46,7 @@ public class FloorController {
     }
 
     @PutMapping("{id}")
-    ResponseEntity<FloorResponseDto> updateFloor(@PathVariable("id") Long id, @RequestBody FloorUpdateDto floorUpdateDto) {
+    ResponseEntity<FloorResponseDto> updateFloor(@PathVariable("id") Long id, @Valid @RequestBody FloorUpdateDto floorUpdateDto) {
         return floorService.update(id, floorUpdateDto);
     }
 

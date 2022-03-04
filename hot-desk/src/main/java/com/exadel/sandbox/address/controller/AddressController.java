@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class AddressController {
     }
 
     @PostMapping()
-    ResponseEntity<AddressResponseDto> createAddress(@RequestBody AddressCreateDto addressCreateDTO) {
+    ResponseEntity<AddressResponseDto> createAddress(@Valid @RequestBody AddressCreateDto addressCreateDTO) {
         return addressService.create(addressCreateDTO);
     }
 
@@ -39,7 +40,7 @@ public class AddressController {
 
     @PutMapping("{id}")
     ResponseEntity<AddressResponseDto> updateAddress(@PathVariable("id") Long id,
-                                     @RequestBody AddressUpdateDto addressUpdateDTO) {
+                                                     @Valid @RequestBody AddressUpdateDto addressUpdateDTO) {
         return addressService.update(id, addressUpdateDTO);
     }
 
