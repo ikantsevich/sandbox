@@ -185,7 +185,7 @@ public class KeyboardService{
         while (date.getMonthValue() == monthValue) {
             for (int i = 1; i <= 7; i++) {
                 if (i == date.getDayOfWeek().getValue() && date.getMonthValue() == monthValue) {
-                    days.put(DATE + date + data.substring(OFFICE.length()), String.valueOf(date.getDayOfMonth()));
+                    days.put(DATE + date + data.substring(Constant.CHOOSE_BOOKING_TYPE.length()), String.valueOf(date.getDayOfMonth()));
                     date = date.plusDays(1);
                 } else
                     days.put(SKIP + i, " ");

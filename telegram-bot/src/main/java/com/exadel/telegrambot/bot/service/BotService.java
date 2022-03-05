@@ -121,4 +121,10 @@ public class BotService {
     private Message getMessage(Update update){
         return (update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage());
     }
+
+    public void getSeats(Update update) {
+
+    }
 }
+
+

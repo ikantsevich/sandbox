@@ -1,7 +1,6 @@
 package com.exadel.telegrambot.bot.bot;
 
 import com.exadel.telegrambot.bot.service.BotService;
-import com.exadel.telegrambot.bot.utils.EmployeeState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -10,8 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.time.LocalDate;
 
 import static com.exadel.telegrambot.bot.utils.Constant.*;
-import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.CHOOSE_BOOKING_TYPE;
+import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,8 +40,10 @@ public class Bot {
                 state = OFFICE;
             } else if (data.startsWith(OFFICE)){
                 state = CHOOSE_BOOKING_TYPE;
-            } else if (data.endsWith(ONE_DAY) || data.endsWith(CONTINUOUS) || data.endsWith(RECURRING)){
+            } else if (data.startsWith(CHOOSE_BOOKING_TYPE)){
                 state = GET_DATE;
+            } else if (data.endsWith(ONE_DAY)){
+                state = GET_SEATS;
             }
         }
 
@@ -56,6 +57,7 @@ public class Bot {
             case OFFICE -> botService.getOffice(update);
             case CHOOSE_BOOKING_TYPE -> botService.getDateType(update);
             case GET_DATE -> botService.getDate(update, LocalDate.now());
+            case GET_SEATS -> botService.getSeats(update);
         }
     }
 }

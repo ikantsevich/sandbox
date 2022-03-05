@@ -2,7 +2,6 @@ package com.exadel.telegrambot.bot.controller;
 
 import com.exadel.telegrambot.bot.bot.Bot;
 import com.exadel.telegrambot.bot.service.BotService;
-import com.exadel.telegrambot.bot.utils.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
