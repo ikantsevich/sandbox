@@ -50,4 +50,9 @@ public class OfficeController {
     ResponseEntity<List<SeatResponseDto>> getFreeSeats(@PathVariable Long id, @RequestBody List<LocalDate> dates) {
         return officeService.getFreeSeats(id, dates);
     }
+
+    @GetMapping("/address/{id}")
+    ResponseEntity<OfficeResponseDto> getOfficeByAddressId(@PathVariable Long id){
+        return officeService.getOfficeByAddressId(id);
+    }
 }

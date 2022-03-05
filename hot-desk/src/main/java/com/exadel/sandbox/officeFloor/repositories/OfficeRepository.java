@@ -1,5 +1,6 @@
 package com.exadel.sandbox.officeFloor.repositories;
 
+import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.officeFloor.entities.Office;
 import com.exadel.sandbox.seat.entity.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,6 @@ public interface OfficeRepository extends JpaRepository<Office, Long> {
             "                            join b.dates d\n" +
             "                   where d.date in (:dates))")
     List<Seat> findFreeSeatsByOfficeIdAndDates(List<LocalDate> dates, Long officeId);
+
+    Office findOfficeByAddressId(Long id);
 }

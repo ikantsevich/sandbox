@@ -1,6 +1,8 @@
 package com.exadel.telegrambot.bot.service;
 
 import com.exadel.sandbox.address.dto.AddressBaseDto;
+import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
+import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.utils.Constant;
 import feign.FeignException;
@@ -23,24 +25,22 @@ import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 public class KeyboardService{
     private final HotDeskFeign hotDeskFeign;
 
-    private InlineKeyboardMarkup getInlineKeyboard(String callback, List<List<String>> name, List<List<String>> callbackData) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+    private InlineKeyboardMarkup getInlineKeyboard(String callback, List<String> name, List<String> callbackData) {
         List<List<InlineKeyboardButton>> inlineKeyboard = new ArrayList<>();
+        List<InlineKeyboardButton> buttons = new ArrayList<>();
 
         for (int i = 0; i < name.size(); i++) {
-            List<InlineKeyboardButton> row = new ArrayList<>();
-            for (int j = 0; j < name.get(i).size(); j++) {
-                InlineKeyboardButton button = new InlineKeyboardButton();
-                button.setText(name.get(i).get(j));
-                button.setCallbackData(callback + callbackData.get(i).get(j));
-                row.add(button);
+            buttons.add(getButton(callback + callbackData.get(i), name.get(i)));
+            if (i % 2 == 0){
+                inlineKeyboard.add(buttons);
+                buttons = new ArrayList<>();
             }
-            inlineKeyboard.add(row);
+
         }
-
-        inlineKeyboardMarkup.setKeyboard(inlineKeyboard);
-
-        return inlineKeyboardMarkup;
+        if (!buttons.isEmpty()){
+            inlineKeyboard.add(buttons);
+        }
+        return new InlineKeyboardMarkup(inlineKeyboard);
     }
 
     private InlineKeyboardMarkup getInlineKeyboard(List<List<String>> name, List<List<String>> callbackData, List<List<String>> urls) {
@@ -118,8 +118,7 @@ public class KeyboardService{
     public InlineKeyboardMarkup countryMenu(Long employeeId) {
         try {
             List<String> countries = hotDeskFeign.getAddresses().stream().map(AddressBaseDto::getCountry).distinct().collect(Collectors.toList());
-            List<List<String>> countries1 = countries.stream().map(List::of).collect(Collectors.toList());
-            return getInlineKeyboard(COUNTRIES, countries1, countries1);
+            return getInlineKeyboard(COUNTRIES, countries, countries);
         } catch (FeignException e) {
             e.printStackTrace();
         }
@@ -128,12 +127,11 @@ public class KeyboardService{
 
     public InlineKeyboardMarkup cityMenu(String country) {
         try {
-            List<List<String>> cities = hotDeskFeign.getAddresses().stream().map(address -> {
+            final List<String> cities = hotDeskFeign.getAddresses().stream().map(address -> {
                 if (address.getCountry().equals(country))
-                    return List.of(address.getCity());
+                    return address.getCity();
                 return null;
             }).distinct().filter(Objects::nonNull).collect(Collectors.toList());
-
 
             return getInlineKeyboard(CITIES, cities, cities);
         } catch (FeignException e) {
@@ -144,15 +142,15 @@ public class KeyboardService{
 
     public InlineKeyboardMarkup officeMenu(String city) {
         try {
-            List<List<String>> office = hotDeskFeign.getAddresses().stream().map(address -> {
+            List<String> office = hotDeskFeign.getAddresses().stream().map(address -> {
                 if (address.getCity().equals(city))
-                    return List.of(address.getStreet() + " " + address.getBuildingNum());
+                    return (address.getStreet() + " " + address.getBuildingNum());
                 return null;
             }).distinct().filter(Objects::nonNull).collect(Collectors.toList());
 
-            List<List<String>> addressId = hotDeskFeign.getAddresses().stream().map(address -> {
+            List<String> addressId = hotDeskFeign.getAddresses().stream().map(address -> {
                 if (address.getCity().equals(city))
-                    return List.of(address.getId().toString());
+                    return address.getId().toString();
                 return null;
             }).distinct().filter(Objects::nonNull).collect(Collectors.toList());
 
@@ -164,9 +162,7 @@ public class KeyboardService{
     }
 
     public InlineKeyboardMarkup createDateType(String callback){
-        List<List<String>> dateType = new ArrayList<>();
-        List<String> list = new ArrayList<>(List.of(ONE_DAY, CONTINUOUS, RECURRING));
-        dateType.add(list);
+        List<String> dateType = new ArrayList<>(List.of(ONE_DAY, CONTINUOUS, RECURRING));
         return getInlineKeyboard(callback, dateType, dateType);
     }
 
@@ -201,6 +197,39 @@ public class KeyboardService{
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
         return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup getSeats(String data){
+        String  date = data.substring(0, 10);
+        List<LocalDate> localDates = new ArrayList<>(List.of(LocalDate.parse(date)));
+        String offId = getOfficeId(data);
+        final OfficeResponseDto officeByAddressId = hotDeskFeign.getOfficeByAddressId(Long.valueOf(offId));
+        final List<SeatResponseDto> seatsByOfficeIdAndDate = hotDeskFeign.getSeatsByOfficeIdAndDate(officeByAddressId.getId(), localDates);
+        List<String> callback = new ArrayList<>();
+        List<String> text = new ArrayList<>();
+        for (SeatResponseDto seatResponseDto: seatsByOfficeIdAndDate){
+            StringBuilder stringBuilderCallback = new StringBuilder();
+            StringBuilder stringBuilderText = new StringBuilder();
+            stringBuilderCallback.append(seatResponseDto.getId());
+            stringBuilderText.append(seatResponseDto.getNumber())
+                    .append("  ")
+                    .append(seatResponseDto.getFloorNum())
+                    .append("  ")
+                    .append(seatResponseDto.getStatus())
+                    .append("  \uD83D\uDCBA");
+            callback.add(stringBuilderCallback.toString());
+            text.add(stringBuilderText.toString());
+        }
+        return getInlineKeyboard(date + offId, text, callback);
+    }
+
+    public String getOfficeId(String data){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=10; i<data.length(); i++){
+            if(Character.isDigit(data.charAt(i)))
+                stringBuilder.append(data.charAt(i));
+        }
+        return stringBuilder.toString();
     }
 
     protected InlineKeyboardButton getButton(String callBackData, String text) {

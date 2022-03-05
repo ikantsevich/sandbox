@@ -28,4 +28,10 @@ public class OfficeService extends BaseCrudService<Office, OfficeResponseDto, Of
         List<SeatResponseDto> list = mapper.map(freeSeatsByOfficeIdAndDates, new TypeToken<List<SeatResponseDto>>() {}.getType());
         return ResponseEntity.ok(list);
     }
+
+    public ResponseEntity<OfficeResponseDto> getOfficeByAddressId(Long id){
+        final Office officeByAddressId = repository.findOfficeByAddressId(id);
+        final OfficeResponseDto officeResponseDto = mapper.map(officeByAddressId, new TypeToken<OfficeResponseDto>(){}.getType());
+        return ResponseEntity.ok(officeResponseDto);
+    }
 }

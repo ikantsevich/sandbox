@@ -122,8 +122,14 @@ public class BotService {
         return (update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage());
     }
 
-    public void getSeats(Update update) {
-
+    public void getSeats(Update update){
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_SEAT);
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getSeats(data.substring(DATE.length())));
+        telegramFeign.editMessageText(editMessageText);
     }
 }
 
