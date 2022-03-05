@@ -3,8 +3,9 @@ package com.exadel.telegrambot.bot.service;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
-import com.exadel.telegrambot.bot.utils.Constant;
+import com.exadel.telegrambot.bot.utils.EmployeeState;
 import feign.FeignException;
+import liquibase.pro.packaged.E;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,8 +16,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 
-import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.Constant.CHOOSE_BOOKING_TYPE;
+import static com.exadel.telegrambot.bot.utils.Constant.CHOOSE_RECURRING_TIME;
+import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @RequiredArgsConstructor
@@ -131,6 +133,24 @@ public class BotService {
         editMessageText.setReplyMarkup(keyboardService.getSeats(data.substring(DATE.length())));
         telegramFeign.editMessageText(editMessageText);
     }
+
+    public void getDayOfWeeK(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getDayOfWeek(data.substring(EmployeeState.CHOOSE_RECURRING_TIME.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getRecurringTime(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_RECURRING_TIME);
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getRecurringTime(EmployeeState.CHOOSE_RECURRING_TIME + data.substring(CHOOSE_BOOKING_TYPE.length(), data.length() - RECURRING.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
 }
-
-

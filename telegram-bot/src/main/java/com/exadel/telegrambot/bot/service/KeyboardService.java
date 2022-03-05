@@ -6,6 +6,7 @@ import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.utils.Constant;
 import feign.FeignException;
+import liquibase.pro.packaged.I;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -22,7 +23,7 @@ import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @Component
 @RequiredArgsConstructor
-public class KeyboardService{
+public class KeyboardService {
     private final HotDeskFeign hotDeskFeign;
 
     private InlineKeyboardMarkup getInlineKeyboard(String callback, List<String> name, List<String> callbackData) {
@@ -31,13 +32,13 @@ public class KeyboardService{
 
         for (int i = 0; i < name.size(); i++) {
             buttons.add(getButton(callback + callbackData.get(i), name.get(i)));
-            if (i % 2 == 0){
+            if (i % 2 == 0) {
                 inlineKeyboard.add(buttons);
                 buttons = new ArrayList<>();
             }
 
         }
-        if (!buttons.isEmpty()){
+        if (!buttons.isEmpty()) {
             inlineKeyboard.add(buttons);
         }
         return new InlineKeyboardMarkup(inlineKeyboard);
@@ -161,7 +162,7 @@ public class KeyboardService{
         return null;
     }
 
-    public InlineKeyboardMarkup createDateType(String callback){
+    public InlineKeyboardMarkup createDateType(String callback) {
         List<String> dateType = new ArrayList<>(List.of(ONE_DAY, CONTINUOUS, RECURRING));
         return getInlineKeyboard(callback, dateType, dateType);
     }
@@ -199,15 +200,15 @@ public class KeyboardService{
         return inlineKeyboardMarkup;
     }
 
-    public InlineKeyboardMarkup getSeats(String data){
-        String  date = data.substring(0, 10);
+    public InlineKeyboardMarkup getSeats(String data) {
+        String date = data.substring(0, 10);
         List<LocalDate> localDates = new ArrayList<>(List.of(LocalDate.parse(date)));
         String offId = getOfficeId(data);
         final OfficeResponseDto officeByAddressId = hotDeskFeign.getOfficeByAddressId(Long.valueOf(offId));
         final List<SeatResponseDto> seatsByOfficeIdAndDate = hotDeskFeign.getSeatsByOfficeIdAndDate(officeByAddressId.getId(), localDates);
         List<String> callback = new ArrayList<>();
         List<String> text = new ArrayList<>();
-        for (SeatResponseDto seatResponseDto: seatsByOfficeIdAndDate){
+        for (SeatResponseDto seatResponseDto : seatsByOfficeIdAndDate) {
             StringBuilder stringBuilderCallback = new StringBuilder();
             StringBuilder stringBuilderText = new StringBuilder();
             stringBuilderCallback.append(seatResponseDto.getId());
@@ -223,10 +224,10 @@ public class KeyboardService{
         return getInlineKeyboard(date + offId, text, callback);
     }
 
-    public String getOfficeId(String data){
+    public String getOfficeId(String data) {
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i=10; i<data.length(); i++){
-            if(Character.isDigit(data.charAt(i)))
+        for (int i = 10; i < data.length(); i++) {
+            if (Character.isDigit(data.charAt(i)))
                 stringBuilder.append(data.charAt(i));
         }
         return stringBuilder.toString();
@@ -247,5 +248,30 @@ public class KeyboardService{
         for (String data : buttons.keySet())
             row.add(getButton(data, buttons.get(data)));
         return row;
+    }
+
+    public InlineKeyboardMarkup getDayOfWeek(String data){
+        List<String> dayList = new ArrayList<>(List.of("M", "T", "W", "R", "F", "S", "U"));
+        return getInlineKeyboard(GET_DAY_OF_WEEK + data, dayList, dayList);
+    }
+
+    public InlineKeyboardMarkup getRecurringTime(String data) {
+        return getNumbers(data);
+    }
+
+    private InlineKeyboardMarkup getNumbers(String data) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        List<InlineKeyboardButton> buttons = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            buttons.add(getButton(data + " " + i, String.valueOf(i)));
+            if (i % 5 == 0) {
+                rows.add(buttons);
+                buttons = new ArrayList<>();
+            }
+        }
+        if (!buttons.isEmpty())
+            rows.add(buttons);
+
+        return new InlineKeyboardMarkup(rows);
     }
 }

@@ -17,6 +17,7 @@ public class Constant {
     public static String CHOOSE_OFFICE = "Choose office \uD83C\uDFE2";
     public static String CHOOSE_BOOKING_TYPE = "Choose booking type";
     public static String CHOOSE_SEAT = "Choose seat  \uD83D\uDCBA";
+    public static String CHOOSE_RECURRING_TIME = "Choose recurring time";
 
     public static String ONE_DAY = "One Day";
     public static String CONTINUOUS = "Continuous";

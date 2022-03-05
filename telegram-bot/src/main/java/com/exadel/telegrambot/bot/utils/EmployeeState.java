@@ -10,6 +10,8 @@ public interface EmployeeState {
     String MAIN_MENU_SEND = "main_menu_send";
     String MAIN_MENU_EDIT = "main_menu_edit";
     String GET_DATE = "get_date";
-    String CHOOSE_BOOKING_TYPE = "Choose booking type";
-    String GET_SEATS = "Get seats";
+    String CHOOSE_BOOKING_TYPE = "choose_booking_type";
+    String GET_SEATS = "get_seats";
+    String GET_DAY_OF_WEEK = "get_day_of_the_week";
+    String CHOOSE_RECURRING_TIME = "choose_recurring_time";
 }
