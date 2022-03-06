@@ -18,10 +18,24 @@ public class Constant {
     public static String CHOOSE_BOOKING_TYPE = "Choose booking type";
     public static String CHOOSE_SEAT = "Choose seat  \uD83D\uDCBA";
     public static String CHOOSE_RECURRING_TIME = "Choose recurring time";
+    public static String CHOOSE_DAY_OF_WEEK = "Choose day of the week";
+
+    public static String HAS_PARKING = "Do you wand to add parking \uD83C\uDD7F️\uD83D\uDE99";
 
     public static String ONE_DAY = "One Day";
     public static String CONTINUOUS = "Continuous";
     public static String RECURRING = "Recurring";
+
+    public static String YES = "YES  ✅";
+    public static String NO = "NO  ❌";
+
+    public static String MONDAY = "Monday";
+    public static String TUESDAY = "Tuesday";
+    public static String WEDNESDAY = "Wednesday";
+    public static String THURSDAY = "Thursday";
+    public static String FRIDAY = "Friday";
+    public static String SATURDAY = "Saturday";
+    public static String SUNDAY = "Sunday";
 
     public static String NEW_BOOKING = "New booking \uD83D\uDCC2";
     public static String MY_BOOKINGS = "My bookings \uD83D\uDDC2";

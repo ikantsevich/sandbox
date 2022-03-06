@@ -5,7 +5,6 @@ import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
 import com.exadel.telegrambot.bot.utils.EmployeeState;
 import feign.FeignException;
-import liquibase.pro.packaged.E;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -72,7 +71,7 @@ public class BotService {
         EditMessageText editMessageText = new EditMessageText(CHOOSE_BOOKING_TYPE);
         editMessageText.setChatId(message.getChatId().toString());
         editMessageText.setMessageId(message.getMessageId());
-        editMessageText.setReplyMarkup(keyboardService.createDateType(CHOOSE_BOOKING_TYPE + data.substring(OFFICE.length())));
+        editMessageText.setReplyMarkup(keyboardService.createDateType(EmployeeState.CHOOSE_BOOKING_TYPE + data.substring(OFFICE.length())));
         telegramFeign.editMessageText(editMessageText);
     }
 
@@ -114,7 +113,7 @@ public class BotService {
         final String data = update.getCallbackQuery().getData();
         Message message = getMessage(update);
         EditMessageText editMessageText = new EditMessageText(GET_DATE_TEXT);
-        editMessageText.setReplyMarkup(keyboardService.createDate(date, data));
+        editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
         telegramFeign.editMessageText(editMessageText);
@@ -137,7 +136,7 @@ public class BotService {
     public void getDayOfWeeK(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
-        EditMessageText editMessageText = new EditMessageText();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_DAY_OF_WEEK);
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
         editMessageText.setReplyMarkup(keyboardService.getDayOfWeek(data.substring(EmployeeState.CHOOSE_RECURRING_TIME.length())));
@@ -151,6 +150,29 @@ public class BotService {
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
         editMessageText.setReplyMarkup(keyboardService.getRecurringTime(EmployeeState.CHOOSE_RECURRING_TIME + data.substring(CHOOSE_BOOKING_TYPE.length(), data.length() - RECURRING.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getSeatsByRecurring(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_SEAT);
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getSeatsByRecurring(data.substring(GET_DAY_OF_WEEK.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getParking(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(HAS_PARKING);
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        if (data.startsWith(GET_SEATS_RECURRING))
+            editMessageText.setReplyMarkup(keyboardService.getHasParking(data.substring(GET_SEATS_RECURRING.length())));
+        else if (data.startsWith(ONE_DAY))
+            editMessageText.setReplyMarkup(keyboardService.getHasParking(data.substring(ONE_DAY.length())));
         telegramFeign.editMessageText(editMessageText);
     }
 }

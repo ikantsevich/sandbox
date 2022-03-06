@@ -4,9 +4,7 @@ import com.exadel.sandbox.address.dto.AddressBaseDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
-import com.exadel.telegrambot.bot.utils.Constant;
 import feign.FeignException;
-import liquibase.pro.packaged.I;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -182,7 +180,7 @@ public class KeyboardService {
         while (date.getMonthValue() == monthValue) {
             for (int i = 1; i <= 7; i++) {
                 if (i == date.getDayOfWeek().getValue() && date.getMonthValue() == monthValue) {
-                    days.put(DATE + date + data.substring(Constant.CHOOSE_BOOKING_TYPE.length()), String.valueOf(date.getDayOfMonth()));
+                    days.put(DATE + date + data, String.valueOf(date.getDayOfMonth()));
                     date = date.plusDays(1);
                 } else
                     days.put(SKIP + i, " ");
@@ -204,25 +202,44 @@ public class KeyboardService {
         String date = data.substring(0, 10);
         List<LocalDate> localDates = new ArrayList<>(List.of(LocalDate.parse(date)));
         String offId = getOfficeId(data);
-        final OfficeResponseDto officeByAddressId = hotDeskFeign.getOfficeByAddressId(Long.valueOf(offId));
-        final List<SeatResponseDto> seatsByOfficeIdAndDate = hotDeskFeign.getSeatsByOfficeIdAndDate(officeByAddressId.getId(), localDates);
-        List<String> callback = new ArrayList<>();
-        List<String> text = new ArrayList<>();
+        final OfficeResponseDto officeByAddressId = getOfficeByAddressId(Long.valueOf(offId));
+        final List<SeatResponseDto> seatsByOfficeIdAndDate = getListOfSeats(officeByAddressId.getId(), localDates);
+        return getInlineKeyboard(ONE_DAY + date + offId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
+    }
+
+    private OfficeResponseDto getOfficeByAddressId(Long id){
+        return hotDeskFeign.getOfficeByAddressId(id);
+    }
+
+    private List<SeatResponseDto> getListOfSeats(Long id, List<LocalDate> localDates){
+        return hotDeskFeign.getSeatsByOfficeIdAndDate(id, localDates);
+    }
+
+
+
+    public List<String> getCallbackOfSeats(List<SeatResponseDto> seatsByOfficeIdAndDate, List<String> callback){
         for (SeatResponseDto seatResponseDto : seatsByOfficeIdAndDate) {
             StringBuilder stringBuilderCallback = new StringBuilder();
-            StringBuilder stringBuilderText = new StringBuilder();
             stringBuilderCallback.append(seatResponseDto.getId());
+            callback.add(stringBuilderCallback.toString());
+        }
+        return callback;
+    }
+
+    public List<String> getTextOfSeats(List<SeatResponseDto> seatsByOfficeIdAndDate, List<String> text){
+        for (SeatResponseDto seatResponseDto : seatsByOfficeIdAndDate) {
+            StringBuilder stringBuilderText = new StringBuilder();
             stringBuilderText.append(seatResponseDto.getNumber())
                     .append("  ")
                     .append(seatResponseDto.getFloorNum())
                     .append("  ")
-                    .append(seatResponseDto.getStatus())
-                    .append("  \uD83D\uDCBA");
-            callback.add(stringBuilderCallback.toString());
+                    .append(seatResponseDto.getStatus());
             text.add(stringBuilderText.toString());
         }
-        return getInlineKeyboard(date + offId, text, callback);
+        return text;
     }
+
+
 
     public String getOfficeId(String data) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -250,8 +267,8 @@ public class KeyboardService {
         return row;
     }
 
-    public InlineKeyboardMarkup getDayOfWeek(String data){
-        List<String> dayList = new ArrayList<>(List.of("M", "T", "W", "R", "F", "S", "U"));
+    public InlineKeyboardMarkup getDayOfWeek(String data) {
+        List<String> dayList = new ArrayList<>(List.of(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY));
         return getInlineKeyboard(GET_DAY_OF_WEEK + data, dayList, dayList);
     }
 
@@ -273,5 +290,46 @@ public class KeyboardService {
             rows.add(buttons);
 
         return new InlineKeyboardMarkup(rows);
+    }
+
+    public InlineKeyboardMarkup getSeatsByRecurring(String data) {
+        final String addressId = data.substring(0, data.indexOf(' '));
+        StringBuilder recurring = new StringBuilder();
+        StringBuilder dayOfWeek = new StringBuilder();
+        for (int i = data.indexOf(' ') + 1; i < data.length(); i++) {
+            if (Character.isDigit(data.charAt(i)))
+                recurring.append(data.charAt(i));
+            else if (Character.isAlphabetic(data.charAt(i)))
+                dayOfWeek.append(data.charAt(i));
+        }
+        int days = Integer.parseInt(String.valueOf(recurring));
+        LocalDate date = LocalDate.now();
+        final int day = checkDayOfWeek(dayOfWeek.toString());
+        List<LocalDate> dates = new ArrayList<>();
+        while (days>0){
+            if (date.getDayOfWeek().getValue()==day){
+                days--;
+                dates.add(date);
+            }
+            date = date.plusDays(1);
+        }
+        final OfficeResponseDto officeByAddressId = getOfficeByAddressId(Long.valueOf(addressId));
+        final List<SeatResponseDto> seatsByOfficeIdAndDate = getListOfSeats(officeByAddressId.getId(), dates);
+        return getInlineKeyboard(GET_SEATS_RECURRING + dates + addressId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
+    }
+
+    private int checkDayOfWeek(String dayOfWeek){
+        int i = 1;
+        for (String day: List.of(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)){
+            if (dayOfWeek.equals(day))
+                return i;
+            i++;
+        }
+        return 0;
+    }
+
+    public InlineKeyboardMarkup getHasParking(String data) {
+        List<String> hasParking = new ArrayList<>(List.of(YES, NO));
+        return getInlineKeyboard(data, hasParking, hasParking);
     }
 }

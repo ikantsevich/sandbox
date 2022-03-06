@@ -12,6 +12,8 @@ public interface EmployeeState {
     String GET_DATE = "get_date";
     String CHOOSE_BOOKING_TYPE = "choose_booking_type";
     String GET_SEATS = "get_seats";
+    String GET_SEATS_RECURRING = "get_seats_recurring";
     String GET_DAY_OF_WEEK = "get_day_of_the_week";
     String CHOOSE_RECURRING_TIME = "choose_recurring_time";
+    String GET_PARKING = "get_parking";
 }

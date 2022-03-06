@@ -1,7 +1,6 @@
 package com.exadel.telegrambot.bot.bot;
 
 import com.exadel.telegrambot.bot.service.BotService;
-import com.exadel.telegrambot.bot.utils.Constant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -11,8 +10,8 @@ import java.time.LocalDate;
 
 import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.CHOOSE_BOOKING_TYPE;
-import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.CHOOSE_RECURRING_TIME;
+import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +49,10 @@ public class Bot {
                 state = CHOOSE_RECURRING_TIME;
             } else if (data.startsWith(CHOOSE_RECURRING_TIME)){
                 state = GET_DAY_OF_WEEK;
+            } else if (data.startsWith(GET_DAY_OF_WEEK)){
+                state = GET_SEATS_RECURRING;
+            } else if (data.startsWith(GET_SEATS_RECURRING) || data.startsWith(ONE_DAY)){
+                state = GET_PARKING;
             }
         }
 
@@ -66,6 +69,8 @@ public class Bot {
             case GET_SEATS -> botService.getSeats(update);
             case CHOOSE_RECURRING_TIME -> botService.getRecurringTime(update);
             case GET_DAY_OF_WEEK -> botService.getDayOfWeeK(update);
+            case GET_SEATS_RECURRING -> botService.getSeatsByRecurring(update);
+            case GET_PARKING ->  botService.getParking(update);
         }
     }
 }
