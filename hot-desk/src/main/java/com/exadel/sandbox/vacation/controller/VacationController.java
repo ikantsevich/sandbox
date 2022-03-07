@@ -20,30 +20,30 @@ public class VacationController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @GetMapping("list")
-    ResponseEntity<List<VacationResponseDto>> getTgInfos() {
+    ResponseEntity<List<VacationResponseDto>> getVacations() {
         return vacationService.getList();
     }
 
     @GetMapping("{id}")
-    ResponseEntity<VacationResponseDto> getTgInfoById(@PathVariable("id") Long id) {
+    ResponseEntity<VacationResponseDto> getVacationById(@PathVariable("id") Long id) {
         return vacationService.getById(id);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping()
-    ResponseEntity<VacationResponseDto> createTgInfo(@Valid @RequestBody VacationCreateDto vacationCreateDto) {
+    ResponseEntity<VacationResponseDto> createVacation(@Valid @RequestBody VacationCreateDto vacationCreateDto) {
         return vacationService.create(vacationCreateDto);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @DeleteMapping("{id}")
-    void deleteTgInfo(@PathVariable("id") Long id) {
+    void deleteVacation(@PathVariable("id") Long id) {
         vacationService.delete(id);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PutMapping("{id}")
-    ResponseEntity<VacationResponseDto> updateTgInfo(@PathVariable("id") Long id,
+    ResponseEntity<VacationResponseDto> updateVacation(@PathVariable("id") Long id,
                                                      @Valid @RequestBody VacationUpdateDto vacationUpdateDto) {
 
         return vacationService.update(id, vacationUpdateDto);

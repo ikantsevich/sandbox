@@ -20,7 +20,6 @@ public class ParkingSpotController {
 
     private final ParkingSpotService parkingSpotService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MAPPER')")
     @GetMapping("list")
     ResponseEntity<List<ParkingSpotResponseDto>> getParkingSpots() {
         return parkingSpotService.getList();
@@ -32,7 +31,7 @@ public class ParkingSpotController {
     }
 
     @GetMapping("office-id/{id}")
-    ResponseEntity<ParkingSpotResponseDto> getByOfficeId(@PathVariable("id") Long id) {
+    ResponseEntity<List<ParkingSpotResponseDto>> getByOfficeId(@PathVariable("id") Long id) {
         return parkingSpotService.findByOfficeId(id);
     }
 

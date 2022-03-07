@@ -18,7 +18,6 @@ import java.util.List;
 public class RoleController {
     private final RoleService roleService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("list")
     ResponseEntity<List<RoleResponseDto>> getRoles() {
         return roleService.getList();

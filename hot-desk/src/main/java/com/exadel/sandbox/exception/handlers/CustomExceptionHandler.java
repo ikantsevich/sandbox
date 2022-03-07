@@ -2,10 +2,7 @@ package com.exadel.sandbox.exception.handlers;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.exadel.sandbox.exception.ExceptionResponse;
-import com.exadel.sandbox.exception.exceptions.AuthenticationRequestException;
-import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
-import com.exadel.sandbox.exception.exceptions.DoubleBookingInADayException;
-import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.*;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +76,17 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = {TokenExpiredException.class})
     public ResponseEntity<ExceptionResponse> handeTokenExpiredException(TokenExpiredException e){
         HttpStatus status = HttpStatus.UNAUTHORIZED;
+        ExceptionResponse response = new ExceptionResponse(
+                e.getMessage(),
+                status,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(value = {ForbiddenException.class})
+    public ResponseEntity<ExceptionResponse> handeForbiddenException(ForbiddenException e){
+        HttpStatus status = HttpStatus.FORBIDDEN;
         ExceptionResponse response = new ExceptionResponse(
                 e.getMessage(),
                 status,

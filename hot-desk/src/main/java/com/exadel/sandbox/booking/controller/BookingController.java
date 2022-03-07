@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,24 +27,25 @@ public class BookingController {
     }
 
     @GetMapping("{id}")
-    ResponseEntity<BookingResponseDto> getBookingById(@PathVariable("id") Long id) {
-        return bookingService.getById(id);
+    ResponseEntity<BookingResponseDto> getBookingById(@PathVariable("id") Long id, Principal principal) {
+        return bookingService.getById(id, principal);
     }
 
     @PostMapping()
-    ResponseEntity<BookingResponseDto> createBooking(@Valid @RequestBody BookingCreateDto bookingCreateDTO) {
-        return bookingService.create(bookingCreateDTO);
+    ResponseEntity<BookingResponseDto> createBooking(@Valid @RequestBody BookingCreateDto bookingCreateDTO, Principal principal) {
+        return bookingService.create(bookingCreateDTO, principal);
     }
 
     @DeleteMapping("{id}")
-    void deleteById(@PathVariable("id") Long id) {
-        bookingService.delete(id);
+    void deleteById(@PathVariable("id") Long id, Principal principal) {
+        bookingService.delete(id, principal);
     }
 
     @PutMapping("{id}")
     ResponseEntity<BookingResponseDto> updateBooking(@PathVariable("id") Long id,
-                                                     @Valid @RequestBody BookingUpdateDto bookingUpdateDTO) {
-        return bookingService.update(id, bookingUpdateDTO);
+                                                     @Valid @RequestBody BookingUpdateDto bookingUpdateDTO,
+                                                     Principal principal) {
+        return bookingService.update(id, bookingUpdateDTO, principal);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")

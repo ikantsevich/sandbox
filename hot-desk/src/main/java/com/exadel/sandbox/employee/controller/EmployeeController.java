@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class EmployeeController {
     }
 
     @GetMapping("{id}")
-    ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable("id") Long id) {
+    ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable("id") Long id, Principal principal) {
 
-        return employeeService.getById(id);
+        return employeeService.getById(id, principal);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
@@ -45,6 +46,7 @@ public class EmployeeController {
         employeeService.delete(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PutMapping("{id}")
     ResponseEntity<EmployeeResponseDto> updateEmployee(@PathVariable("id") Long id,
                                                        @Valid @RequestBody EmployeeUpdateDto employeeUpdateDto) {
@@ -65,12 +67,12 @@ public class EmployeeController {
     }
 
     @GetMapping("{id}/booked-dates")
-    ResponseEntity<List<LocalDate>> getEmployeesBookedDates(@PathVariable Long id) {
-        return employeeService.getEmployeeBookedDates(id);
+    ResponseEntity<List<LocalDate>> getEmployeesBookedDates(@PathVariable Long id, Principal principal) {
+        return employeeService.getEmployeeBookedDates(id, principal);
     }
 
     @GetMapping("{id}/booked-dates/list")
-    ResponseEntity<List<LocalDate>> getEmployeesBookedDatesAll(@PathVariable Long id) {
-        return employeeService.getEmployeeBookedDatesAll(id);
+    ResponseEntity<List<LocalDate>> getEmployeesBookedDatesAll(@PathVariable Long id, Principal principal) {
+        return employeeService.getEmployeeBookedDatesAll(id, principal);
     }
 }

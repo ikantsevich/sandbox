@@ -11,6 +11,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class BookingCreateDto extends BookingBaseDto {
     private Long parkingSpotId;
-    @NotEmpty(message = "cannot be null")
+    @NotEmpty(message = "cannot be empty")
     private List<LocalDate> dates;
 }
