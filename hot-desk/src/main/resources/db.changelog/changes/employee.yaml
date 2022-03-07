@@ -66,3 +66,19 @@ databaseChangeLog:
                   name: em_modified
                   type: datetime
                   defaultValueComputed: CURRENT_TIMESTAMP
+  - changeSet:
+      id: employee add password
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: employee
+            columnName: password
+      changes:
+          - addColumn:
+              tableName: employee
+              columns:
+                - column:
+                    name: password
+                    type: varchar(255)

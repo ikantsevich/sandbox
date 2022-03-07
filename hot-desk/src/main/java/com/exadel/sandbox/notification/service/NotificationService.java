@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,9 +30,9 @@ public class NotificationService extends BaseCrudService<Notification, Notificat
         this.mailSender = mailSender;
     }
 
-    public ResponseEntity<EmployeeResponseDto> findByEmployeeId(Long id) {
+    public ResponseEntity<List<NotificationResponseDto>> findByEmployeeId(Long id) {
         List<Notification> notifications = repository.findNotificationsByEmployeeId(id);
-        return ResponseEntity.ok(mapper.map(notifications, new TypeToken<List<EmployeeResponseDto>>() {}.getType()));
+        return ResponseEntity.ok(notifications.stream().map(notification -> mapper.map(notification, NotificationResponseDto.class)).collect(Collectors.toList()));
     }
 
     public NotificationResponseDto send(NotificationCreateDto notificationCreateDto) {

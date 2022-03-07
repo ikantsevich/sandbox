@@ -1,6 +1,8 @@
 package com.exadel.sandbox.exception.handlers;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.exadel.sandbox.exception.ExceptionResponse;
+import com.exadel.sandbox.exception.exceptions.AuthenticationRequestException;
 import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
 import com.exadel.sandbox.exception.exceptions.DoubleBookingInADayException;
 import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
@@ -57,6 +59,28 @@ public class CustomExceptionHandler {
         HttpStatus status = HttpStatus.NOT_FOUND;
         ExceptionResponse response = new ExceptionResponse(
                 "entity doesn't exist",
+                status,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(value = {AuthenticationRequestException.class})
+    public ResponseEntity<ExceptionResponse> handeAuthenticationRequestException(AuthenticationRequestException e){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ExceptionResponse response = new ExceptionResponse(
+                "bad request",
+                status,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(value = {TokenExpiredException.class})
+    public ResponseEntity<ExceptionResponse> handeTokenExpiredException(TokenExpiredException e){
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        ExceptionResponse response = new ExceptionResponse(
+                e.getMessage(),
                 status,
                 LocalDateTime.now()
         );

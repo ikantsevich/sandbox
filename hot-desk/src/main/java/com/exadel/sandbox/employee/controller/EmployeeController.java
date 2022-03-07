@@ -6,6 +6,7 @@ import com.exadel.sandbox.employee.dto.employeeDto.EmployeeUpdateDto;
 import com.exadel.sandbox.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @GetMapping("list")
     ResponseEntity<List<EmployeeResponseDto>> getEmployees() {
         return employeeService.getList();
@@ -30,12 +32,14 @@ public class EmployeeController {
         return employeeService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PostMapping()
     ResponseEntity<EmployeeResponseDto> createEmployee(@Valid @RequestBody EmployeeCreateDto employeeCreateDto) {
 
         return employeeService.create(employeeCreateDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @DeleteMapping("{id}")
     void deleteEmployeeById(@PathVariable("id") Long id) {
         employeeService.delete(id);
@@ -48,6 +52,7 @@ public class EmployeeController {
         return employeeService.update(id, employeeUpdateDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @PutMapping("{id}/addRole/{roleId}")
     ResponseEntity<EmployeeResponseDto> addRole(@PathVariable Long id,
                                                 @PathVariable Long roleId) {

@@ -7,6 +7,7 @@ import com.exadel.sandbox.seat.dto.SeatUpdateDto;
 import com.exadel.sandbox.seat.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SeatController {
     private final SeatService seatService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MAPPER')")
     @GetMapping("list")
     ResponseEntity<List<SeatResponseDto>> getSeats() {
         return seatService.getList();
@@ -34,17 +36,19 @@ public class SeatController {
         return seatService.getSeatsByFloorId(floorId);
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @PostMapping()
     ResponseEntity<SeatResponseDto> createSeat(@Valid @RequestBody SeatCreateDto seatBaseDto) {
         return seatService.create(seatBaseDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @DeleteMapping("{id}")
     void deleteSeatById(@PathVariable Long id) {
         seatService.delete(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @PutMapping("{id}")
     ResponseEntity<SeatResponseDto> updateSeat(@PathVariable("id") Long id,
                                                @Valid @RequestBody SeatUpdateDto seatUpdateDto) {

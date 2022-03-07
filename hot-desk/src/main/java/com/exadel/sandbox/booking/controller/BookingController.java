@@ -6,6 +6,7 @@ import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,7 +19,7 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @GetMapping("list")
     ResponseEntity<List<BookingResponseDto>> getBookings() {
         return bookingService.getList();
@@ -45,14 +46,15 @@ public class BookingController {
         return bookingService.update(id, bookingUpdateDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @GetMapping("list/current")
     ResponseEntity<List<BookingResponseDto>> getCurrentBookings() {
         return bookingService.getCurrentBookings();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
     @GetMapping("offices/{officeId}/list")
     ResponseEntity<List<BookingResponseDto>> getBookingsByOfficeId(@PathVariable Long officeId) {
         return bookingService.getBookingsByOfficeId(officeId);
     }
-
 }

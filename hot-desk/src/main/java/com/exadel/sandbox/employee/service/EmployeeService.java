@@ -13,6 +13,7 @@ import com.exadel.sandbox.role.entity.Role;
 import com.exadel.sandbox.role.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +25,21 @@ import java.util.List;
 public class EmployeeService extends BaseCrudService<Employee, EmployeeResponseDto, EmployeeUpdateDto, EmployeeCreateDto, EmployeeRepository> {
 
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public EmployeeService(ModelMapper mapper, EmployeeRepository repository, TgInfoRepository tgInfoRepository, RoleRepository roleRepository) {
+    public EmployeeService(ModelMapper mapper, EmployeeRepository repository, TgInfoRepository tgInfoRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         super(mapper, repository);
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public ResponseEntity<EmployeeResponseDto> create(EmployeeCreateDto employeeCreateDto) {
+        Employee employee = mapper.map(employeeCreateDto, Employee.class);
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+
+        employee = repository.save(employee);
+        return ResponseEntity.ok(mapper.map(employee, EmployeeResponseDto.class));
     }
 
     public ResponseEntity<EmployeeResponseDto> addRole(Long id, Long roleId) {
