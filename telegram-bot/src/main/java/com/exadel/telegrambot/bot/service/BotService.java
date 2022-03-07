@@ -28,24 +28,25 @@ public class BotService {
     private final HotDeskFeign hotDeskFeign;
     private final Executor executor;
 
-    public void checkEmployee(Update update){
+    public EmployeeResponseDto checkEmployee(Update update) {
         Message message = getMessage(update);
         try {
-           hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
+            return hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
         } catch (FeignException e) {
             e.printStackTrace();
             executor.sendMessage(message.getChatId(), "You are not our employee");
+            return null;
         }
     }
 
-    public void getCountry(Update update){
+    public void getCountry(Update update) {
         Message message = getMessage(update);
         SendMessage sendMessage = new SendMessage(message.getChatId().toString(), CHOOSE_COUNTRY);
         sendMessage.setReplyMarkup(keyboardService.countryMenu(getEmployeeId(message.getChatId().toString())));
         telegramFeign.sendMessage(sendMessage);
     }
 
-    public void getCity(Update update){
+    public void getCity(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
         EditMessageText editMessageText = new EditMessageText(CHOOSE_CITY);
@@ -55,7 +56,7 @@ public class BotService {
         telegramFeign.editMessageText(editMessageText);
     }
 
-    public void getOffice(Update update){
+    public void getOffice(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
         EditMessageText editMessageText = new EditMessageText(CHOOSE_OFFICE);
@@ -65,7 +66,7 @@ public class BotService {
         telegramFeign.editMessageText(editMessageText);
     }
 
-    public void getDateType(Update update){
+    public void getDateType(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
         EditMessageText editMessageText = new EditMessageText(CHOOSE_BOOKING_TYPE);
@@ -75,34 +76,33 @@ public class BotService {
         telegramFeign.editMessageText(editMessageText);
     }
 
-    private Long getEmployeeId(String chatId){
+    private Long getEmployeeId(String chatId) {
         return hotDeskFeign.getEmployeeByChatId(chatId).getId();
     }
 
-    public void getMainMenuSend(Update update){
+    public void getMainMenuSend(Update update) {
         Message message = getMessage(update);
         SendMessage sendMessage = new SendMessage(message.getChatId().toString(), MENU_TEXT);
         sendMessage.setReplyMarkup(keyboardService.homeMenu());
         telegramFeign.sendMessage(sendMessage);
     }
 
-    public String getAndCheck(Update update){
-        Message message = getMessage(update);
-        EmployeeResponseDto employeeByChatId = hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
-        return employeeByChatId.getTgInfo().getChatState();
+    public String getAndCheck(Update update) {
+        EmployeeResponseDto employeeByChatId = checkEmployee(update);
+        return employeeByChatId == null ? SKIP_ACTION : employeeByChatId.getTgInfo().getChatState();
     }
 
-    public void hello(Update update){
+    public void hello(Update update) {
         Message message = getMessage(update);
         telegramFeign.sendMessage(new SendMessage(message.getChatId().toString(), "Hello"));
     }
 
-    public void deleteMessage(Update update){
+    public void deleteMessage(Update update) {
         Message message = getMessage(update);
         telegramFeign.deleteMessage(message.getChatId().toString(), message.getMessageId());
     }
 
-    public void switchDate(Update update){
+    public void switchDate(Update update) {
         final CallbackQuery callbackQuery = update.getCallbackQuery();
         boolean isPrev = callbackQuery.getData().startsWith(PREV);
         LocalDate date = LocalDate.parse(callbackQuery.getData().substring(isPrev ? PREV.length() : NEXT.length()));
@@ -112,18 +112,27 @@ public class BotService {
     public void getDate(Update update, LocalDate date) {
         final String data = update.getCallbackQuery().getData();
         Message message = getMessage(update);
-        EditMessageText editMessageText = new EditMessageText(GET_DATE_TEXT);
-        editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
+        EditMessageText editMessageText = new EditMessageText();
+        if (data.endsWith(ONE_DAY)){
+            editMessageText.setText(GET_DATE_TEXT);
+            editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
+        } else if (data.length()<35 && data.startsWith(DATE) && data.endsWith(CONTINUOUS)){
+            editMessageText.setText(GET_CONTINUOUS_DATE_END);
+            editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(DATE.length())));
+        } else if (Character.isDigit(data.charAt(0)) && data.endsWith(CONTINUOUS)){
+            editMessageText.setText(GET_CONTINUOUS_DATE_BEGIN);
+            editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
+        }
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
         telegramFeign.editMessageText(editMessageText);
     }
 
-    private Message getMessage(Update update){
+    private Message getMessage(Update update) {
         return (update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage());
     }
 
-    public void getSeats(Update update){
+    public void getSeats(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
         EditMessageText editMessageText = new EditMessageText(CHOOSE_SEAT);

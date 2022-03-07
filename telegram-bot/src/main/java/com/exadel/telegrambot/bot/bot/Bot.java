@@ -19,47 +19,46 @@ public class Bot {
     private final BotService botService;
 
     public void updateHandler(Update update) {
-        botService.checkEmployee(update);
+        if (botService.checkEmployee(update) == null)
+            return;
         String state = botService.getAndCheck(update);
-        if (update.hasMessage()){
+        if (update.hasMessage()) {
             Message message = update.getMessage();
-            if (message.hasText()){
+            if (message.hasText()) {
                 String text = message.getText();
-                if (text.equals(START)){
+                if (text.equals(START)) {
                     state = MAIN_MENU_SEND;
-                } else if (text.equals(NEW_BOOKING)){
+                } else if (text.equals(NEW_BOOKING)) {
                     state = COUNTRIES;
                 }
-            } else if (message.hasContact()){
+            } else if (message.hasContact()) {
 
             }
-        } else if (update.hasCallbackQuery()){
+        } else if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
-            if (data.startsWith(COUNTRIES)){
+            if (data.startsWith(COUNTRIES)) {
                 state = CITIES;
-            } else if (data.startsWith(CITIES)){
+            } else if (data.startsWith(CITIES)) {
                 state = OFFICE;
-            } else if (data.startsWith(OFFICE)){
+            } else if (data.startsWith(OFFICE)) {
                 state = CHOOSE_BOOKING_TYPE;
-            } else if (data.startsWith(CHOOSE_BOOKING_TYPE) && data.endsWith(ONE_DAY)){
+            } else if ((data.startsWith(CHOOSE_BOOKING_TYPE) && (data.endsWith(ONE_DAY) || data.endsWith(CONTINUOUS)))
+                    || (data.startsWith(DATE) && data.endsWith(CONTINUOUS))) {
                 state = GET_DATE;
-            } else if (data.endsWith(ONE_DAY)){
+            } else if (data.endsWith(ONE_DAY) || data.endsWith(CONTINUOUS)) {
                 state = GET_SEATS;
-            } else if (data.endsWith(RECURRING)){
+            } else if (data.endsWith(RECURRING)) {
                 state = CHOOSE_RECURRING_TIME;
-            } else if (data.startsWith(CHOOSE_RECURRING_TIME)){
+            } else if (data.startsWith(CHOOSE_RECURRING_TIME)) {
                 state = GET_DAY_OF_WEEK;
-            } else if (data.startsWith(GET_DAY_OF_WEEK)){
+            } else if (data.startsWith(GET_DAY_OF_WEEK)) {
                 state = GET_SEATS_RECURRING;
-            } else if (data.startsWith(GET_SEATS_RECURRING) || data.startsWith(ONE_DAY)){
+            } else if (data.startsWith(GET_SEATS_RECURRING) || data.startsWith(ONE_DAY)) {
                 state = GET_PARKING;
             }
         }
 
-        if (state.equals(SKIP_ACTION))
-            return;
-
-        switch (state){
+        switch (state) {
             case MAIN_MENU_SEND -> botService.getMainMenuSend(update);
             case COUNTRIES -> botService.getCountry(update);
             case CITIES -> botService.getCity(update);
@@ -70,7 +69,7 @@ public class Bot {
             case CHOOSE_RECURRING_TIME -> botService.getRecurringTime(update);
             case GET_DAY_OF_WEEK -> botService.getDayOfWeeK(update);
             case GET_SEATS_RECURRING -> botService.getSeatsByRecurring(update);
-            case GET_PARKING ->  botService.getParking(update);
+            default -> botService.getParking(update);
         }
     }
 }
