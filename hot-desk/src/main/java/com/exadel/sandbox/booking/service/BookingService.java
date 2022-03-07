@@ -9,24 +9,30 @@ import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
 import com.exadel.sandbox.exception.exceptions.DoubleBookingInADayException;
+import com.exadel.sandbox.exception.exceptions.VacationOverlapException;
+import com.exadel.sandbox.vacation.entities.Vacation;
+import com.exadel.sandbox.vacation.repository.VacationRepository;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class BookingService extends BaseCrudService<Booking, BookingResponseDto, BookingUpdateDto, BookingCreateDto, BookingRepository> {
+    private final VacationRepository vacationRepository;
 
-    public BookingService(ModelMapper mapper, BookingRepository repository) {
+    public BookingService(ModelMapper mapper, BookingRepository repository, VacationRepository vacationRepository) {
         super(mapper, repository);
+        this.vacationRepository = vacationRepository;
     }
 
     public final static int MAX_MONTH = 3;
@@ -38,6 +44,9 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
 
         checkNewBooking(booking);
 
+//        Removing duplicate dates
+        booking.setDates(new ArrayList<>(new HashSet<>(booking.getDates())));
+
         BookingResponseDto bookingResponseDto = mapper.map(repository.save(booking), BookingResponseDto.class);
 
         return new ResponseEntity<>(bookingResponseDto, HttpStatus.CREATED);
@@ -48,6 +57,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         List<LocalDate> dates = booking.getDates().stream().map(BookingDates::getDate).collect(Collectors.toList());
 
         checkTheDates(dates);
+        checkTheEmployeesVacation(dates, booking.getEmployee().getId());
 
         List<LocalDate> seatsBookedDates = repository.checkSeatBookingDates(booking.getSeat().getId(), dates);
         List<LocalDate> employeeBookedDates = repository.checkEmployeeBookedDates(booking.getEmployee().getId(), dates);
@@ -76,6 +86,18 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
             if (!(date.isAfter(today) && date.isBefore(dateLimit)) && !(date.equals(today) || date.equals(dateLimit)))
                 throw new DateOutOfBoundException("Date " + date + " is not in the range ");
         });
+    }
+
+    private void checkTheEmployeesVacation(List<LocalDate> dates, Long employeeId) {
+        List<Vacation> vacationList = vacationRepository.findAllByEmployeeId(employeeId);
+         dates.forEach(date -> {
+             vacationList.forEach(vacation -> {
+                 if (vacation.getStart().toLocalDate().isBefore(date) && vacation.getEnd().toLocalDate().isAfter(date))
+                     throw new VacationOverlapException("On date: " + date + " employee is on vacation");
+                 if (vacation.getStart().toLocalDate().equals(date) || vacation.getEnd().toLocalDate().equals(date))
+                     throw new VacationOverlapException("On date: " + date + " employee is on vacation");
+             });
+         });
     }
 
     public ResponseEntity<List<BookingResponseDto>> getCurrentBookings() {
