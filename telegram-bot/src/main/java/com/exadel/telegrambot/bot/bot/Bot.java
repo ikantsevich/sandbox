@@ -59,7 +59,6 @@ public class Bot {
         }
 
         switch (state) {
-            case MAIN_MENU_SEND -> botService.getMainMenuSend(update);
             case COUNTRIES -> botService.getCountry(update);
             case CITIES -> botService.getCity(update);
             case OFFICE -> botService.getOffice(update);
@@ -69,7 +68,8 @@ public class Bot {
             case CHOOSE_RECURRING_TIME -> botService.getRecurringTime(update);
             case GET_DAY_OF_WEEK -> botService.getDayOfWeeK(update);
             case GET_SEATS_RECURRING -> botService.getSeatsByRecurring(update);
-            default -> botService.getParking(update);
+            case GET_PARKING -> botService.getParking(update);
+            default -> botService.getMainMenuSend(update);
         }
     }
 }
