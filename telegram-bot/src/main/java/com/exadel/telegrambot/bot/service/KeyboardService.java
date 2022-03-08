@@ -310,6 +310,8 @@ public class KeyboardService {
             if (date.getDayOfWeek().getValue()==day){
                 days--;
                 dates.add(date);
+                date = date.plusWeeks(1);
+                continue;
             }
             date = date.plusDays(1);
         }
