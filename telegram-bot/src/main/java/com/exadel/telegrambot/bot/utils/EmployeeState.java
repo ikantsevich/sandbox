@@ -17,4 +17,5 @@ public interface EmployeeState {
     String CHOOSE_RECURRING_TIME = "choose_recurring_time";
     String GET_PARKING = "get_parking";
     String GET_CONTINUOUS_DATE = "get_continuous_date";
+    String GET_REVIEW = "get_review";
 }

@@ -13,9 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 public class CallBackDto {
-    private Long emId;
+    private Long addId;
     private Long offId;
     private Long seatId;
     private List<LocalDate> dates;
-    private String bookingType;
+    private Long parkingId;
+    private String country;
 }

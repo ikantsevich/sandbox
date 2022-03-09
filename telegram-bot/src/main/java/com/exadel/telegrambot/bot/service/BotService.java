@@ -52,7 +52,7 @@ public class BotService {
         EditMessageText editMessageText = new EditMessageText(CHOOSE_CITY);
         editMessageText.setChatId(message.getChatId().toString());
         editMessageText.setMessageId(message.getMessageId());
-        editMessageText.setReplyMarkup(keyboardService.cityMenu(data.substring(COUNTRIES.length())));
+        editMessageText.setReplyMarkup(keyboardService.cityMenu(data.substring(COUNTRIES.length() + 1)));
         telegramFeign.editMessageText(editMessageText);
     }
 
@@ -62,7 +62,7 @@ public class BotService {
         EditMessageText editMessageText = new EditMessageText(CHOOSE_OFFICE);
         editMessageText.setChatId(message.getChatId().toString());
         editMessageText.setMessageId(message.getMessageId());
-        editMessageText.setReplyMarkup(keyboardService.officeMenu(data.substring(CITIES.length())));
+        editMessageText.setReplyMarkup(keyboardService.officeMenu(data.substring(CITIES.length() + 1)));
         telegramFeign.editMessageText(editMessageText);
     }
 
@@ -72,7 +72,7 @@ public class BotService {
         EditMessageText editMessageText = new EditMessageText(CHOOSE_BOOKING_TYPE);
         editMessageText.setChatId(message.getChatId().toString());
         editMessageText.setMessageId(message.getMessageId());
-        editMessageText.setReplyMarkup(keyboardService.createDateType(EmployeeState.CHOOSE_BOOKING_TYPE + data.substring(OFFICE.length())));
+        editMessageText.setReplyMarkup(keyboardService.createDateType(EmployeeState.CHOOSE_BOOKING_TYPE + data.substring(OFFICE.length() + 1)));
         telegramFeign.editMessageText(editMessageText);
     }
 
@@ -184,6 +184,16 @@ public class BotService {
             editMessageText.setReplyMarkup(keyboardService.getHasParking(data.substring(ONE_DAY.length())));
         else if (data.startsWith(CONTINUOUS))
             editMessageText.setReplyMarkup(keyboardService.getHasParking(data.substring(CONTINUOUS.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getReview(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(REVIEW);
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getReview(data.substring(GET_PARKING.length())));
         telegramFeign.editMessageText(editMessageText);
     }
 }

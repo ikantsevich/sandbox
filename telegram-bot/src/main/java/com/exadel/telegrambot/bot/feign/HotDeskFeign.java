@@ -4,6 +4,7 @@ import com.exadel.sandbox.address.dto.AddressResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
+import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -34,4 +35,7 @@ public interface HotDeskFeign {
             @PathVariable Long id,
             @RequestBody List<LocalDate> dateList
     );
+
+    @GetMapping("parking-spot/office-id/{id}")
+    List<ParkingSpotResponseDto> getParkingSpotByOfficeId(@PathVariable Long id);
 }

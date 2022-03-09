@@ -23,6 +23,7 @@ public class Constant {
     public static String CHOOSE_DAY_OF_WEEK = "Choose day of the week";
 
     public static String HAS_PARKING = "Do you wand to add parking \uD83C\uDD7F️\uD83D\uDE99";
+    public static String REVIEW = "Your booking review  \uD83D\uDCDD ";
 
     public static String ONE_DAY = "One Day";
     public static String CONTINUOUS = "Continuous";

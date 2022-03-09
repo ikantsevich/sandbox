@@ -57,6 +57,8 @@ public class Bot {
                 state = GET_SEATS_RECURRING;
             } else if (data.startsWith(GET_SEATS_RECURRING) || data.startsWith(ONE_DAY) || data.startsWith(CONTINUOUS)) {
                 state = GET_PARKING;
+            } else if (data.startsWith(GET_PARKING)) {
+                state = GET_REVIEW;
             }
         }
 
@@ -71,6 +73,7 @@ public class Bot {
             case GET_DAY_OF_WEEK -> botService.getDayOfWeeK(update);
             case GET_SEATS_RECURRING -> botService.getSeatsByRecurring(update);
             case GET_PARKING -> botService.getParking(update);
+            case GET_REVIEW -> botService.getReview(update);
             default -> botService.getMainMenuSend(update);
         }
     }
