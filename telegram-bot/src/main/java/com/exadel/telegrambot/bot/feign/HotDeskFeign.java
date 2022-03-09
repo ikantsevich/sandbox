@@ -38,4 +38,13 @@ public interface HotDeskFeign {
 
     @GetMapping("parking-spot/office-id/{id}")
     List<ParkingSpotResponseDto> getParkingSpotByOfficeId(@PathVariable Long id);
+
+    @PutMapping("office/{id}/free-spots")
+    List<ParkingSpotResponseDto> getFreeParkingSpots(
+            @PathVariable Long id,
+            @RequestBody List<LocalDate> dates
+    );
+
+    @GetMapping("seat/{id}")
+    SeatResponseDto getSeatById(@PathVariable Long id);
 }

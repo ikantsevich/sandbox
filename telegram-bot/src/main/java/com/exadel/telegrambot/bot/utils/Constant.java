@@ -31,6 +31,8 @@ public class Constant {
 
     public static String YES = "YES  ✅";
     public static String NO = "NO  ❌";
+    public static String CONFIRM = "Confirm  ✅";
+    public static String CANCEL = "Cancel  ❌";
 
     public static String MONDAY = "Monday";
     public static String TUESDAY = "Tuesday";

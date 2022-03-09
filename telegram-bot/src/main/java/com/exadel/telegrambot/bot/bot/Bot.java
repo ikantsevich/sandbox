@@ -1,7 +1,6 @@
 package com.exadel.telegrambot.bot.bot;
 
 import com.exadel.telegrambot.bot.service.BotService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -59,6 +58,8 @@ public class Bot {
                 state = GET_PARKING;
             } else if (data.startsWith(GET_PARKING)) {
                 state = GET_REVIEW;
+            } else if (data.startsWith(GET_REVIEW)){
+                state = BOOKING;
             }
         }
 
@@ -74,6 +75,7 @@ public class Bot {
             case GET_SEATS_RECURRING -> botService.getSeatsByRecurring(update);
             case GET_PARKING -> botService.getParking(update);
             case GET_REVIEW -> botService.getReview(update);
+            case BOOKING -> botService.bookWorkPlace(update);
             default -> botService.getMainMenuSend(update);
         }
     }

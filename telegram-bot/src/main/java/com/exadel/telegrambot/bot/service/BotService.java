@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.exadel.telegrambot.bot.utils.Constant.CHOOSE_BOOKING_TYPE;
 import static com.exadel.telegrambot.bot.utils.Constant.CHOOSE_RECURRING_TIME;
@@ -190,10 +191,19 @@ public class BotService {
     public void getReview(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
-        EditMessageText editMessageText = new EditMessageText(REVIEW);
+        final List<String> review = keyboardService.getReview(data.substring(GET_PARKING.length()));
+                EditMessageText editMessageText = new EditMessageText(
+                        REVIEW +
+                                "\n" +
+                                review.get(0)
+                );
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
-        editMessageText.setReplyMarkup(keyboardService.getReview(data.substring(GET_PARKING.length())));
+        editMessageText.setReplyMarkup(keyboardService.getReviewInline(review.get(0) + data.substring(GET_PARKING.length())));
         telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void bookWorkPlace(Update update) {
+        keyboardService.booking(update);
     }
 }
