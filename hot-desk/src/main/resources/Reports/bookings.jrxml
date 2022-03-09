@@ -2,10 +2,8 @@
 <!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="booking_by_employee" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bc4c3d29-1b4f-4e0d-b983-917527068ad3">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
-    <field name="firstname" class="java.lang.String"/>
-    <field name="lastname" class="java.lang.String"/>
-    <field name="email" class="java.lang.String"/>
-    <field name="position" class="java.lang.String"/>
+    <field name="id" class="java.lang.String"/>
+    <field name="dates" class="com.exadel.sandbox.booking.entity.BookingDates"/>
     <background>
         <band/>
     </background>

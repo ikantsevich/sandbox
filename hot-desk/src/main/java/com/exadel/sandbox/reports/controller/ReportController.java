@@ -1,8 +1,11 @@
 package com.exadel.sandbox.reports.controller;
 
+import com.exadel.sandbox.booking.entity.Booking;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.reports.dto.SeatReportDto;
 import com.exadel.sandbox.reports.service.ReportService;
+import com.exadel.sandbox.seat.dto.SeatResponseDto;
+import com.exadel.sandbox.seat.entity.Seat;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ public class ReportController {
         return service.findAllEmployees();
     }
 
+
     @GetMapping("/{fileFormat}")
     public ResponseEntity<byte[]> generateReport(@PathVariable String fileFormat) throws IOException, JRException {
         //return service.generateReport(fileFormat);
@@ -41,5 +45,17 @@ public class ReportController {
     @GetMapping("office/{id}")
     public List<SeatReportDto> seatReport(@PathVariable Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
         return service.seatReport(id, startDate, endDate);
+    }
+
+    @GetMapping("/office/{fileFormat}")
+    public ResponseEntity<byte[]> generateBookingReportByOffice(@PathVariable String fileFormat) throws IOException, JRException {
+        //return service.generateReport(fileFormat);
+        byte [] data = service.generateBookingReportByOffice(fileFormat);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=booking_by_office.pdf");
+
+        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
+
     }
 }
