@@ -1,36 +1,34 @@
 package com.exadel.sandbox.reports.service;
 
-import com.exadel.sandbox.reports.service.ReportService;
+import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
+import com.exadel.sandbox.reports.dto.SeatReportDto;
 
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 
+import com.exadel.sandbox.seat.repository.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
-import net.sf.jasperreports.export.*;
-import org.apache.http.client.methods.HttpHead;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
-import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+
 
 @Service
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
     private final EmployeeRepository employeeRepository;
+    private final SeatRepository seatRepository;
 
     @Override
     public byte[] generateReport(String reportFormat) throws FileNotFoundException, JRException {
@@ -67,5 +65,17 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Employee> findAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    @Override
+    public List<SeatReportDto> seatReport(Long id, LocalDate startDate, LocalDate endDate) {
+        long between = DAYS.between(startDate, endDate) + 1;
+
+        if (between < 0)
+            throw new DateOutOfBoundException();
+        List<SeatReportDto> reportOfSeatsById = seatRepository.findReportOfSeatsById(id, startDate, endDate);
+        reportOfSeatsById.forEach(seatReportDto -> seatReportDto.setFreeDates(between - seatReportDto.getBookedDates()));
+
+        return reportOfSeatsById;
     }
 }
