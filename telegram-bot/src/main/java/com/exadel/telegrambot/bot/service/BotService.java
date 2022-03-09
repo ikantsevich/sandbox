@@ -110,7 +110,7 @@ public class BotService {
     }
 
     public void getDate(Update update, LocalDate date) {
-        final String data = update.getCallbackQuery().getData();
+        String data = update.getCallbackQuery().getData();
         Message message = getMessage(update);
         EditMessageText editMessageText = new EditMessageText();
         if (data.endsWith(ONE_DAY)){
@@ -119,7 +119,7 @@ public class BotService {
         } else if (data.length()<35 && data.startsWith(DATE) && data.endsWith(CONTINUOUS)){
             editMessageText.setText(GET_CONTINUOUS_DATE_END);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(DATE.length())));
-        } else if (Character.isDigit(data.charAt(0)) && data.endsWith(CONTINUOUS)){
+        } else if (data.endsWith(CONTINUOUS)){
             editMessageText.setText(GET_CONTINUOUS_DATE_BEGIN);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
         }
@@ -182,6 +182,8 @@ public class BotService {
             editMessageText.setReplyMarkup(keyboardService.getHasParking(data.substring(GET_SEATS_RECURRING.length())));
         else if (data.startsWith(ONE_DAY))
             editMessageText.setReplyMarkup(keyboardService.getHasParking(data.substring(ONE_DAY.length())));
+        else if (data.startsWith(CONTINUOUS))
+            editMessageText.setReplyMarkup(keyboardService.getHasParking(data.substring(CONTINUOUS.length())));
         telegramFeign.editMessageText(editMessageText);
     }
 }

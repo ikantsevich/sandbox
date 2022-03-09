@@ -199,25 +199,45 @@ public class KeyboardService {
     }
 
     public InlineKeyboardMarkup getSeats(String data) {
-        String date = data.substring(0, 10);
-        List<LocalDate> localDates = new ArrayList<>(List.of(LocalDate.parse(date)));
-        String offId = getOfficeId(data);
+        List<LocalDate> localDates = new ArrayList<>();
+        String offId = null;
+        boolean isContinuous = false;
+        if (data.endsWith(CONTINUOUS)) {
+            isContinuous = true;
+            String end = data.substring(0, 10);
+            String begin = data.substring(10, 20);
+            getContinuousDays(localDates, begin, end);
+            offId = getOfficeId(data, true);
+        } else if (data.endsWith(ONE_DAY)) {
+            String date = data.substring(0, 10);
+            localDates.add(LocalDate.parse(date));
+            offId = getOfficeId(data, false);
+        }
         final OfficeResponseDto officeByAddressId = getOfficeByAddressId(Long.valueOf(offId));
         final List<SeatResponseDto> seatsByOfficeIdAndDate = getListOfSeats(officeByAddressId.getId(), localDates);
-        return getInlineKeyboard(ONE_DAY + date + offId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
+        return getInlineKeyboard((isContinuous ? CONTINUOUS : ONE_DAY) + localDates + offId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
     }
 
-    private OfficeResponseDto getOfficeByAddressId(Long id){
+    private void getContinuousDays(List<LocalDate> localDates, String begin, String end){
+        LocalDate beginning = LocalDate.parse(begin);
+        LocalDate ending = LocalDate.parse(end);
+        while (!String.valueOf(beginning).equals(String.valueOf(ending))){
+            localDates.add(beginning);
+            beginning = beginning.plusDays(1);
+        }
+        localDates.add(ending);
+    }
+
+    private OfficeResponseDto getOfficeByAddressId(Long id) {
         return hotDeskFeign.getOfficeByAddressId(id);
     }
 
-    private List<SeatResponseDto> getListOfSeats(Long id, List<LocalDate> localDates){
+    private List<SeatResponseDto> getListOfSeats(Long id, List<LocalDate> localDates) {
         return hotDeskFeign.getSeatsByOfficeIdAndDate(id, localDates);
     }
 
 
-
-    public List<String> getCallbackOfSeats(List<SeatResponseDto> seatsByOfficeIdAndDate, List<String> callback){
+    public List<String> getCallbackOfSeats(List<SeatResponseDto> seatsByOfficeIdAndDate, List<String> callback) {
         for (SeatResponseDto seatResponseDto : seatsByOfficeIdAndDate) {
             StringBuilder stringBuilderCallback = new StringBuilder();
             stringBuilderCallback.append(seatResponseDto.getId());
@@ -226,7 +246,7 @@ public class KeyboardService {
         return callback;
     }
 
-    public List<String> getTextOfSeats(List<SeatResponseDto> seatsByOfficeIdAndDate, List<String> text){
+    public List<String> getTextOfSeats(List<SeatResponseDto> seatsByOfficeIdAndDate, List<String> text) {
         for (SeatResponseDto seatResponseDto : seatsByOfficeIdAndDate) {
             StringBuilder stringBuilderText = new StringBuilder();
             stringBuilderText.append(seatResponseDto.getNumber())
@@ -240,10 +260,14 @@ public class KeyboardService {
     }
 
 
-
-    public String getOfficeId(String data) {
+    public String getOfficeId(String data, boolean isContinuous) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 10; i < data.length(); i++) {
+        int i = 0;
+        if (isContinuous)
+            i = 20;
+        else
+            i = 10;
+        for (; i < data.length(); i++) {
             if (Character.isDigit(data.charAt(i)))
                 stringBuilder.append(data.charAt(i));
         }
@@ -306,8 +330,8 @@ public class KeyboardService {
         LocalDate date = LocalDate.now();
         final int day = checkDayOfWeek(dayOfWeek.toString());
         List<LocalDate> dates = new ArrayList<>();
-        while (days>0){
-            if (date.getDayOfWeek().getValue()==day){
+        while (days > 0) {
+            if (date.getDayOfWeek().getValue() == day) {
                 days--;
                 dates.add(date);
                 date = date.plusWeeks(1);
@@ -320,9 +344,9 @@ public class KeyboardService {
         return getInlineKeyboard(GET_SEATS_RECURRING + dates + addressId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
     }
 
-    private int checkDayOfWeek(String dayOfWeek){
+    private int checkDayOfWeek(String dayOfWeek) {
         int i = 1;
-        for (String day: List.of(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)){
+        for (String day : List.of(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)) {
             if (dayOfWeek.equals(day))
                 return i;
             i++;

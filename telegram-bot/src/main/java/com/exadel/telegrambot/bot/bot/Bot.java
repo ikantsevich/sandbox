@@ -1,6 +1,7 @@
 package com.exadel.telegrambot.bot.bot;
 
 import com.exadel.telegrambot.bot.service.BotService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -36,6 +37,7 @@ public class Bot {
             }
         } else if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
+            String text = update.getCallbackQuery().getMessage().getText();
             if (data.startsWith(COUNTRIES)) {
                 state = CITIES;
             } else if (data.startsWith(CITIES)) {
@@ -43,9 +45,9 @@ public class Bot {
             } else if (data.startsWith(OFFICE)) {
                 state = CHOOSE_BOOKING_TYPE;
             } else if ((data.startsWith(CHOOSE_BOOKING_TYPE) && (data.endsWith(ONE_DAY) || data.endsWith(CONTINUOUS)))
-                    || (data.startsWith(DATE) && data.endsWith(CONTINUOUS))) {
+                    || text.equals(GET_CONTINUOUS_DATE_BEGIN)) {
                 state = GET_DATE;
-            } else if (data.endsWith(ONE_DAY) || data.endsWith(CONTINUOUS)) {
+            } else if (data.endsWith(ONE_DAY) || text.equals(GET_CONTINUOUS_DATE_END)) {
                 state = GET_SEATS;
             } else if (data.endsWith(RECURRING)) {
                 state = CHOOSE_RECURRING_TIME;
@@ -53,7 +55,7 @@ public class Bot {
                 state = GET_DAY_OF_WEEK;
             } else if (data.startsWith(GET_DAY_OF_WEEK)) {
                 state = GET_SEATS_RECURRING;
-            } else if (data.startsWith(GET_SEATS_RECURRING) || data.startsWith(ONE_DAY)) {
+            } else if (data.startsWith(GET_SEATS_RECURRING) || data.startsWith(ONE_DAY) || data.startsWith(CONTINUOUS)) {
                 state = GET_PARKING;
             }
         }
