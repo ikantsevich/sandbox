@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,9 +25,9 @@ public class ParkingSpotService extends BaseCrudService<ParkingSpot, ParkingSpot
         this.parkingSpotRepository = parkingSpotRepository;
     }
 
-    public ResponseEntity<ParkingSpotResponseDto> findByOfficeId(Long id) {
-        ParkingSpot parkingSpot = parkingSpotRepository.findParkingSpotByOfficeId(id);
-        return ResponseEntity.ok(mapper.map(parkingSpot, ParkingSpotResponseDto.class));
+    public ResponseEntity<List<ParkingSpotResponseDto>> findByOfficeId(Long id) {
+        List<ParkingSpot> parkingSpotByOfficeId = parkingSpotRepository.findParkingSpotByOfficeId(id);
+        return ResponseEntity.ok(parkingSpotByOfficeId.stream().map(parkingSpot -> mapper.map(parkingSpot, ParkingSpotResponseDto.class)).collect(Collectors.toList()));
     }
 
     public ResponseEntity<List<LocalDate>> getParkingSpotBookedDates(Long id) {

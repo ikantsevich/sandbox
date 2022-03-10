@@ -31,7 +31,7 @@ public class ParkingSpotController {
     }
 
     @GetMapping("office-id/{id}")
-    ResponseEntity<ParkingSpotResponseDto> getByOfficeId(@PathVariable("id") Long id) {
+    ResponseEntity<List<ParkingSpotResponseDto>> getByOfficeId(@PathVariable("id") Long id) {
         return parkingSpotService.findByOfficeId(id);
     }
 
