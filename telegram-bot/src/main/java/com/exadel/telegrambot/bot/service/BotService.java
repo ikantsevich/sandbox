@@ -114,13 +114,13 @@ public class BotService {
         String data = update.getCallbackQuery().getData();
         Message message = getMessage(update);
         EditMessageText editMessageText = new EditMessageText();
-        if (data.endsWith(ONE_DAY)){
+        if (data.endsWith(ONE_DAY)) {
             editMessageText.setText(GET_DATE_TEXT);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
-        } else if (data.length()<35 && data.startsWith(DATE) && data.endsWith(CONTINUOUS)){
+        } else if (data.length() < 35 && data.startsWith(DATE) && data.endsWith(CONTINUOUS)) {
             editMessageText.setText(GET_CONTINUOUS_DATE_END);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(DATE.length())));
-        } else if (data.endsWith(CONTINUOUS)){
+        } else if (data.endsWith(CONTINUOUS)) {
             editMessageText.setText(GET_CONTINUOUS_DATE_BEGIN);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
         }
@@ -192,14 +192,11 @@ public class BotService {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
         final List<String> review = keyboardService.getReview(data.substring(GET_PARKING.length()));
-                EditMessageText editMessageText = new EditMessageText(
-                        REVIEW +
-                                "\n" +
-                                review.get(0)
-                );
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setText(REVIEW + "\n" + review.get(0));
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
-        editMessageText.setReplyMarkup(keyboardService.getReviewInline(review.get(0) + data.substring(GET_PARKING.length())));
+        editMessageText.setReplyMarkup(keyboardService.getReviewInline("" + review.get(0) + data.substring(GET_PARKING.length())));
         telegramFeign.editMessageText(editMessageText);
     }
 

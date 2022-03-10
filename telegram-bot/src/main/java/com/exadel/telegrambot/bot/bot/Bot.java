@@ -58,9 +58,9 @@ public class Bot {
                 state = GET_PARKING;
             } else if (data.startsWith(GET_PARKING)) {
                 state = GET_REVIEW;
-            } else if (data.startsWith(GET_REVIEW)){
+            } else if (data.startsWith(GET_REVIEW)) {
                 state = BOOKING;
-               }
+            }
         }
 
         switch (state) {

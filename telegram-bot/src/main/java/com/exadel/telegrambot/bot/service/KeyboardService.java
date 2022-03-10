@@ -40,7 +40,7 @@ public class KeyboardService {
         }
         if (!buttons.isEmpty()) {
             inlineKeyboard.add(buttons);
-            buttons = new ArrayList<>();
+//            buttons = new ArrayList<>();
         }
 //        final InlineKeyboardButton button = getButton(CANCEL, CANCEL);
 //        buttons.add(button);
@@ -225,10 +225,10 @@ public class KeyboardService {
         return getInlineKeyboard((isContinuous ? CONTINUOUS : ONE_DAY) + localDates + offId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
     }
 
-    private void getContinuousDays(List<LocalDate> localDates, String begin, String end){
+    private void getContinuousDays(List<LocalDate> localDates, String begin, String end) {
         LocalDate beginning = LocalDate.parse(begin);
         LocalDate ending = LocalDate.parse(end);
-        while (!String.valueOf(beginning).equals(String.valueOf(ending))){
+        while (!String.valueOf(beginning).equals(String.valueOf(ending))) {
             localDates.add(beginning);
             beginning = beginning.plusDays(1);
         }
@@ -277,7 +277,7 @@ public class KeyboardService {
         for (; i < data.length(); i++) {
             if (Character.isDigit(data.charAt(i)))
                 stringBuilder.append(data.charAt(i));
-            else if (data.charAt(i)==' ')
+            else if (data.charAt(i) == ' ')
                 break;
         }
         return stringBuilder.toString();
@@ -374,9 +374,9 @@ public class KeyboardService {
         OfficeResponseDto officeByAddressId = getOfficeByAddressId(getOfficeId(data));
         Long seatId;
         if (data.endsWith(YES)) {
-            seatId = getSeatId(data.substring(0, data.length()-YES.length()));
+            seatId = getSeatId(data.substring(0, data.length() - YES.length()));
         } else {
-            seatId = getSeatId(data.substring(0, data.length()-NO.length()));
+            seatId = getSeatId(data.substring(0, data.length() - NO.length()));
         }
         SeatResponseDto seatById = hotDeskFeign.getSeatById(seatId);
         stringBuilder.append(officeByAddressId.getAddress().getCountry())
@@ -396,7 +396,7 @@ public class KeyboardService {
                 .append("  ")
                 .append(seatById.getStatus());
         List<ParkingSpotResponseDto> freeParkingSpots = hotDeskFeign.getFreeParkingSpots(officeByAddressId.getId(), dates);
-        if (data.endsWith(YES)){
+        if (data.endsWith(YES)) {
             stringBuilder
                     .append("  ")
                     .append("\n")
@@ -407,43 +407,43 @@ public class KeyboardService {
 
     private Long getSeatId(String data) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i=data.indexOf(' ') + 1; i<data.length(); i++){
+        for (int i = data.indexOf(' ') + 1; i < data.length(); i++) {
             if (Character.isDigit(data.charAt(i)))
                 stringBuilder.append(data.charAt(i));
         }
         return Long.valueOf(stringBuilder.toString());
     }
 
-    public InlineKeyboardMarkup getReviewInline(String data){
+    public InlineKeyboardMarkup getReviewInline(String data) {
         List<String> list = new ArrayList<>(List.of(CONFIRM, CANCEL));
-        if (data.endsWith(YES)){
-            return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length()-YES.length()), list, list);
+        if (data.endsWith(YES)) {
+            return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length() - YES.length()), list, list);
         }
-        return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length()-NO.length()), list, list);
+        return getInlineKeyboard(GET_REVIEW, list, list);
     }
 
-    private Long getOfficeId(String data){
+    private Long getOfficeId(String data) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i=data.indexOf("]") + 1; i<data.length(); i++){
+        for (int i = data.indexOf("]") + 1; i < data.length(); i++) {
             if (Character.isDigit(data.charAt(i)))
                 stringBuilder.append(data.charAt(i));
-            else if (data.charAt(i)==' ')
+            else if (data.charAt(i) == ' ')
                 break;
         }
         return Long.parseLong(stringBuilder.toString());
     }
 
-    private List<LocalDate> getDates(String dates){
+    private List<LocalDate> getDates(String dates) {
         List<LocalDate> localDates = new ArrayList<>();
-        for (int i=0; i<dates.length(); i+=10){
-            localDates.add(LocalDate.parse(dates.substring(i, i+10)));
+        for (int i = 0; i < dates.length(); i += 10) {
+            localDates.add(LocalDate.parse(dates.substring(i, i + 10)));
         }
         return localDates;
     }
 
     public void booking(Update update) {
         final String data = update.getCallbackQuery().getData();
-        if (data.endsWith(CONFIRM)){
+        if (data.endsWith(CONFIRM)) {
             final Long seatId = getSeatId(data);
             final List<LocalDate> dates = getDates(data.substring(data.indexOf("[") + 1, data.indexOf("]")));
 
