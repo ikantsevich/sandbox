@@ -94,5 +94,4 @@ public interface TelegramFeign {
     @DeleteMapping("deleteMessage")
     void deleteMessage(@RequestParam(name = "chat_id") String chatId,
                        @RequestParam(name = "message_id") Integer messageId);
-
 }

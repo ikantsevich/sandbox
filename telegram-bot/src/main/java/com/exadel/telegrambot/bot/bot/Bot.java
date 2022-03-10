@@ -60,7 +60,7 @@ public class Bot {
                 state = GET_REVIEW;
             } else if (data.startsWith(GET_REVIEW)){
                 state = BOOKING;
-            }
+               }
         }
 
         switch (state) {
