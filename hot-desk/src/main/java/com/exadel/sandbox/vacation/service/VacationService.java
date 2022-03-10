@@ -11,7 +11,6 @@ import com.exadel.sandbox.vacation.dto.VacationResponseDto;
 import com.exadel.sandbox.vacation.dto.VacationUpdateDto;
 import com.exadel.sandbox.vacation.entities.Vacation;
 import com.exadel.sandbox.vacation.repository.VacationRepository;
-import org.apache.commons.collections.IteratorUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -43,7 +42,7 @@ public class VacationService extends BaseCrudService<Vacation, VacationResponseD
     }
 
     public void editBookings(Vacation vacation) {
-        List<Booking> bookings = bookingRepository.bookingDatesByEmployee(vacation.getEmployee().getId());
+        List<Booking> bookings = bookingRepository.findBookingsByEmployeeId(vacation.getEmployee().getId());
 
         for (Booking booking : bookings) {
             List<BookingDates> remove = new ArrayList<>();
@@ -64,7 +63,6 @@ public class VacationService extends BaseCrudService<Vacation, VacationResponseD
                 bookingRepository.save(booking);
         }
     }
-
 
     public void checkForVacationOverlap(Vacation vacation) {
         List<Vacation> vacations = repository.findAllById(Collections.singleton(vacation.getEmployee().getId()));
