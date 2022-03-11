@@ -48,6 +48,6 @@ public interface HotDeskFeign {
     @GetMapping("seat/{id}")
     SeatResponseDto getSeatById(@PathVariable Long id);
 
-    @PostMapping
+    @PostMapping("booking")
     BookingResponseDto createBooking(@Valid @RequestBody BookingCreateDto bookingCreateDto);
 }

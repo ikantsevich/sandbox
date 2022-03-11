@@ -9,8 +9,8 @@ import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -37,7 +37,7 @@ public class KeyboardService {
 
         for (int i = 0; i < name.size(); i++) {
             buttons.add(getButton(callback + " " + callbackData.get(i), name.get(i)));
-            if (i % 2 == 0) {
+            if (i % 2 == 1) {
                 inlineKeyboard.add(buttons);
                 buttons = new ArrayList<>();
             }
@@ -45,11 +45,11 @@ public class KeyboardService {
         }
         if (!buttons.isEmpty()) {
             inlineKeyboard.add(buttons);
-//            buttons = new ArrayList<>();
+            buttons = new ArrayList<>();
         }
-//        final InlineKeyboardButton button = getButton(CANCEL, CANCEL);
-//        buttons.add(button);
-//        inlineKeyboard.add(buttons);
+        final InlineKeyboardButton button = getButton(DELETE, DELETE);
+        buttons.add(button);
+        inlineKeyboard.add(buttons);
         return new InlineKeyboardMarkup(inlineKeyboard);
     }
 
@@ -370,7 +370,7 @@ public class KeyboardService {
 
     public InlineKeyboardMarkup getHasParking(String data) {
         List<String> hasParking = new ArrayList<>(List.of(YES, NO));
-        return getInlineKeyboard("" + GET_PARKING + data, hasParking, hasParking);
+        return getInlineKeyboard(GET_PARKING + data, hasParking, hasParking);
     }
 
     public List<String> getReview(String data) {
@@ -455,23 +455,29 @@ public class KeyboardService {
         return localDates;
     }
 
-    public void booking(Update update) {
+    public SendMessage booking(Update update) {
         final String data = update.getCallbackQuery().getData();
         final Message message = getMessage(update);
         if (data.endsWith(CONFIRM)) {
-            final Long seatId = getSeatId(data.substring(0, data.length() - CONFIRM.length() - 1));
-            final List<LocalDate> dates = getDates(data.substring(data.indexOf("[") + 1, data.indexOf("]")));
-            final EmployeeResponseDto employeeByChatId = hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
-            final Long id = employeeByChatId.getId();
-            Long parkingId1 = getParkingId(data.substring(GET_PARKING.length()));
-            final Long parkingId = parkingId1 == 0 ? null : parkingId1;
-            BookingCreateDto bookingCreateDto = new BookingCreateDto();
-            bookingCreateDto.setDates(dates);
-            bookingCreateDto.setParkingSpotId(parkingId);
-            bookingCreateDto.setEmployeeId(id);
-            bookingCreateDto.setSeatId(seatId);
-            hotDeskFeign.createBooking(bookingCreateDto);
+            try {
+                final Long seatId = getSeatId(data.substring(0, data.length() - CONFIRM.length() - 1));
+                final List<LocalDate> dates = getDates(data.substring(data.indexOf("[") + 1, data.indexOf("]")));
+                final EmployeeResponseDto employeeByChatId = hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
+                final Long id = employeeByChatId.getId();
+                Long parkingId1 = getParkingId(data.substring(GET_REVIEW.length()));
+                final Long parkingId = parkingId1 == 0 ? null : parkingId1;
+                BookingCreateDto bookingCreateDto = new BookingCreateDto();
+                bookingCreateDto.setDates(dates);
+                bookingCreateDto.setParkingSpotId(parkingId);
+                bookingCreateDto.setEmployeeId(id);
+                bookingCreateDto.setSeatId(seatId);
+                hotDeskFeign.createBooking(bookingCreateDto);
+                return new SendMessage(message.getChatId().toString(), "Booking added successfully");
+            } catch (Exception e){
+                return new SendMessage(message.getChatId().toString(), "You have already booked place for today");
+            }
         }
+        return new SendMessage();
     }
 
     private Long getParkingId(String data) {

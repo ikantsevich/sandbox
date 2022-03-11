@@ -3,7 +3,7 @@ package com.exadel.telegrambot.bot.utils;
 
 public class Constant {
     public static String SKIP = "Skip";
-    public static String DELETE = "DELETE";
+    public static String DELETE = "❌";
     public static String PREV="<<";
     public static String NEXT=">>";
     public static String BACK_TO_GET_TO_OFFICE = "BACK_TO_GET_TO_OFFICE";

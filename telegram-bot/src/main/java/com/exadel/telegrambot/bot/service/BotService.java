@@ -8,6 +8,7 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -100,7 +101,7 @@ public class BotService {
 
     public void deleteMessage(Update update) {
         Message message = getMessage(update);
-        telegramFeign.deleteMessage(message.getChatId().toString(), message.getMessageId());
+        telegramFeign.deleteMessage(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
     }
 
     public void switchDate(Update update) {
@@ -201,6 +202,7 @@ public class BotService {
     }
 
     public void bookWorkPlace(Update update) {
-        keyboardService.booking(update);
+        final SendMessage booking = keyboardService.booking(update);
+        telegramFeign.sendMessage(booking);
     }
 }
