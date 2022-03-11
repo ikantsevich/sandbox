@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReportSeatDto {
+public class BookingReportDto {
     private Long id;
-    private int number;
-    private String status;
+    private SeatReportDto seatReportDto;
+    private LocalDate date;
 }

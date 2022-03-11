@@ -1,6 +1,7 @@
 package com.exadel.sandbox.booking.repository;
 
 import com.exadel.sandbox.booking.entity.Booking;
+import com.exadel.sandbox.booking.entity.BookingDates;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = "select b from Booking b join b.seat s join s.floor f join f.office o where o.id = :officeId")
     List<Booking> findBookingsByOfficeId(Long officeId);
 
-    @Query(value = "select b from Booking b join b.dates d join b.seat s join s.floor f join f.office o where o.id = :officeId and d.date >= :startDate and d.date <= :endDate")
-    List<Booking> findBookingsByOfficeIdAndTimePeriod(Long officeId, LocalDate startDate, LocalDate endDate);
+
 }
