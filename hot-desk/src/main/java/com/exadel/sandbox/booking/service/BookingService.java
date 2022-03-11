@@ -130,7 +130,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
     public ResponseEntity<BookingResponseDto> update(Long id, BookingUpdateDto bookingUpdateDTO) {
         Booking booking = checkUpdateBooking(id, bookingUpdateDTO);
 
-        return ResponseEntity.ok(mapper.map(booking, BookingResponseDto.class));
+        return ResponseEntity.ok(mapper.map(repository.save(booking), BookingResponseDto.class));
     }
 
 //    Checks all possible errors and if bookingUpdateDto passes function returns The booking
@@ -204,5 +204,32 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         booking.setDates(bookingUpdateDto.getDates().stream().map(BookingDates::new).collect(Collectors.toList()));
 
         return booking;
+    }
+
+    public ResponseEntity<BookingResponseDto> cancelBookings(Long id, LocalDate start, LocalDate end) {
+
+        if (end == null)
+            end = LocalDate.now().plusMonths(MAX_MONTH);
+
+        if (start.isBefore(LocalDate.now()) || end.isBefore(start))
+            throw new DateOutOfBoundException("date range is not correct");
+
+        Booking booking = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking with id: " + id + "not found"));
+
+        List<BookingDates> removedDates = new ArrayList<>();
+
+        LocalDate finalEnd = end;
+
+        booking.getDates().forEach(date -> {
+            if (date.getDate().equals(start) || date.getDate().equals(finalEnd) || (start.isBefore(date.getDate()) && finalEnd.isAfter(date.getDate())))
+                removedDates.add(date);
+        });
+
+        booking.getDates().removeAll(removedDates);
+
+        if (booking.getDates().isEmpty())
+            repository.delete(booking);
+
+        return ResponseEntity.ok(mapper.map(booking, BookingResponseDto.class));
     }
 }

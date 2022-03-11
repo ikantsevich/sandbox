@@ -1,19 +1,21 @@
 package com.exadel.sandbox.address.entity;
 
 import com.exadel.sandbox.officeFloor.entities.Office;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Address {
@@ -23,6 +25,7 @@ public class Address {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "address", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Office office;
 
     @Column(name = "country", nullable = false)
@@ -47,4 +50,17 @@ public class Address {
     @LastModifiedDate
     @Column(name = "ad_modified")
     private LocalDateTime modified;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Address address = (Address) o;
+        return id != null && Objects.equals(id, address.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

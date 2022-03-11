@@ -8,6 +8,7 @@ import com.exadel.sandbox.exception.exceptions.VacationOverlapException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -66,6 +67,17 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(value = {VacationOverlapException.class})
     public ResponseEntity<ExceptionResponse> handleEmptyResultDateAccessException(VacationOverlapException e){
+        HttpStatus status = HttpStatus.CONFLICT;
+        ExceptionResponse response = new ExceptionResponse(
+                e.getMessage(),
+                status,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(value = MailSendException.class)
+    public ResponseEntity<ExceptionResponse> handleMailSendException(MailSendException e){
         HttpStatus status = HttpStatus.CONFLICT;
         ExceptionResponse response = new ExceptionResponse(
                 e.getMessage(),
