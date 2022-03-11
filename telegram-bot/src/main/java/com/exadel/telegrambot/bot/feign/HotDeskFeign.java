@@ -1,6 +1,8 @@
 package com.exadel.telegrambot.bot.feign;
 
 import com.exadel.sandbox.address.dto.AddressResponseDto;
+import com.exadel.sandbox.booking.dto.BookingCreateDto;
+import com.exadel.sandbox.booking.dto.BookingResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.employee.dto.tgInfoDto.TgInfoUpdateDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
@@ -8,11 +10,9 @@ import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -47,4 +47,7 @@ public interface HotDeskFeign {
 
     @GetMapping("seat/{id}")
     SeatResponseDto getSeatById(@PathVariable Long id);
+
+    @PostMapping
+    BookingResponseDto createBooking(@Valid @RequestBody BookingCreateDto bookingCreateDto);
 }

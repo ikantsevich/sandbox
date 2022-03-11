@@ -129,7 +129,7 @@ public class BotService {
         telegramFeign.editMessageText(editMessageText);
     }
 
-    private Message getMessage(Update update) {
+    public static Message getMessage(Update update) {
         return (update.hasMessage() ? update.getMessage() : update.getCallbackQuery().getMessage());
     }
 
@@ -189,14 +189,14 @@ public class BotService {
     }
 
     public void getReview(Update update) {
-        final Message message = getMessage(update);
-        final String data = update.getCallbackQuery().getData();
-        final List<String> review = keyboardService.getReview(data.substring(GET_PARKING.length()));
+        Message message = getMessage(update);
+        String data = update.getCallbackQuery().getData();
+        List<String> review = keyboardService.getReview(data.substring(GET_PARKING.length()));
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setText(REVIEW + "\n" + review.get(0));
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
-        editMessageText.setReplyMarkup(keyboardService.getReviewInline("" + review.get(0) + data.substring(GET_PARKING.length())));
+        editMessageText.setReplyMarkup(keyboardService.getReviewInline(review.get(1) + data.substring(GET_PARKING.length())));
         telegramFeign.editMessageText(editMessageText);
     }
 
