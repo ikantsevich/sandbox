@@ -43,11 +43,11 @@ public class MessageHandler implements EmployeeState {
 //        else
 //            manager(message, employee);
 //    }
-
+//
 //    public void employee(Message message, EmployeeResponseDto employee) {
 //        switch (message.getText()) {
 //            case NEW_BOOKING:
-//                executor.sendMessage(message.getChatId(), "Choose country", keyboardService.countryMenu());
+//                executor.sendMessage(message.getChatId(), "Choose country", keyboardService.countryMenu(employee.getId()));
 //                employeeService.updateState(COUNTRIES, employee);
 //                break;
 //            case MY_BOOKINGS:
@@ -56,8 +56,8 @@ public class MessageHandler implements EmployeeState {
 //                executor.sendMessage(message.getChatId(), "What do you want today?", keyboardService.homeMenu());
 //        }
 //    }
-
-    public void manager(Message message, EmployeeResponseDto employee) {
-
-    }
+//
+//    public void manager(Message message, EmployeeResponseDto employee) {
+//
+//    }
 }

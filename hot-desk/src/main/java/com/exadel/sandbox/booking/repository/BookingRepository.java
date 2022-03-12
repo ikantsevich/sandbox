@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -28,4 +27,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query(value = "select b from Booking b join b.seat s join s.floor f join f.office o where o.id = :officeId")
     List<Booking> findBookingsByOfficeId(Long officeId);
+
+    List<Booking> getBookingsByEmployeeId(Long employee_id);
 }

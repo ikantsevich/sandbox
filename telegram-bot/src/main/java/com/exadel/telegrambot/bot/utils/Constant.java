@@ -1,18 +1,20 @@
 package com.exadel.telegrambot.bot.utils;
 
-
 public class Constant {
     public static String SKIP = "Skip";
     public static String DELETE = "DELETE";
-    public static String PREV="<<";
-    public static String NEXT=">>";
+    public static String PREV = "<<";
+    public static final String PREV_BOOKING = "prev_booking:";
+    public static String EDIT = "Edit:";
+    public static String NEXT = ">>";
+    public static final String NEXT_BOOKING = "next_booking:";
     public static String BACK_TO_GET_TO_OFFICE = "BACK_TO_GET_TO_OFFICE";
     public static String BACK = "⬅️ Back";
-    public static String DATE="DATE";
-    public static String GET_DATE_TEXT="Please,choose a date \uD83D\uDCC5";
+    public static String DATE = "DATE";
+    public static String GET_DATE_TEXT = "Please,choose a date \uD83D\uDCC5";
     public static String GET_CONTINUOUS_DATE_BEGIN = "Please,choose a beginning day \uD83D\uDCC5";
     public static String GET_CONTINUOUS_DATE_END = "Please,choose a ending day \uD83D\uDCC5";
-    public static String MENU_TEXT = "Welcome...";
+    public static String MENU_TEXT = "Welcome   ";
 
     public static String CHOOSE_COUNTRY = "Choose country";
     public static String CHOOSE_CITY = "Choose city \uD83C\uDF06";
@@ -43,5 +45,5 @@ public class Constant {
     public static String SUNDAY = "Sunday";
 
     public static String NEW_BOOKING = "New booking \uD83D\uDCC2";
-    public static String MY_BOOKINGS = "My bookings \uD83D\uDDC2";
+    public static final String MY_BOOKINGS = "My bookings \uD83D\uDDC2";
 }

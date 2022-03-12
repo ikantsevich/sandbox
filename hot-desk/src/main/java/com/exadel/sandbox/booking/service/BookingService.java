@@ -10,7 +10,6 @@ import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
 import com.exadel.sandbox.exception.exceptions.DoubleBookingInADayException;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -95,5 +94,11 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         List<BookingResponseDto> bookingResponseDtos = bookingsByOfficeId.stream().map(booking -> mapper.map(booking, BookingResponseDto.class)).collect(Collectors.toList());
 
         return ResponseEntity.ok(bookingResponseDtos);
+    }
+
+    public ResponseEntity<List<BookingResponseDto>> getBookingsByEmployeeId(Long employeeId) {
+        List<Booking> bookingByEmployeeId = repository.getBookingsByEmployeeId(employeeId);
+        List<BookingResponseDto> bookings = bookingByEmployeeId.stream().map(booking -> mapper.map(booking, BookingResponseDto.class)).collect(Collectors.toList());
+        return ResponseEntity.ok(bookings);
     }
 }

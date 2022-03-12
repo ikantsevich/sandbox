@@ -19,8 +19,7 @@ public class Bot {
     private final BotService botService;
 
     public void updateHandler(Update update) {
-        if (botService.checkEmployee(update) == null)
-            return;
+        if (botService.checkEmployee(update) == null) return;
         String state = botService.getAndCheck(update);
         if (update.hasMessage()) {
             Message message = update.getMessage();
@@ -30,6 +29,8 @@ public class Bot {
                     state = MAIN_MENU_SEND;
                 } else if (text.equals(NEW_BOOKING)) {
                     state = COUNTRIES;
+                } else if (text.equals(MY_BOOKINGS)) {
+                    state = MY_BOOKINGS;
                 }
             } else if (message.hasContact()) {
 
@@ -43,8 +44,7 @@ public class Bot {
                 state = OFFICE;
             } else if (data.startsWith(OFFICE)) {
                 state = CHOOSE_BOOKING_TYPE;
-            } else if ((data.startsWith(CHOOSE_BOOKING_TYPE) && (data.endsWith(ONE_DAY) || data.endsWith(CONTINUOUS)))
-                    || text.equals(GET_CONTINUOUS_DATE_BEGIN)) {
+            } else if ((data.startsWith(CHOOSE_BOOKING_TYPE) && (data.endsWith(ONE_DAY) || data.endsWith(CONTINUOUS))) || text.equals(GET_CONTINUOUS_DATE_BEGIN)) {
                 state = GET_DATE;
             } else if (data.endsWith(ONE_DAY) || text.equals(GET_CONTINUOUS_DATE_END)) {
                 state = GET_SEATS;
@@ -58,25 +58,64 @@ public class Bot {
                 state = GET_PARKING;
             } else if (data.startsWith(GET_PARKING)) {
                 state = GET_REVIEW;
-            } else if (data.startsWith(GET_REVIEW)){
+            } else if (data.startsWith(GET_REVIEW)) {
                 state = BOOKING;
+            } else if (data.startsWith(PREV_BOOKING)) {
+                state = PREV_BOOKING;
+            } else if (data.startsWith(NEXT_BOOKING)) {
+                state = NEXT_BOOKING;
             }
         }
 
         switch (state) {
-            case COUNTRIES -> botService.getCountry(update);
-            case CITIES -> botService.getCity(update);
-            case OFFICE -> botService.getOffice(update);
-            case CHOOSE_BOOKING_TYPE -> botService.getDateType(update);
-            case GET_DATE -> botService.getDate(update, LocalDate.now());
-            case GET_SEATS -> botService.getSeats(update);
-            case CHOOSE_RECURRING_TIME -> botService.getRecurringTime(update);
-            case GET_DAY_OF_WEEK -> botService.getDayOfWeeK(update);
-            case GET_SEATS_RECURRING -> botService.getSeatsByRecurring(update);
-            case GET_PARKING -> botService.getParking(update);
-            case GET_REVIEW -> botService.getReview(update);
-            case BOOKING -> botService.bookWorkPlace(update);
-            default -> botService.getMainMenuSend(update);
+            case COUNTRIES:
+                botService.getCountry(update);
+                break;
+            case MY_BOOKINGS:
+                botService.getBookingsByEmId(update);
+                break;
+            case CITIES:
+                botService.getCity(update);
+                break;
+            case OFFICE:
+                botService.getOffice(update);
+                break;
+            case CHOOSE_BOOKING_TYPE:
+                botService.getDateType(update);
+                break;
+            case GET_DATE:
+                botService.getDate(update, LocalDate.now());
+                break;
+            case GET_SEATS:
+                botService.getSeats(update);
+                break;
+            case CHOOSE_RECURRING_TIME:
+                botService.getRecurringTime(update);
+                break;
+            case GET_DAY_OF_WEEK:
+                botService.getDayOfWeeK(update);
+                break;
+            case GET_SEATS_RECURRING:
+                botService.getSeatsByRecurring(update);
+                break;
+            case GET_PARKING:
+                botService.getParking(update);
+                break;
+            case GET_REVIEW:
+                botService.getReview(update);
+                break;
+            case BOOKING:
+                botService.bookWorkPlace(update);
+                break;
+            case PREV_BOOKING:
+                botService.getPrevBooking(update);
+                break;
+            case NEXT_BOOKING:
+                botService.getNextBooking(update);
+                break;
+            default:
+                botService.getMainMenuSend(update);
+                break;
         }
     }
 }
