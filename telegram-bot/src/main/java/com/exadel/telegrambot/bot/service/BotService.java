@@ -113,7 +113,7 @@ public class BotService {
 
     public void getMainMenuSend(Update update) {
         Message message = getMessage(update);
-        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), MENU_TEXT+update.getMessage().getFrom().getFirstName());
+        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), MENU_TEXT + update.getMessage().getFrom().getFirstName());
         sendMessage.setReplyMarkup(keyboardService.homeMenu());
         telegramFeign.sendMessage(sendMessage);
     }
@@ -284,6 +284,19 @@ public class BotService {
             }
             order++;
         }
+    }
 
+    public void deleteBooking(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String currBookingId = data.substring(DELETE.length() + 1);
+        hotDeskFeign.deleteById(Long.valueOf(currBookingId));
+        telegramFeign.deleteMessage(message.getChatId().toString(), message.getMessageId());
+        getBookingsByEmId(update);
+    }
+
+    public void editBooking(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
     }
 }

@@ -2,12 +2,10 @@ package com.exadel.telegrambot.bot.utils;
 
 public class Constant {
     public static String SKIP = "Skip";
-    public static String DELETE = "DELETE";
+    public static String DELETE = "Delete:";
     public static String PREV = "<<";
-    public static final String PREV_BOOKING = "prev_booking:";
     public static String EDIT = "Edit:";
     public static String NEXT = ">>";
-    public static final String NEXT_BOOKING = "next_booking:";
     public static String BACK_TO_GET_TO_OFFICE = "BACK_TO_GET_TO_OFFICE";
     public static String BACK = "⬅️ Back";
     public static String DATE = "DATE";

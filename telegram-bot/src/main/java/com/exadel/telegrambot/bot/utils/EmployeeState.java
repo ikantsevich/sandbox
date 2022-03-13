@@ -19,4 +19,8 @@ public interface EmployeeState {
     String GET_CONTINUOUS_DATE = "get_continuous_date";
     String GET_REVIEW = "get_review";
     String BOOKING = "booking";
+    String NEXT_BOOKING = "next_booking:";
+    String PREV_BOOKING = "prev_booking:";
+    String DELETE_BOOKING="delete_booking";
+    String EDIT_BOOKING="edit_booking";
 }

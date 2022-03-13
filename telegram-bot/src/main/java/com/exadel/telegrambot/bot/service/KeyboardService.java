@@ -154,7 +154,7 @@ public class KeyboardService {
         inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtons);
         if (hasPrev)
         rows.add(getButton(PREV_BOOKING+" "+bookingId, "⏮️"));
-        rows.add(getButton(CANCEL+" "+bookingId, "❌"));
+        rows.add(getButton(DELETE+" "+bookingId, "❌"));
         rows.add(getButton(EDIT+" "+bookingId, "EDIT"));
         if (hasNext)
         rows.add(getButton(NEXT_BOOKING+" "+bookingId, "⏭️"));

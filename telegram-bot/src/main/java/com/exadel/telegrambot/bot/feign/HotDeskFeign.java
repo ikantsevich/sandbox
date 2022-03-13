@@ -10,10 +10,7 @@ import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.expression.spel.ast.OpAnd;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -52,4 +49,9 @@ public interface HotDeskFeign {
 
     @GetMapping("seat/{id}")
     SeatResponseDto getSeatById(@PathVariable Long id);
+
+    @DeleteMapping("booking/{id}")
+    void deleteById(@PathVariable("id") Long id) ;
+
+
 }

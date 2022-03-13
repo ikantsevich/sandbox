@@ -7,7 +7,7 @@ public interface TelegramUtils {
     String BASE_WEBHOOK = "api/telegram";
     String FULL_REQUEST = TELEGRAM_BASE + TOKEN;
 
-    String GLOBAL = "https://e583-185-139-137-198.ngrok.io/";
+    String GLOBAL = "https://b24f-185-139-137-198.ngrok.io/";
 
 
     String HOT_DESK_URL = "http://localhost:8081/sandbox";

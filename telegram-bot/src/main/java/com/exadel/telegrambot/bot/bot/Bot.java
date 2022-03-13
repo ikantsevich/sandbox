@@ -64,6 +64,10 @@ public class Bot {
                 state = PREV_BOOKING;
             } else if (data.startsWith(NEXT_BOOKING)) {
                 state = NEXT_BOOKING;
+            } else if (data.startsWith(DELETE)) {
+                state = DELETE_BOOKING;
+            } else if (data.startsWith(EDIT)) {
+                state = EDIT_BOOKING;
             }
         }
 
@@ -112,6 +116,12 @@ public class Bot {
                 break;
             case NEXT_BOOKING:
                 botService.getNextBooking(update);
+                break;
+            case EDIT_BOOKING:
+                botService.editBooking(update);
+                break;
+            case DELETE_BOOKING:
+                botService.deleteBooking(update);
                 break;
             default:
                 botService.getMainMenuSend(update);
