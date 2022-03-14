@@ -42,6 +42,8 @@ public class Constant {
     public static String SATURDAY = "Saturday";
     public static String SUNDAY = "Sunday";
 
+    public static String YOU_NOT_EMPLOYEE = "You are not our employee";
+
     public static String NEW_BOOKING = "New booking \uD83D\uDCC2";
     public static String MY_BOOKINGS = "My bookings \uD83D\uDDC2";
 }

@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -27,7 +26,7 @@ public class ParkingSpotService extends BaseCrudService<ParkingSpot, ParkingSpot
     }
 
     public ResponseEntity<List<ParkingSpotResponseDto>> findByOfficeId(Long id) {
-        final List<ParkingSpot> parkingSpotByOfficeId = parkingSpotRepository.findParkingSpotByOfficeId(id);
+        List<ParkingSpot> parkingSpotByOfficeId = parkingSpotRepository.findParkingSpotByOfficeId(id);
         return ResponseEntity.ok(parkingSpotByOfficeId.stream().map(parkingSpot -> mapper.map(parkingSpot, ParkingSpotResponseDto.class)).collect(Collectors.toList()));
     }
 

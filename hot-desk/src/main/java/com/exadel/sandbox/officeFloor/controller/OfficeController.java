@@ -52,13 +52,13 @@ public class OfficeController {
         return officeService.getFreeSeats(id, dates);
     }
 
-    @GetMapping("/address/{id}")
-    ResponseEntity<OfficeResponseDto> getOfficeByAddressId(@PathVariable Long id){
-        return officeService.getOfficeByAddressId(id);
-    }
-
     @PutMapping("{id}/free-spots")
     ResponseEntity<List<ParkingSpotResponseDto>> getFreeSpots(@PathVariable Long id, @RequestBody List<LocalDate> dates){
         return officeService.getFreeSpots(id, dates);
+    }
+
+    @GetMapping("/address/{id}")
+    ResponseEntity<OfficeResponseDto> getOfficeByAddressId(@PathVariable Long id){
+        return officeService.getOfficeByAddressId(id);
     }
 }

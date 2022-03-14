@@ -35,7 +35,10 @@ public class BotService {
             return hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
         } catch (FeignException e) {
             e.printStackTrace();
-            executor.sendMessage(message.getChatId(), "You are not our employee");
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setText(YOU_NOT_EMPLOYEE);
+            sendMessage.setChatId(message.getChatId().toString());
+            telegramFeign.sendMessage(sendMessage);
             return null;
         }
     }
