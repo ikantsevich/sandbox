@@ -4,7 +4,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.GetUserProfilePhotos;
 import org.telegram.telegrambots.meta.api.methods.StopMessageLiveLocation;
@@ -91,8 +90,6 @@ public interface TelegramFeign {
     void stopPoll(@RequestBody Poll poll);
 
     //                        Delete message
-    @DeleteMapping("deleteMessage")
-    void deleteMessage(@RequestParam(name = "chat_id") String chatId,
-                       @RequestParam(name = "message_id") Integer messageId);
-
+    @PostMapping("deleteMessage")
+    void deleteMessage(@RequestBody DeleteMessage deleteMessage);
 }

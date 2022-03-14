@@ -1,11 +1,11 @@
 package com.exadel.telegrambot.bot.utils;
 
+
 public class Constant {
     public static String SKIP = "Skip";
-    public static String DELETE = "Delete:";
-    public static String PREV = "<<";
-    public static String EDIT = "Edit:";
-    public static String NEXT = ">>";
+    public static String DELETE = "❌";
+    public static String PREV="<<";
+    public static String NEXT=">>";
     public static String BACK_TO_GET_TO_OFFICE = "BACK_TO_GET_TO_OFFICE";
     public static String BACK = "⬅️ Back";
     public static String DATE = "DATE";
@@ -41,6 +41,8 @@ public class Constant {
     public static String FRIDAY = "Friday";
     public static String SATURDAY = "Saturday";
     public static String SUNDAY = "Sunday";
+
+    public static String YOU_NOT_EMPLOYEE = "You are not our employee";
 
     public static String NEW_BOOKING = "New booking \uD83D\uDCC2";
     public static final String MY_BOOKINGS = "My bookings \uD83D\uDDC2";

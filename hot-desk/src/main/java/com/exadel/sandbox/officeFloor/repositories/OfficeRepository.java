@@ -23,11 +23,11 @@ public interface OfficeRepository extends JpaRepository<Office, Long> {
             "                   where d.date in (:dates))")
     List<Seat> findFreeSeatsByOfficeIdAndDates(List<LocalDate> dates, Long officeId);
 
-    Office findOfficeByAddressId(Long id);
-
     @Query(value = "select p\n" +
             "from ParkingSpot p\n" +
             "where p.office.id = :officeId\n" +
             "  and p.id not in (select p.id from Booking b join b.parkingSpot p join b.dates d where d.date in (:dates))")
     List<ParkingSpot> findFreeSpotsByOfficeIdAndDates(Long officeId, List<LocalDate> dates);
+
+    Office findOfficeByAddressId(Long id);
 }

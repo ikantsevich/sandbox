@@ -1,5 +1,6 @@
 package com.exadel.sandbox.parking_spot.entity;
 
+import com.exadel.sandbox.booking.entity.Booking;
 import com.exadel.sandbox.officeFloor.entities.Office;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +27,9 @@ public class ParkingSpot {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "of_id")
     private Office office;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "seat")
+    private List<Booking> bookings;
 
     @Column(name = "spot_status")
     private String status;

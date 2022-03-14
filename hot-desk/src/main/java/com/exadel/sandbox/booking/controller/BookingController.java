@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,10 +22,6 @@ public class BookingController {
     @GetMapping("list")
     ResponseEntity<List<BookingResponseDto>> getBookings() {
         return bookingService.getList();
-    }
-    @GetMapping("{emId}/list")
-    ResponseEntity<List<BookingResponseDto>> getBookingsByEmployeeId(@PathVariable Long emId) {
-        return bookingService.getBookingsByEmployeeId(emId);
     }
 
     @GetMapping("{id}")
@@ -60,6 +55,11 @@ public class BookingController {
         return bookingService.getBookingsByOfficeId(officeId);
     }
 
-
+    @PutMapping("cancel/{id}")
+    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id,
+                                                      @RequestParam LocalDate start,
+                                                      @RequestParam(required = false) LocalDate end){
+        return bookingService.cancelBookings(id, start, end);
+    }
 
 }

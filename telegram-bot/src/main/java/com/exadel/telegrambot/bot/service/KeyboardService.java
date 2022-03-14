@@ -1,6 +1,8 @@
 package com.exadel.telegrambot.bot.service;
 
 import com.exadel.sandbox.address.dto.AddressBaseDto;
+import com.exadel.sandbox.booking.dto.BookingCreateDto;
+import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
@@ -8,7 +10,8 @@ import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -19,6 +22,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.exadel.telegrambot.bot.service.BotService.getMessage;
 import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
@@ -33,7 +37,7 @@ public class KeyboardService {
 
         for (int i = 0; i < name.size(); i++) {
             buttons.add(getButton(callback + " " + callbackData.get(i), name.get(i)));
-            if (i % 2 == 0) {
+            if (i % 2 == 1) {
                 inlineKeyboard.add(buttons);
                 buttons = new ArrayList<>();
             }
@@ -43,9 +47,9 @@ public class KeyboardService {
             inlineKeyboard.add(buttons);
             buttons = new ArrayList<>();
         }
-//        final InlineKeyboardButton button = getButton(CANCEL, CANCEL);
-//        buttons.add(button);
-//        inlineKeyboard.add(buttons);
+        final InlineKeyboardButton button = getButton(DELETE, DELETE);
+        buttons.add(button);
+        inlineKeyboard.add(buttons);
         return new InlineKeyboardMarkup(inlineKeyboard);
     }
 
@@ -422,24 +426,32 @@ public class KeyboardService {
                     .append("\n")
                     .append(freeParkingSpots.get(0).getSpotNum());
         }
-        return new ArrayList(List.of(stringBuilder.toString(), freeParkingSpots.get(0).getId()));
+        List<String> list = new ArrayList<>();
+        list.add(stringBuilder.toString());
+        list.add(String.valueOf(freeParkingSpots.get(0).getId()));
+        return list;
     }
 
     private Long getSeatId(String data) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = data.indexOf(' ') + 1; i < data.length(); i++) {
+        int count = 0;
+        for (int i = data.length() - 1; data.charAt(i) != ']'; i--) {
             if (Character.isDigit(data.charAt(i)))
                 stringBuilder.append(data.charAt(i));
+            if (data.charAt(i) == ' ')
+                count++;
+            if (count == 2)
+                return Long.valueOf(stringBuilder.toString());
         }
         return Long.valueOf(stringBuilder.toString());
     }
 
     public InlineKeyboardMarkup getReviewInline(String data) {
         List<String> list = new ArrayList<>(List.of(CONFIRM, CANCEL));
-        if (data.endsWith(YES)) {
+        if (data.contains(YES)) {
             return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length() - YES.length()), list, list);
         }
-        return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length() - NO.length()), list, list);
+        return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length() - YES.length()), list, list);
     }
 
     private Long getOfficeId(String data) {
@@ -455,18 +467,48 @@ public class KeyboardService {
 
     private List<LocalDate> getDates(String dates) {
         List<LocalDate> localDates = new ArrayList<>();
-        for (int i = 0; i < dates.length(); i += 10) {
-            localDates.add(LocalDate.parse(dates.substring(i, i + 10)));
+        final String[] split = dates.split(", ");
+        for (int i = 0; i < split.length; i++) {
+            localDates.add(LocalDate.parse(split[i]));
         }
         return localDates;
     }
 
-    public void booking(Update update) {
+    public SendMessage booking(Update update) {
         final String data = update.getCallbackQuery().getData();
+        final Message message = getMessage(update);
         if (data.endsWith(CONFIRM)) {
-            final Long seatId = getSeatId(data);
-            final List<LocalDate> dates = getDates(data.substring(data.indexOf("[") + 1, data.indexOf("]")));
+            try {
+                final Long seatId = getSeatId(data.substring(0, data.length() - CONFIRM.length() - 1));
+                final List<LocalDate> dates = getDates(data.substring(data.indexOf("[") + 1, data.indexOf("]")));
+                final EmployeeResponseDto employeeByChatId = hotDeskFeign.getEmployeeByChatId(message.getChatId().toString());
+                final Long id = employeeByChatId.getId();
+                Long parkingId1 = getParkingId(data.substring(GET_REVIEW.length()));
+                final Long parkingId = parkingId1 == 0 ? null : parkingId1;
+                BookingCreateDto bookingCreateDto = new BookingCreateDto();
+                bookingCreateDto.setDates(dates);
+                bookingCreateDto.setParkingSpotId(parkingId);
+                bookingCreateDto.setEmployeeId(id);
+                bookingCreateDto.setSeatId(seatId);
+                hotDeskFeign.createBooking(bookingCreateDto);
+                return new SendMessage(message.getChatId().toString(), "Booking added successfully");
+            } catch (Exception e){
+                return new SendMessage(message.getChatId().toString(), "You have already booked place for today");
+            }
+        }
+        return new SendMessage();
+    }
 
+    private Long getParkingId(String data) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; data.charAt(i) != '['; i++) {
+            if (Character.isDigit(data.charAt(i)))
+                stringBuilder.append(data.charAt(i));
+        }
+        try {
+            return Long.valueOf(stringBuilder.toString());
+        } catch (Exception e) {
+            return 0L;
         }
     }
 }

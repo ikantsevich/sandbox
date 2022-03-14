@@ -36,7 +36,7 @@ public class Vacation {
     @Column(name = "va_modified")
     private LocalDateTime modified;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "em_id")
     private Employee employee;
 }

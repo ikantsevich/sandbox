@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.Path;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -52,13 +51,13 @@ public class OfficeController {
         return officeService.getFreeSeats(id, dates);
     }
 
-    @GetMapping("/address/{id}")
-    ResponseEntity<OfficeResponseDto> getOfficeByAddressId(@PathVariable Long id){
-        return officeService.getOfficeByAddressId(id);
-    }
-
     @PutMapping("{id}/free-spots")
     ResponseEntity<List<ParkingSpotResponseDto>> getFreeSpots(@PathVariable Long id, @RequestBody List<LocalDate> dates){
         return officeService.getFreeSpots(id, dates);
+    }
+
+    @GetMapping("/address/{id}")
+    ResponseEntity<OfficeResponseDto> getOfficeByAddressId(@PathVariable Long id){
+        return officeService.getOfficeByAddressId(id);
     }
 }
