@@ -46,10 +46,6 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
-      file: changes/booking.yaml
-      relativeToChangelogFile: true
-
-  - include:
       file: changes/attachment.yaml
       relativeToChangelogFile: true
 
@@ -87,6 +83,10 @@ databaseChangeLog:
 
   - include:
       file: changes/notification.yaml
+      relativeToChangelogFile: true
+
+  - include:
+      file: changes/booking.yaml
       relativeToChangelogFile: true
 
   - include:

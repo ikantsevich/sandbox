@@ -1,6 +1,7 @@
 package com.exadel.sandbox.officeFloor.repositories;
 
 import com.exadel.sandbox.officeFloor.entities.Office;
+import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import com.exadel.sandbox.seat.entity.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,10 @@ public interface OfficeRepository extends JpaRepository<Office, Long> {
             "                            join b.dates d\n" +
             "                   where d.date in (:dates))")
     List<Seat> findFreeSeatsByOfficeIdAndDates(List<LocalDate> dates, Long officeId);
+
+    @Query(value = "select p\n" +
+            "from ParkingSpot p\n" +
+            "where p.office.id = :officeId\n" +
+            "  and p.id not in (select p.id from Booking b join b.parkingSpot p join b.dates d where d.date in (:dates))")
+    List<ParkingSpot> findFreeSpotsByOfficeIdAndDates(Long officeId, List<LocalDate> dates);
 }
