@@ -28,7 +28,6 @@ public class BotService {
     private final TelegramFeign telegramFeign;
     private final KeyboardService keyboardService;
     private final HotDeskFeign hotDeskFeign;
-    private final Executor executor;
 
     public EmployeeResponseDto checkEmployee(Update update) {
         Message message = getMessage(update);

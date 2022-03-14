@@ -432,7 +432,7 @@ public class KeyboardService {
         if (data.contains(YES)) {
             return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length() - YES.length()), list, list);
         }
-        return getInlineKeyboard(GET_REVIEW, list, list);
+        return getInlineKeyboard(GET_REVIEW + data.substring(0, data.length() - YES.length()), list, list);
     }
 
     private Long getOfficeId(String data) {
