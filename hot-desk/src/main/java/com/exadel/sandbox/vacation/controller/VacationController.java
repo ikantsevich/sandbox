@@ -43,4 +43,9 @@ public class VacationController {
 
         return vacationService.update(id, vacationUpdateDto);
     }
+
+    @GetMapping("employee/{employeeId}")
+    ResponseEntity<List<VacationResponseDto>> getByEmployeeID(@PathVariable Long employeeId){
+        return vacationService.getByEmployeeId(employeeId);
+    }
 }
