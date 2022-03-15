@@ -6,7 +6,6 @@ import com.exadel.sandbox.booking.entity.Booking;
 import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.booking.service.BookingService;
-import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
 import com.exadel.sandbox.notification.dto.NotificationCreateDto;
 import com.exadel.sandbox.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -38,27 +37,9 @@ public class BookingAspects {
         Address address = booking.getSeat().getFloor().getOffice().getAddress();
         String officeName = address.getCountry() + " " + address.getCity() + " " + address.getStreet() + " " + address.getBuildingNum();
 
-        String message = """
-                Office name: %s
-                                
-                Floor number: %s
-                                
-                Seat number: %s
-                                
-                Dates: %s
-                Booking number: %s
-                Executed: %s
-                                
-                """.formatted(
-                officeName,
-                booking.getSeat().getFloor().getFloorNum(),
-                booking.getSeat().getNumber(),
-                Arrays.toString(booking.getDates().stream().map(BookingDates::getDate).toArray()),
-                booking.getId(),
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        );
+//        String message = """ Office name: %s Floor number: %s Seat number: %s Dates: %s Booking number: %s1 Executed: %s """.formatted(officeName, booking.getSeat().getFloor().getFloorNum(), booking.getSeat().getNumber(), Arrays.toString(booking.getDates().stream().map(BookingDates::getDate).toArray()), booking.getId(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-        notification.setMessage(message);
+//        notification.setMessage(message);
 
         notificationService.send(notification);
     }
@@ -74,17 +55,12 @@ public class BookingAspects {
         assert bookingResponseDto != null;
         NotificationCreateDto notification = new NotificationCreateDto(bookingResponseDto.getEmployeeId());
 
-        if (end == null)
-            end = LocalDate.now().plusMonths(BookingService.MAX_MONTH);
+        if (end == null) end = LocalDate.now().plusMonths(BookingService.MAX_MONTH);
 
         Booking booking = bookingRepository.findById(id).orElse(null);
 
-        if (booking == null){
-            notification.setMessage("""
-                    booking: %s
-                    
-                    Executed: %s
-                    """.formatted(bookingResponseDto.getId(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+        if (booking == null) {
+//            notification.setMessage("""booking: %s Executed: %s""".formatted(bookingResponseDto.getId(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
 
             notification.setTitle("Booking cancelled successfully");
 
@@ -98,25 +74,9 @@ public class BookingAspects {
 
         notification.setTitle("Your Booking cancelled successfully");
 
-        String message = """
-                Booking number: %s
-                Office name: %s
-                Seat number: %s
-                Floor number: %s
-                                
-                Cancelled reservation: %s
-                                
-                Executed: %s
-                """.formatted(
-                booking.getId(),
-                officeName,
-                booking.getSeat().getNumber(),
-                booking.getSeat().getFloor().getFloorNum(),
-                start + " - " + end,
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        );
+//        String message = """ Booking number: %s Office name: %s  Seat number: %s Floor number: %s Cancelled reservation: %s Executed: %s """.formatted(booking.getId(), officeName, booking.getSeat().getNumber(), booking.getSeat().getFloor().getFloorNum(), start + " - " + end, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-        notification.setMessage(message);
+//        notification.setMessage(message);
 
         notificationService.send(notification);
     }

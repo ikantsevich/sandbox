@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Scanner;
+
 import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.TelegramUtils.BASE_WEBHOOK;
 
@@ -36,5 +38,4 @@ public class BotController{
         }
         bot.updateHandler(update);
     }
-
 }

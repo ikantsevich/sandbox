@@ -20,14 +20,16 @@ import com.exadel.sandbox.seat.repository.SeatRepository;
 import com.exadel.sandbox.vacation.entities.Vacation;
 import com.exadel.sandbox.vacation.repository.VacationRepository;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +40,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
     private final SeatRepository seatRepository;
     private final ParkingSpotRepository parkingSpotRepository;
 
-    public BookingService(ModelMapper mapper, BookingRepository repository) {
+    public BookingService(ModelMapper mapper, BookingRepository repository, VacationRepository vacationRepository, EmployeeRepository employeeRepository, SeatRepository seatRepository, ParkingSpotRepository parkingSpotRepository) {
         super(mapper, repository);
         this.vacationRepository = vacationRepository;
         this.employeeRepository = employeeRepository;
@@ -128,13 +130,21 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         return ResponseEntity.ok(bookingResponseDtos);
     }
 
+    public ResponseEntity<List<BookingResponseDto>> getBookingsByEmId(Long emId) {
+        List<Booking> bookingsByOfficeId = repository.getBookingsByEmployeeId(emId);
+
+        List<BookingResponseDto> bookingResponseDtos = bookingsByOfficeId.stream().map(booking -> mapper.map(booking, BookingResponseDto.class)).collect(Collectors.toList());
+
+        return ResponseEntity.ok(bookingResponseDtos);
+    }
+
     public ResponseEntity<BookingResponseDto> update(Long id, BookingUpdateDto bookingUpdateDTO) {
         Booking booking = checkUpdateBooking(id, bookingUpdateDTO);
 
         return ResponseEntity.ok(mapper.map(repository.save(booking), BookingResponseDto.class));
     }
 
-//    Checks all possible errors and if bookingUpdateDto passes function returns The booking
+    //    Checks all possible errors and if bookingUpdateDto passes function returns The booking
     private Booking checkUpdateBooking(Long id, BookingUpdateDto bookingUpdateDto) {
         bookingUpdateDto.setDates(new ArrayList<>(new HashSet<>(bookingUpdateDto.getDates())));
 

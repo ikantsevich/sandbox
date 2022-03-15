@@ -21,6 +21,9 @@ public interface EmployeeState {
     String BOOKING = "booking";
     String NEXT_BOOKING = "next_booking:";
     String PREV_BOOKING = "prev_booking:";
-    String DELETE_BOOKING="delete_booking";
-    String EDIT_BOOKING="edit_booking";
+    String CANCEL_BOOKING = "cancel_booking";
+    String CONFIRM_CANCELLING = "confirm_cancel";
+    String CONFIRM_EDITING = "confirm_editing";
+    String EDIT_BOOKING = "edit_booking";
+    String BACK_TO_MAIN_MENU = "back_to_main_menu";
 }

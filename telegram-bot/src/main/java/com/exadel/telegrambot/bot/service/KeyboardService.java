@@ -150,21 +150,34 @@ public class KeyboardService {
         return null;
     }
 
-    public InlineKeyboardMarkup myBookingInlineKeyboard(String bookingId,boolean hasPrev, boolean hasNext) {
-        AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
+    public InlineKeyboardMarkup confirmationMenuButtons(String bookingId, boolean isEdit) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> inlineKeyboardButtons = new ArrayList<>();
+        List<InlineKeyboardButton> rows = new ArrayList<>();
+        inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtons);
+        if (isEdit)
+            rows.add(getButton(CONFIRM_EDITING + " " + bookingId, "✅"));
+        else
+            rows.add(getButton(CONFIRM_CANCELLING + " " + bookingId, "✅"));
+        rows.add(getButton(BACK_TO_BOOKINGS + " " + bookingId, "🔙"));
+        inlineKeyboardButtons.add(rows);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup myBookingInlineKeyboard(String bookingId, boolean hasPrev, boolean hasNext) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> inlineKeyboardButtons = new ArrayList<>();
         List<InlineKeyboardButton> rows = new ArrayList<>();
         inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtons);
         if (hasPrev)
-        rows.add(getButton(PREV_BOOKING+" "+bookingId, "⏮️"));
-        rows.add(getButton(DELETE+" "+bookingId, "❌"));
-        rows.add(getButton(EDIT+" "+bookingId, "EDIT"));
+            rows.add(getButton(PREV_BOOKING + " " + bookingId, "⏮️"));
+        rows.add(getButton(CANCEL + " " + bookingId, "❌"));
+        rows.add(getButton(EDIT + " " + bookingId, "EDIT"));
         if (hasNext)
-        rows.add(getButton(NEXT_BOOKING+" "+bookingId, "⏭️"));
+            rows.add(getButton(NEXT_BOOKING + " " + bookingId, "⏭️"));
         inlineKeyboardButtons.add(rows);
         rows = new ArrayList<>();
-        rows.add(getButton(BACK,"🔙"));
+        rows.add(getButton(BACK_TO_MAIN_MENU, "🔙"));
         inlineKeyboardButtons.add(rows);
         return inlineKeyboardMarkup;
     }
@@ -194,6 +207,7 @@ public class KeyboardService {
         List<String> dateType = new ArrayList<>(List.of(ONE_DAY, CONTINUOUS, RECURRING));
         return getInlineKeyboard(callback, dateType, dateType);
     }
+
 
     public InlineKeyboardMarkup createDate(LocalDate date, String data) {
         String dateStr = date.toString();
@@ -492,7 +506,7 @@ public class KeyboardService {
                 bookingCreateDto.setSeatId(seatId);
                 hotDeskFeign.createBooking(bookingCreateDto);
                 return new SendMessage(message.getChatId().toString(), "Booking added successfully");
-            } catch (Exception e){
+            } catch (Exception e) {
                 return new SendMessage(message.getChatId().toString(), "You have already booked place for today");
             }
         }
@@ -510,5 +524,20 @@ public class KeyboardService {
         } catch (Exception e) {
             return 0L;
         }
+    }
+
+    public InlineKeyboardMarkup getMainEditMenu(String bookingId) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> inlineKeyboardButtons = new ArrayList<>();
+        List<InlineKeyboardButton> rows = new ArrayList<>();
+        inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtons);
+        rows.add(getButton(PREV_BOOKING + " " + bookingId, "Change Office"));
+        rows.add(getButton(CANCEL + " " + bookingId, "Change Workplace"));
+        rows.add(getButton(EDIT + " " + bookingId, "New Date"));
+        inlineKeyboardButtons.add(rows);
+        rows = new ArrayList<>();
+        rows.add(getButton(BACK_TO_BOOKINGS, "🔙"));
+        inlineKeyboardButtons.add(rows);
+        return inlineKeyboardMarkup;
     }
 }

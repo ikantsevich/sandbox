@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,7 @@ public class BookingController {
     ResponseEntity<BookingResponseDto> getBookingById(@PathVariable("id") Long id) {
         return bookingService.getById(id);
     }
+
 
     @PostMapping()
     ResponseEntity<BookingResponseDto> createBooking(@Valid @RequestBody BookingCreateDto bookingCreateDTO) {
@@ -56,10 +58,13 @@ public class BookingController {
     }
 
     @PutMapping("cancel/{id}")
-    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id,
-                                                      @RequestParam LocalDate start,
-                                                      @RequestParam(required = false) LocalDate end){
-        return bookingService.cancelBookings(id, start, end);
+    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id,@RequestParam LocalDate start, @RequestParam(required = false) LocalDate end){
+        return bookingService.cancelBookings(id,start,end);
+    }
+
+    @GetMapping("{emId}/list")
+    ResponseEntity<List<BookingResponseDto>> getBookingsByEmId(@PathVariable Long emId){
+        return bookingService.getBookingsByEmId(emId);
     }
 
 }

@@ -73,7 +73,7 @@ public class EmployeeService extends BaseCrudService<Employee, EmployeeResponseD
         LocalDate employmentEnd = employeeUpdateDto.getEmploymentEnd().toLocalDate();
 
         if (employmentEnd != null){
-            List<Booking> bookingsByEmployeeId = bookingRepository.findBookingsByEmployeeId(id);
+            List<Booking> bookingsByEmployeeId = bookingRepository.getBookingsByEmployeeId(id);
             bookingsByEmployeeId.forEach(booking -> {
                 List<BookingDates> shouldBeSaved = new ArrayList<>();
                 booking.getDates().forEach(date -> {

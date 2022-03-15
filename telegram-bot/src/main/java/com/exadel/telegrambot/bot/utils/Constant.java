@@ -4,10 +4,12 @@ package com.exadel.telegrambot.bot.utils;
 public class Constant {
     public static String SKIP = "Skip";
     public static String DELETE = "❌";
+    public static String EDIT = "Edit:";
     public static String PREV="<<";
     public static String NEXT=">>";
     public static String BACK_TO_GET_TO_OFFICE = "BACK_TO_GET_TO_OFFICE";
     public static String BACK = "⬅️ Back";
+    public static String BACK_TO_BOOKINGS = "BACK_TO_BOOKINGS";
     public static String DATE = "DATE";
     public static String GET_DATE_TEXT = "Please,choose a date \uD83D\uDCC5";
     public static String GET_CONTINUOUS_DATE_BEGIN = "Please,choose a beginning day \uD83D\uDCC5";

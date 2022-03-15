@@ -64,14 +64,25 @@ public class Bot {
                 state = PREV_BOOKING;
             } else if (data.startsWith(NEXT_BOOKING)) {
                 state = NEXT_BOOKING;
-            } else if (data.startsWith(DELETE)) {
-                state = DELETE_BOOKING;
+            } else if (data.startsWith(CANCEL)) {
+                state = CANCEL_BOOKING;
             } else if (data.startsWith(EDIT)) {
                 state = EDIT_BOOKING;
+            } else if (data.startsWith(BACK_TO_BOOKINGS))
+                state = MY_BOOKINGS;
+            else if (data.startsWith(CONFIRM_CANCELLING)) {
+                state = CONFIRM_CANCELLING;
+            } else if (data.startsWith(CONFIRM_EDITING)) {
+                state = CONFIRM_EDITING;
+            } else if (data.startsWith(BACK_TO_MAIN_MENU)) {
+                state = BACK_TO_MAIN_MENU;
             }
         }
 
         switch (state) {
+            case BACK_TO_MAIN_MENU:
+                botService.getMainMenuSend(update);
+                break;
             case COUNTRIES:
                 botService.getCountry(update);
                 break;
@@ -117,11 +128,17 @@ public class Bot {
             case NEXT_BOOKING:
                 botService.getNextBooking(update);
                 break;
+            case CANCEL_BOOKING:
+                botService.cancelBooking(update);
+                break;
+            case CONFIRM_CANCELLING:
+                botService.confirmedCancelling(update);
+                break;
             case EDIT_BOOKING:
                 botService.editBooking(update);
                 break;
-            case DELETE_BOOKING:
-                botService.deleteBooking(update);
+            case CONFIRM_EDITING:
+                botService.confirmedEditing(update);
                 break;
             default:
                 botService.getMainMenuSend(update);

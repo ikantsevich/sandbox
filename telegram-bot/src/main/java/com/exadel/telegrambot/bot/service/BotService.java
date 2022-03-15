@@ -1,5 +1,6 @@
 package com.exadel.telegrambot.bot.service;
 
+import com.exadel.sandbox.booking.dto.BookingResponseDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
@@ -52,6 +53,7 @@ public class BotService {
 
     public void getBookingsByEmId(Update update) {
         Message message = getMessage(update);
+        if (update.hasCallbackQuery()) deleteMessage(update);
         List<BookingResponseDto> bookings = hotDeskFeign.findBookingsByEmId(getEmployeeId(message.getChatId().toString()));
         SendMessage sendMessage = new SendMessage();
         if (bookings.size() == 0) {
@@ -71,12 +73,7 @@ public class BotService {
     }
 
     private String textBuilderForBooking(BookingResponseDto bookingResponseDto) {
-        return "\nCreated at: " + bookingResponseDto.getCreated()
-                + "\nCountry: " + bookingResponseDto.getOffice().getAddress().getCountry()
-                + "\nCity: " + bookingResponseDto.getOffice().getAddress().getCity()
-                + "\nStreet: " + bookingResponseDto.getOffice().getAddress().getStreet()
-                + "\nBuilding number: " + bookingResponseDto.getOffice().getAddress().getBuildingNum()
-                + "\nFloor Number: " + bookingResponseDto.getFloorNumber();
+        return "\nCreated at: " + bookingResponseDto.getCreated() + "\nCountry: " + bookingResponseDto.getOffice().getAddress().getCountry() + "\nCity: " + bookingResponseDto.getOffice().getAddress().getCity() + "\nStreet: " + bookingResponseDto.getOffice().getAddress().getStreet() + "\nBuilding number: " + bookingResponseDto.getOffice().getAddress().getBuildingNum() + "\nFloor Number: " + bookingResponseDto.getFloorNumber();
     }
 
     public void getCity(Update update) {
@@ -115,7 +112,9 @@ public class BotService {
 
     public void getMainMenuSend(Update update) {
         Message message = getMessage(update);
-        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), MENU_TEXT + update.getMessage().getFrom().getFirstName());
+        if (update.hasCallbackQuery())
+            deleteMessage(update);
+        SendMessage sendMessage = new SendMessage(message.getChatId().toString(), MENU_TEXT + message.getFrom().getFirstName());
         sendMessage.setReplyMarkup(keyboardService.homeMenu());
         telegramFeign.sendMessage(sendMessage);
     }
@@ -146,13 +145,13 @@ public class BotService {
         String data = update.getCallbackQuery().getData();
         Message message = getMessage(update);
         EditMessageText editMessageText = new EditMessageText();
-        if (data.endsWith(ONE_DAY)){
+        if (data.endsWith(ONE_DAY)) {
             editMessageText.setText(GET_DATE_TEXT);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
-        } else if (data.length()<35 && data.startsWith(DATE) && data.endsWith(CONTINUOUS)){
+        } else if (data.length() < 35 && data.startsWith(DATE) && data.endsWith(CONTINUOUS)) {
             editMessageText.setText(GET_CONTINUOUS_DATE_END);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(DATE.length())));
-        } else if (data.endsWith(CONTINUOUS)){
+        } else if (data.endsWith(CONTINUOUS)) {
             editMessageText.setText(GET_CONTINUOUS_DATE_BEGIN);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
         }
@@ -286,17 +285,67 @@ public class BotService {
         }
     }
 
-    public void deleteBooking(Update update) {
+    public void cancelBooking(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
-        String currBookingId = data.substring(DELETE.length() + 1);
-        hotDeskFeign.deleteById(Long.valueOf(currBookingId));
-        telegramFeign.deleteMessage(message.getChatId().toString(), message.getMessageId());
-        getBookingsByEmId(update);
+        String currBookingId = data.substring(CANCEL.length() + 1);
+        EditMessageText editMessageText = new EditMessageText(message.getText() + "\n Do you really want to cancel?");
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(currBookingId,false));
+        telegramFeign.editMessageText(editMessageText);
     }
 
     public void editBooking(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
+        String currBookingId = data.substring(EDIT.length() + 1);
+        EditMessageText editMessageText = new EditMessageText(message.getText() + "\n Do you really want to edit?");
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(currBookingId,true));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void confirmedCancelling(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String currBookingId = data.substring(CONFIRM_CANCELLING.length() + 1);
+        BookingResponseDto bookingById = hotDeskFeign.getBookingById(Long.valueOf(currBookingId));
+        List<LocalDate> dates = bookingById.getDates();
+        if (dates != null) {
+            LocalDate start = dates.get(0);
+            BookingResponseDto bookingResponseDto = new BookingResponseDto();
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(message.getChatId().toString());
+            try {
+                if (dates.size() == 1) {
+                    bookingResponseDto = hotDeskFeign.cancelBooking(Long.parseLong(currBookingId), start, null);
+                } else {
+                    LocalDate end = dates.get(1);
+                    bookingResponseDto = hotDeskFeign.cancelBooking(Long.parseLong(currBookingId), start, end);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                sendMessage.setText(e.getMessage());
+                telegramFeign.sendMessage(sendMessage);
+                deleteMessage(update);
+                return;
+            }
+            sendMessage.setText("Successfully cancelled");
+            telegramFeign.sendMessage(sendMessage);
+            deleteMessage(update);
+        }
+    }
+
+    public void confirmedEditing(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String currBookingId = data.substring(CONFIRM_EDITING.length() + 1);
+        EditMessageText editMessageText = new EditMessageText("Your option >");
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getMainEditMenu(currBookingId));
+        telegramFeign.editMessageText(editMessageText);
     }
 }
