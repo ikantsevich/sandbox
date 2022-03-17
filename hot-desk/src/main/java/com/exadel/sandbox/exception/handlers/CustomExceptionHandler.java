@@ -1,10 +1,7 @@
 package com.exadel.sandbox.exception.handlers;
 
 import com.exadel.sandbox.exception.ExceptionResponse;
-import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
-import com.exadel.sandbox.exception.exceptions.DoubleBookingInADayException;
-import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
-import com.exadel.sandbox.exception.exceptions.VacationOverlapException;
+import com.exadel.sandbox.exception.exceptions.*;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +76,17 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = MailSendException.class)
     public ResponseEntity<ExceptionResponse> handleMailSendException(MailSendException e){
         HttpStatus status = HttpStatus.CONFLICT;
+        ExceptionResponse response = new ExceptionResponse(
+                e.getMessage(),
+                status,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(value = DifferentLocationException.class)
+    public ResponseEntity<ExceptionResponse> handleDifferentLocationException(DifferentLocationException e){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         ExceptionResponse response = new ExceptionResponse(
                 e.getMessage(),
                 status,

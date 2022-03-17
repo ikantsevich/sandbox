@@ -9,10 +9,7 @@ import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
-import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
-import com.exadel.sandbox.exception.exceptions.DoubleBookingInADayException;
-import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
-import com.exadel.sandbox.exception.exceptions.VacationOverlapException;
+import com.exadel.sandbox.exception.exceptions.*;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import com.exadel.sandbox.parking_spot.repository.ParkingSpotRepository;
 import com.exadel.sandbox.seat.entity.Seat;
@@ -65,6 +62,8 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
     //    Throws exception if any of the objects already booked
     private void checkNewBooking(Booking booking) {
         List<LocalDate> dates = booking.getDates().stream().map(BookingDates::getDate).collect(Collectors.toList());
+
+        checkParkingSpotAndSeatOffice(booking);
 
         checkTheDates(dates);
         checkTheEmployeesVacation(dates, booking.getEmployee().getId());
@@ -145,6 +144,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         bookingUpdateDtoDates.removeAll(dates);
 
         checkTheDates(bookingUpdateDtoDates);
+        checkParkingSpotAndSeatOffice(booking);
 
         List<LocalDate> employeeBookedDates = new ArrayList<>();
         List<LocalDate> seatBookingDates = new ArrayList<>();
@@ -231,5 +231,10 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
             repository.delete(booking);
 
         return ResponseEntity.ok(mapper.map(booking, BookingResponseDto.class));
+    }
+
+    public void checkParkingSpotAndSeatOffice(Booking booking){
+        if (! booking.getParkingSpot().getOffice().getId().equals(booking.getSeat().getFloor().getOffice().getId()))
+            throw new DifferentLocationException("Parking spot and seat should be at the same location");
     }
 }
