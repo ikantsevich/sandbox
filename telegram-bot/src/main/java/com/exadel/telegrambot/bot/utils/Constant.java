@@ -14,6 +14,7 @@ public class Constant {
     public static String GET_DATE_TEXT = "Please,choose a date \uD83D\uDCC5";
     public static String GET_CONTINUOUS_DATE_BEGIN = "Please,choose a beginning day \uD83D\uDCC5";
     public static String GET_CONTINUOUS_DATE_END = "Please,choose a ending day \uD83D\uDCC5";
+    public static String CHOSE_END_DATE_FOR_UPDATE="chose_update_date_for_update";
     public static String MENU_TEXT = "Welcome   ";
 
     public static String CHOOSE_COUNTRY = "Choose country";
@@ -30,6 +31,8 @@ public class Constant {
     public static String ONE_DAY = "One Day";
     public static String CONTINUOUS = "Continuous";
     public static String RECURRING = "Recurring";
+    public static String NEW_DATE = "NEW_DATE";
+
 
     public static String YES = "YES  ✅";
     public static String NO = "NO  ❌";

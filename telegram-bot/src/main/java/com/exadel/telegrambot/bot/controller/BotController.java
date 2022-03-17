@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.Scanner;
-
 import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.TelegramUtils.BASE_WEBHOOK;
 
@@ -27,7 +25,7 @@ public class BotController{
         if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
             if (data.equals(SKIP)) return;
-            if (data.equals(CANCEL) || data.equals(DELETE)){
+            if (data.equals(CANCEL) || data.equals(DELETE)) {
                 botService.deleteMessage(update);
                 return;
             }

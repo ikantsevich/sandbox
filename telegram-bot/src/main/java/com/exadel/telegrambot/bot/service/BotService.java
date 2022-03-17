@@ -16,11 +16,15 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.exadel.telegrambot.bot.utils.Constant.CHOOSE_BOOKING_TYPE;
 import static com.exadel.telegrambot.bot.utils.Constant.CHOOSE_RECURRING_TIME;
+import static com.exadel.telegrambot.bot.utils.Constant.CHOSE_END_DATE_FOR_UPDATE;
+import static com.exadel.telegrambot.bot.utils.Constant.NEW_DATE;
 import static com.exadel.telegrambot.bot.utils.Constant.*;
+import static com.exadel.telegrambot.bot.utils.EmployeeState.GET_CONTINUOUS_DATE_END;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
 @RequiredArgsConstructor
@@ -112,8 +116,7 @@ public class BotService {
 
     public void getMainMenuSend(Update update) {
         Message message = getMessage(update);
-        if (update.hasCallbackQuery())
-            deleteMessage(update);
+        if (update.hasCallbackQuery()) deleteMessage(update);
         SendMessage sendMessage = new SendMessage(message.getChatId().toString(), MENU_TEXT + message.getFrom().getFirstName());
         sendMessage.setReplyMarkup(keyboardService.homeMenu());
         telegramFeign.sendMessage(sendMessage);
@@ -184,6 +187,19 @@ public class BotService {
         telegramFeign.editMessageText(editMessageText);
     }
 
+    public void getDayOfWeekForUpdate(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String[] split = data.split(":");
+        String recurringTime = split[split.length - 1];
+        String currBookingId = split[1];
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_DAY_OF_WEEK);
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getDayOfWeek(" " + RECURRING + " " + currBookingId + recurringTime));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
     public void getRecurringTime(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
@@ -191,6 +207,16 @@ public class BotService {
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
         editMessageText.setReplyMarkup(keyboardService.getRecurringTime(EmployeeState.CHOOSE_RECURRING_TIME + data.substring(CHOOSE_BOOKING_TYPE.length(), data.length() - RECURRING.length())));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getRecurringTimeForEdit(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        EditMessageText editMessageText = new EditMessageText(CHOOSE_RECURRING_TIME);
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getRecurringTime(data + ":"));
         telegramFeign.editMessageText(editMessageText);
     }
 
@@ -289,10 +315,10 @@ public class BotService {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
         String currBookingId = data.substring(CANCEL.length() + 1);
-        EditMessageText editMessageText = new EditMessageText(message.getText() + "\n Do you really want to cancel?");
+        EditMessageText editMessageText = new EditMessageText("\n" + message.getText() + "\n Do you really want to cancel?");
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
-        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(currBookingId,false));
+        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(currBookingId, false));
         telegramFeign.editMessageText(editMessageText);
     }
 
@@ -300,10 +326,10 @@ public class BotService {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
         String currBookingId = data.substring(EDIT.length() + 1);
-        EditMessageText editMessageText = new EditMessageText(message.getText() + "\n Do you really want to edit?");
+        EditMessageText editMessageText = new EditMessageText("\n\n" + message.getText() + "\n\n Choose your option editing > ");
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
-        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(currBookingId,true));
+        editMessageText.setReplyMarkup(keyboardService.getMainEditMenu(currBookingId));
         telegramFeign.editMessageText(editMessageText);
     }
 
@@ -338,14 +364,140 @@ public class BotService {
         }
     }
 
-    public void confirmedEditing(Update update) {
+    public void confirmedEditingForDate(Update update) {
         final Message message = getMessage(update);
         final String data = update.getCallbackQuery().getData();
-        String currBookingId = data.substring(CONFIRM_EDITING.length() + 1);
-        EditMessageText editMessageText = new EditMessageText("Your option >");
+        String[] split = (data.indexOf(":") > 0) ? data.split(":") : data.split(" ");
+        String currBookingId = split[1];
+        List<LocalDate> newDates = new ArrayList<>();
+        if (data.endsWith(CONTINUOUS)){
+            String startDate = split[2];
+            String endDate = split[3];
+            keyboardService.getContinuousDays(newDates,startDate,endDate);
+        }
+        else
+        {
+            for (int i = 2; i <= split.length - 1; i++) {
+                newDates.add(LocalDate.parse(split[i]));
+            }
+        }
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(message.getChatId().toString());
+        deleteMessage(update);
+        try {
+            BookingResponseDto bookingById = hotDeskFeign.getBookingById(Long.valueOf(currBookingId));
+            bookingById.setDates(newDates);
+            hotDeskFeign.updateBooking(Long.valueOf(currBookingId), bookingById);
+            sendMessage.setText("Updated Successfully");
+        } catch (Exception e) {
+            sendMessage.setText(e.getMessage());
+        }
+        telegramFeign.sendMessage(sendMessage);
+    }
+
+    public void editBookingDate(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String currBookingId = data.substring(NEW_DATE.length() + 1);
+        EditMessageText editMessageText = new EditMessageText("Choose the type of booking dates");
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.createDateType("id:" + currBookingId + ":"));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getDateForEditOneDay(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String[] split = data.split(":");
+        String currBookingId = split[1];
+        EditMessageText editMessageText = new EditMessageText("Choose the new date: ");
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.createDate(LocalDate.now(), ":" + currBookingId + ":id"));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void choseNewDate(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String[] split = data.split(":");
+        String currBookingId = split[1];
+        LocalDate newDate = LocalDate.parse(split[0].substring(DATE.length()));
+        EditMessageText editMessageText = new EditMessageText("\n\n" + textBuilderForBooking(hotDeskFeign.getBookingById(Long.valueOf(currBookingId))) + "\n\nNew Date: " + newDate + "\n\n");
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(":" + currBookingId + ":" + newDate, true));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getConfirmMenuForRecurringUpdate(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String[] split = data.split(" ");
+        Long bookingId = Long.valueOf(split[2]);
+        int days = Integer.parseInt(split[3]);
+        int dayOfWeek = keyboardService.checkDayOfWeek(split[split.length - 1]);
+        LocalDate date = LocalDate.now();
+        List<LocalDate> dates = new ArrayList<>();
+        while (days > 0) {
+            if (date.getDayOfWeek().getValue() == dayOfWeek) {
+                days--;
+                dates.add(date);
+                date = date.plusWeeks(1);
+                continue;
+            }
+            date = date.plusDays(1);
+        }
+        EditMessageText editMessageText = new EditMessageText("\n\nBooking Id: " + bookingId + "\n\nNew Date(s): " + dates + ";");
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        StringBuilder datas = new StringBuilder();
+        datas.append(bookingId);
+        for (LocalDate l : dates) {
+            datas.append(" ").append(l);
+        }
+        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(datas.toString(), true));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getStartDateForEditContinuous(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String[] split = data.split(":");
+        String bookingId = split[1];
+        EditMessageText editMessageText = new EditMessageText("\n\nSelect the start date:\n\n");
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setChatId(message.getChatId().toString());
-        editMessageText.setReplyMarkup(keyboardService.getMainEditMenu(currBookingId));
+        editMessageText.setReplyMarkup(keyboardService.createDate(LocalDate.now(), ":" + bookingId + ":" + GET_CONTINUOUS_DATE_END));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getEndDateForUpdate(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String[] split = data.split(":");
+        String bookingId = split[1];
+        String startDate = split[0].substring(DATE.length());
+        EditMessageText editMessageText = new EditMessageText("\n\nSelect the end date:\n\n");
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.createDate(LocalDate.now(), " " + startDate + " " + bookingId + " " + CHOSE_END_DATE_FOR_UPDATE));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getConfirmMenuForContinuousUpdate(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String[] s = data.split(" ");
+        String startDate = s[1];
+        String endDate = s[0].substring(DATE.length());
+        String bookingId = s[2];
+        EditMessageText editMessageText = new EditMessageText("\n\nBooking Id: " + bookingId + "\n\nStart Date: " + startDate + "\n\nEnd Date: " + endDate);
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(bookingId + " " + startDate + " " + endDate + " " + CONTINUOUS, true));
         telegramFeign.editMessageText(editMessageText);
     }
 }

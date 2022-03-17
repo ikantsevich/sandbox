@@ -14,5 +14,4 @@ public class Config {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return mapper;
     }
-
 }

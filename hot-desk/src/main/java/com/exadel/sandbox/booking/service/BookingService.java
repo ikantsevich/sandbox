@@ -53,7 +53,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
 
     @Override
     public ResponseEntity<BookingResponseDto> create(BookingCreateDto bookingCreateDto) {
-        Booking booking = mapper.map(bookingCreateDto, Booking.class);
+        Booking booking = mapper.map(bookingCreateDto,Booking.class);
 
         checkNewBooking(booking);
 
@@ -138,7 +138,8 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         return ResponseEntity.ok(bookingResponseDtos);
     }
 
-    public ResponseEntity<BookingResponseDto> update(Long id, BookingUpdateDto bookingUpdateDTO) {
+    public ResponseEntity<BookingResponseDto> update(Long id, BookingResponseDto bookingResponseDto) {
+        BookingUpdateDto bookingUpdateDTO = mapper.map(bookingResponseDto, BookingUpdateDto.class);
         Booking booking = checkUpdateBooking(id, bookingUpdateDTO);
 
         return ResponseEntity.ok(mapper.map(repository.save(booking), BookingResponseDto.class));

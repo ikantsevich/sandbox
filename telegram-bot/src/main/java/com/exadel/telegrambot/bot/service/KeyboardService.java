@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.exadel.telegrambot.bot.service.BotService.getMessage;
+import static com.exadel.telegrambot.bot.utils.Constant.NEW_DATE;
 import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
 
@@ -154,13 +155,13 @@ public class KeyboardService {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> inlineKeyboardButtons = new ArrayList<>();
         List<InlineKeyboardButton> rows = new ArrayList<>();
-        inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtons);
         if (isEdit)
-            rows.add(getButton(CONFIRM_EDITING + " " + bookingId, "✅"));
+            rows.add(getButton(CONFIRM_EDITING_FOR_DATE + " " + bookingId, "✅"));
         else
             rows.add(getButton(CONFIRM_CANCELLING + " " + bookingId, "✅"));
         rows.add(getButton(BACK_TO_BOOKINGS + " " + bookingId, "🔙"));
         inlineKeyboardButtons.add(rows);
+        inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtons);
         return inlineKeyboardMarkup;
     }
 
@@ -242,6 +243,39 @@ public class KeyboardService {
         return inlineKeyboardMarkup;
     }
 
+//    public InlineKeyboardMarkup createDateForNewDate(LocalDate date, String data) {
+//        String dateStr = date.toString();
+//        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+//        rowList.add(Collections.singletonList(getButton(SKIP, date.getMonth().name() + " " + date.getYear())));
+//        List<InlineKeyboardButton> weeks = new ArrayList<>();
+//        for (String week : Arrays.asList("M", "T", "W", "R", "F", "S", "U"))
+//            weeks.add(getButton(SKIP, week));
+//        rowList.add(weeks);
+//
+//        int monthValue = date.getMonthValue();
+//        date = date.minusDays(date.getDayOfMonth() - 1);
+//        Map<String, String> days = new LinkedHashMap<>();
+//        while (date.getMonthValue() == monthValue) {
+//            for (int i = 1; i <= 7; i++) {
+//                if (i == date.getDayOfWeek().getValue() && date.getMonthValue() == monthValue) {
+//                    days.put(DATE + ":" + date + ":" + data, String.valueOf(date.getDayOfMonth()));
+//                    date = date.plusDays(1);
+//                } else
+//                    days.put(SKIP + i, " ");
+//            }
+//            rowList.add(getRow(days));
+//            days = new LinkedHashMap<>();
+//        }
+//        LinkedHashMap<String, String> floor = new LinkedHashMap<>();
+//        floor.put(PREV + dateStr, PREV);
+//        floor.put(BACK_TO_GET_TO_OFFICE, BACK);
+//        floor.put(NEXT + dateStr, NEXT);
+//        rowList.add(getRow(floor));
+//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+//        inlineKeyboardMarkup.setKeyboard(rowList);
+//        return inlineKeyboardMarkup;
+//    }
+
     public InlineKeyboardMarkup getSeats(String data) {
         List<LocalDate> localDates = new ArrayList<>();
         String offId = null;
@@ -263,7 +297,7 @@ public class KeyboardService {
         return getInlineKeyboard((isContinuous ? CONTINUOUS : ONE_DAY) + localDates + offId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
     }
 
-    private void getContinuousDays(List<LocalDate> localDates, String begin, String end) {
+    public void getContinuousDays(List<LocalDate> localDates, String begin, String end) {
         LocalDate beginning = LocalDate.parse(begin);
         LocalDate ending = LocalDate.parse(end);
         while (!String.valueOf(beginning).equals(String.valueOf(ending))) {
@@ -391,7 +425,8 @@ public class KeyboardService {
         return getInlineKeyboard(GET_SEATS_RECURRING + dates + addressId, getTextOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()), getCallbackOfSeats(seatsByOfficeIdAndDate, new ArrayList<>()));
     }
 
-    private int checkDayOfWeek(String dayOfWeek) {
+
+    public int checkDayOfWeek(String dayOfWeek) {
         int i = 1;
         for (String day : List.of(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)) {
             if (dayOfWeek.equals(day))
@@ -533,11 +568,14 @@ public class KeyboardService {
         inlineKeyboardMarkup.setKeyboard(inlineKeyboardButtons);
         rows.add(getButton(PREV_BOOKING + " " + bookingId, "Change Office"));
         rows.add(getButton(CANCEL + " " + bookingId, "Change Workplace"));
-        rows.add(getButton(EDIT + " " + bookingId, "New Date"));
+        rows.add(getButton(NEW_DATE + " " + bookingId, "New Date"));
         inlineKeyboardButtons.add(rows);
         rows = new ArrayList<>();
         rows.add(getButton(BACK_TO_BOOKINGS, "🔙"));
         inlineKeyboardButtons.add(rows);
         return inlineKeyboardMarkup;
     }
+
+
+
 }

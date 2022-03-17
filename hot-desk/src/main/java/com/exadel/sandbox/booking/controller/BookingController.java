@@ -2,7 +2,6 @@ package com.exadel.sandbox.booking.controller;
 
 import com.exadel.sandbox.booking.dto.BookingCreateDto;
 import com.exadel.sandbox.booking.dto.BookingResponseDto;
-import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +42,8 @@ public class BookingController {
 
     @PutMapping("{id}")
     ResponseEntity<BookingResponseDto> updateBooking(@PathVariable("id") Long id,
-                                                     @Valid @RequestBody BookingUpdateDto bookingUpdateDTO) {
-        return bookingService.update(id, bookingUpdateDTO);
+                                                     @Valid @RequestBody BookingResponseDto bookingResponseDto) {
+        return bookingService.update(id, bookingResponseDto);
     }
 
     @GetMapping("list/current")
@@ -58,13 +57,12 @@ public class BookingController {
     }
 
     @PutMapping("cancel/{id}")
-    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id,@RequestParam LocalDate start, @RequestParam(required = false) LocalDate end){
-        return bookingService.cancelBookings(id,start,end);
+    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id, @RequestParam LocalDate start, @RequestParam(required = false) LocalDate end) {
+        return bookingService.cancelBookings(id, start, end);
     }
 
     @GetMapping("{emId}/list")
-    ResponseEntity<List<BookingResponseDto>> getBookingsByEmId(@PathVariable Long emId){
+    ResponseEntity<List<BookingResponseDto>> getBookingsByEmId(@PathVariable Long emId) {
         return bookingService.getBookingsByEmId(emId);
     }
-
 }

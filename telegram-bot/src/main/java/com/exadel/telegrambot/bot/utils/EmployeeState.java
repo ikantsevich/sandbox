@@ -23,7 +23,16 @@ public interface EmployeeState {
     String PREV_BOOKING = "prev_booking:";
     String CANCEL_BOOKING = "cancel_booking";
     String CONFIRM_CANCELLING = "confirm_cancel";
-    String CONFIRM_EDITING = "confirm_editing";
+    String CONFIRM_EDITING_FOR_DATE = "confirm_editing_for_date";
     String EDIT_BOOKING = "edit_booking";
     String BACK_TO_MAIN_MENU = "back_to_main_menu";
+    String NEW_DATE = "NEW_DATE";
+    String CHOSE_NEW_DATE = "chose_new_date";
+    String GET_DATE_ONE_DAY = "get_date_one_day";
+    String GET_DATE_CONTINUOUS = "get_date_continuous";
+    String CHOOSE_RECURRING_TIME_FOR_UPDATE = "get_recurring_time_for_update";
+    String GET_DAY_OF_WEEK_FOR_UPDATE = "get_day_of_week_for_update";
+    String CHOSE_RECURRING_DATE_FOR_UPDATE = "get_recurring_date_for_update";
+    String GET_CONTINUOUS_DATE_END = "Please,choose a ending day \uD83D\uDCC5";
+    String CHOSE_END_DATE_FOR_UPDATE="chose_update_date_for_update";
 }
