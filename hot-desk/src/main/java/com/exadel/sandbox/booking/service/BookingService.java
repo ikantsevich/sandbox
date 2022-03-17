@@ -9,10 +9,7 @@ import com.exadel.sandbox.booking.entity.BookingDates;
 import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
-import com.exadel.sandbox.exception.exceptions.DateOutOfBoundException;
-import com.exadel.sandbox.exception.exceptions.DoubleBookingInADayException;
-import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
-import com.exadel.sandbox.exception.exceptions.VacationOverlapException;
+import com.exadel.sandbox.exception.exceptions.*;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import com.exadel.sandbox.parking_spot.repository.ParkingSpotRepository;
 import com.exadel.sandbox.seat.entity.Seat;
@@ -25,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,15 +30,15 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class BookingService extends BaseCrudService<Booking, BookingResponseDto, BookingUpdateDto, BookingCreateDto, BookingRepository> {
-    private final VacationRepository vacationRepository;
+
     private final EmployeeRepository employeeRepository;
+    private final VacationRepository vacationRepository;
     private final SeatRepository seatRepository;
     private final ParkingSpotRepository parkingSpotRepository;
-
-    public BookingService(ModelMapper mapper, BookingRepository repository, VacationRepository vacationRepository, EmployeeRepository employeeRepository, SeatRepository seatRepository, ParkingSpotRepository parkingSpotRepository) {
+    public BookingService(ModelMapper mapper, BookingRepository repository, EmployeeRepository employeeRepository, VacationRepository vacationRepository, SeatRepository seatRepository, ParkingSpotRepository parkingSpotRepository) {
         super(mapper, repository);
-        this.vacationRepository = vacationRepository;
         this.employeeRepository = employeeRepository;
+        this.vacationRepository = vacationRepository;
         this.seatRepository = seatRepository;
         this.parkingSpotRepository = parkingSpotRepository;
     }
@@ -52,10 +50,8 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
     public ResponseEntity<BookingResponseDto> create(BookingCreateDto bookingCreateDto) {
         Booking booking = mapper.map(bookingCreateDto, Booking.class);
 
-        checkNewBooking(booking);
-
-//        Removing duplicate dates
         booking.setDates(new ArrayList<>(new HashSet<>(booking.getDates())));
+        checkNewBooking(booking);
 
         BookingResponseDto bookingResponseDto = mapper.map(repository.save(booking), BookingResponseDto.class);
 
@@ -86,6 +82,16 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         }
     }
 
+    private void checkTheEmployeesVacation(List<LocalDate> dates, Long employeeId) {
+        List<Vacation> vacationList = vacationRepository.findAllByEmployeeId(employeeId);
+        dates.forEach(date -> vacationList.forEach(vacation -> {
+            if (vacation.getStart().toLocalDate().isBefore(date) && vacation.getEnd().toLocalDate().isAfter(date))
+                throw new VacationOverlapException("On date: " + date + " employee is on vacation");
+            if (vacation.getStart().toLocalDate().equals(date) || vacation.getEnd().toLocalDate().equals(date))
+                throw new VacationOverlapException("On date: " + date + " employee is on vacation");
+        }));
+    }
+
     //    Checks if Date is in valid range
     private void checkTheDates(List<LocalDate> dates) {
         LocalDate today = LocalDate.now();
@@ -96,16 +102,6 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
             if (!(date.isAfter(today) && date.isBefore(dateLimit)) && !(date.equals(today) || date.equals(dateLimit)))
                 throw new DateOutOfBoundException("Date " + date + " is not in the range ");
         });
-    }
-
-    private void checkTheEmployeesVacation(List<LocalDate> dates, Long employeeId) {
-        List<Vacation> vacationList = vacationRepository.findAllByEmployeeId(employeeId);
-        dates.forEach(date -> vacationList.forEach(vacation -> {
-            if (vacation.getStart().toLocalDate().isBefore(date) && vacation.getEnd().toLocalDate().isAfter(date))
-                throw new VacationOverlapException("On date: " + date + " employee is on vacation");
-            if (vacation.getStart().toLocalDate().equals(date) || vacation.getEnd().toLocalDate().equals(date))
-                throw new VacationOverlapException("On date: " + date + " employee is on vacation");
-        }));
     }
 
     public ResponseEntity<List<BookingResponseDto>> getCurrentBookings() {
@@ -127,13 +123,40 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         return ResponseEntity.ok(bookingResponseDtos);
     }
 
+    public ResponseEntity<BookingResponseDto> getById(Long id, Principal principal) {
+        ResponseEntity<BookingResponseDto> byId = super.getById(id);
+        checkForPrivacy(Objects.requireNonNull(byId.getBody()).getEmployeeId(), principal);
+        return byId;
+    }
+
+
+
+    public ResponseEntity<BookingResponseDto> create(BookingCreateDto bookingCreateDTO, Principal principal) {
+        checkForPrivacy(bookingCreateDTO.getEmployeeId(), principal);
+        return create(bookingCreateDTO);
+    }
+
+    public void delete(Long id, Principal principal) {
+        checkForPrivacy(id, principal);
+        delete(id);
+    }
+
+    public ResponseEntity<BookingResponseDto> update(Long id, BookingUpdateDto bookingUpdateDTO, Principal principal) {
+        Booking booking = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking with id: " + id + " not found"));
+
+        checkForPrivacy(bookingUpdateDTO.getEmployeeId(), principal);
+        checkForPrivacy(booking.getEmployee().getId(), principal);
+
+        return update(id, bookingUpdateDTO);
+    }
+
+    @Override
     public ResponseEntity<BookingResponseDto> update(Long id, BookingUpdateDto bookingUpdateDTO) {
         Booking booking = checkUpdateBooking(id, bookingUpdateDTO);
 
         return ResponseEntity.ok(mapper.map(repository.save(booking), BookingResponseDto.class));
     }
 
-//    Checks all possible errors and if bookingUpdateDto passes function returns The booking
     private Booking checkUpdateBooking(Long id, BookingUpdateDto bookingUpdateDto) {
         bookingUpdateDto.setDates(new ArrayList<>(new HashSet<>(bookingUpdateDto.getDates())));
 
@@ -150,7 +173,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         List<LocalDate> seatBookingDates = new ArrayList<>();
         List<LocalDate> parkingBookedDates = new ArrayList<>();
 
-//        Checking if employee es free.
+        //        Checking if employee es free.
         if (bookingUpdateDto.getEmployeeId().equals(booking.getEmployee().getId()))
             employeeBookedDates = repository.checkEmployeeBookedDates(bookingUpdateDto.getEmployeeId(), bookingUpdateDtoDates);
         else
@@ -159,7 +182,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         if (!employeeBookedDates.isEmpty())
             throw new DoubleBookingInADayException("Employee already booked on " + Arrays.toString(employeeBookedDates.toArray()));
 
-//        Checking if seat is free.
+        //        Checking if seat is free.
         if (bookingUpdateDto.getSeatId().equals(booking.getSeat().getId()))
             seatBookingDates = repository.checkSeatBookingDates(bookingUpdateDto.getSeatId(), bookingUpdateDtoDates);
         else
@@ -168,7 +191,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         if (!seatBookingDates.isEmpty())
             throw new DoubleBookingInADayException("Seat already booked on " + Arrays.toString(seatBookingDates.toArray()));
 
-//        Checking parking spot is free
+        //        Checking parking spot is free
         if (bookingUpdateDto.getParkingSpotId() != null) {
             if (booking.getParkingSpot() != null) {
                 if (booking.getParkingSpot().getId().equals(bookingUpdateDto.getParkingSpotId()))
@@ -231,5 +254,16 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
             repository.delete(booking);
 
         return ResponseEntity.ok(mapper.map(booking, BookingResponseDto.class));
+    }
+
+    //        Checking that employee can't see other employee's bookings
+    private void checkForPrivacy(Long id, Principal principal){
+        Employee employee = employeeRepository.findEmployeeByEmail(principal.getName()).orElseThrow((() -> new EntityNotFoundException("You are not our employee")));
+
+        if (!employee.getId().equals(id))
+            employee.getRoles().forEach(role -> {
+                if (role.getName().equals("ROLE_EMPLOYEE"))
+                    throw new ForbiddenException();
+            });
     }
 }

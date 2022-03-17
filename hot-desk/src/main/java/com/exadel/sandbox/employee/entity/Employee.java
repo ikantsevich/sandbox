@@ -42,11 +42,14 @@ public class Employee {
     @Column(name = "em_position", nullable = false)
     private String position;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "preferred_seat")
     private Seat preferredSeat;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "employee_role", joinColumns = {@JoinColumn(name = "em_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id"),})
     private List<Role> roles = new ArrayList<>();
 

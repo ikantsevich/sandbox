@@ -8,6 +8,7 @@ import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,16 +32,19 @@ public class OfficeController {
         return officeService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @PostMapping()
     ResponseEntity<OfficeResponseDto> createOffice(@Valid @RequestBody OfficeCreateDto officeCreateDto) {
         return officeService.create(officeCreateDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
         officeService.delete(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @PutMapping("{id}")
     ResponseEntity<OfficeResponseDto> updateOffice(@PathVariable("id") Long id, @Valid @RequestBody OfficeUpdateDto officeUpdateDto) {
         return officeService.update(id, officeUpdateDto);

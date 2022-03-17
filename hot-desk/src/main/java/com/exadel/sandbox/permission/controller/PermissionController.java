@@ -6,6 +6,7 @@ import com.exadel.sandbox.permission.dto.PermissionUpdateDto;
 import com.exadel.sandbox.permission.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,16 +28,19 @@ public class PermissionController {
         return permissionService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping()
     ResponseEntity<PermissionResponseDto> createPermission(@Valid @RequestBody PermissionCreateDto permissionCreateDto) {
         return permissionService.create(permissionCreateDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
         permissionService.delete(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("{id}")
     ResponseEntity<PermissionResponseDto> updateRole(@PathVariable("id") Long id, @Valid @RequestBody PermissionUpdateDto permissionUpdateDto) {
         return permissionService.update(id, permissionUpdateDto);

@@ -1,9 +1,6 @@
 package com.exadel.sandbox.employee.service;
 
 import com.exadel.sandbox.base.BaseCrudService;
-import com.exadel.sandbox.booking.entity.Booking;
-import com.exadel.sandbox.booking.entity.BookingDates;
-import com.exadel.sandbox.booking.repository.BookingRepository;
 import com.exadel.sandbox.booking.service.BookingService;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeCreateDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
@@ -12,28 +9,40 @@ import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.employee.repository.EmployeeRepository;
 import com.exadel.sandbox.employee.repository.TgInfoRepository;
 import com.exadel.sandbox.exception.exceptions.EntityNotFoundException;
+import com.exadel.sandbox.exception.exceptions.ForbiddenException;
 import com.exadel.sandbox.role.entity.Role;
 import com.exadel.sandbox.role.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
 public class EmployeeService extends BaseCrudService<Employee, EmployeeResponseDto, EmployeeUpdateDto, EmployeeCreateDto, EmployeeRepository> {
 
     private final RoleRepository roleRepository;
-    private final BookingRepository bookingRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public EmployeeService(ModelMapper mapper, EmployeeRepository repository, TgInfoRepository tgInfoRepository, RoleRepository roleRepository, BookingRepository bookingRepository) {
+    public EmployeeService(ModelMapper mapper, EmployeeRepository repository, TgInfoRepository tgInfoRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         super(mapper, repository);
         this.roleRepository = roleRepository;
-        this.bookingRepository = bookingRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public ResponseEntity<EmployeeResponseDto> create(EmployeeCreateDto employeeCreateDto) {
+        Employee employee = mapper.map(employeeCreateDto, Employee.class);
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+
+        employee = repository.save(employee);
+        return ResponseEntity.ok(mapper.map(employee, EmployeeResponseDto.class));
     }
 
     public ResponseEntity<EmployeeResponseDto> addRole(Long id, Long roleId) {
@@ -68,23 +77,29 @@ public class EmployeeService extends BaseCrudService<Employee, EmployeeResponseD
         return ResponseEntity.ok(employeeBookedDates);
     }
 
-    @Override
-    public ResponseEntity<EmployeeResponseDto> update(Long id, EmployeeUpdateDto employeeUpdateDto) {
-        LocalDate employmentEnd = employeeUpdateDto.getEmploymentEnd().toLocalDate();
+    public ResponseEntity<EmployeeResponseDto> getById(Long id, Principal principal) {
+        checkPrivacy(id, principal);
+        return super.getById(id);
+    }
 
-        if (employmentEnd != null){
-            List<Booking> bookingsByEmployeeId = bookingRepository.findBookingsByEmployeeId(id);
-            bookingsByEmployeeId.forEach(booking -> {
-                List<BookingDates> shouldBeSaved = new ArrayList<>();
-                booking.getDates().forEach(date -> {
-                    if (employmentEnd.isAfter(date.getDate()))
-                        shouldBeSaved.add(date);
-                });
-                booking.setDates(shouldBeSaved);
-                bookingRepository.save(booking);
+    public ResponseEntity<List<LocalDate>> getEmployeeBookedDates(Long id, Principal principal) {
+        checkPrivacy(id, principal);
+        return getEmployeeBookedDates(id);
+    }
+
+    public ResponseEntity<List<LocalDate>> getEmployeeBookedDatesAll(Long id, Principal principal) {
+        checkPrivacy(id, principal);
+        return  getEmployeeBookedDatesAll(id);
+    }
+
+    public void checkPrivacy(Long id, Principal principal) {
+        Employee employee = repository.findEmployeeByEmail(principal.getName()).orElseThrow(() -> new EntityNotFoundException("you are not our employee"));
+
+        if (!id.equals(employee.getId())){
+            employee.getRoles().forEach(role -> {
+                if (role.getName().equals("ROLE_EMPLOYEE"))
+                    throw new ForbiddenException();
             });
         }
-
-        return super.update(id, employeeUpdateDto);
     }
 }

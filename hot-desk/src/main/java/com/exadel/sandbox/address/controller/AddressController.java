@@ -6,6 +6,7 @@ import com.exadel.sandbox.address.dto.AddressResponseDto;
 import com.exadel.sandbox.address.dto.AddressUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ public class AddressController {
 
     private final AddressService addressService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MAPPER')")
     @GetMapping("list")
     ResponseEntity<List<AddressResponseDto>> getAddresses() {
         return addressService.getList();
@@ -28,16 +30,19 @@ public class AddressController {
         return addressService.getById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @PostMapping()
     ResponseEntity<AddressResponseDto> createAddress(@Valid @RequestBody AddressCreateDto addressCreateDTO) {
         return addressService.create(addressCreateDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @DeleteMapping("{id}")
     void deleteById(@PathVariable("id") Long id) {
         addressService.delete(id);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MAPPER')")
     @PutMapping("{id}")
     ResponseEntity<AddressResponseDto> updateAddress(@PathVariable("id") Long id,
                                                      @Valid @RequestBody AddressUpdateDto addressUpdateDTO) {

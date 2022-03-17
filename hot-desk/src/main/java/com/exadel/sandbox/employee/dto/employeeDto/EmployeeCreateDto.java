@@ -15,6 +15,8 @@ import java.util.List;
 @JsonPropertyOrder({"firstname", "lastname"})
 public class EmployeeCreateDto extends EmployeeBaseDto {
     @NotEmpty(message = "cannot be empty")
+    private String password;
+    @NotEmpty(message = "cannot be empty")
     private List<String> roles;
     private TgInfoCreateDto tgInfoCreateDto;
     @NotNull(message = "cannot be null")

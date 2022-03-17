@@ -6,4 +6,5 @@ dependencies {
     implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
+    implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.3'
 }
