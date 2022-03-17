@@ -4,6 +4,7 @@ import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeCreateDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeUpdateDto;
 import com.exadel.sandbox.officeFloor.service.OfficeService;
+import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.ws.rs.Path;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -53,5 +53,15 @@ public class OfficeController {
     @PutMapping("{id}/free-seats")
     ResponseEntity<List<SeatResponseDto>> getFreeSeats(@PathVariable Long id, @RequestBody List<LocalDate> dates) {
         return officeService.getFreeSeats(id, dates);
+    }
+
+    @PutMapping("{id}/free-spots")
+    ResponseEntity<List<ParkingSpotResponseDto>> getFreeSpots(@PathVariable Long id, @RequestBody List<LocalDate> dates){
+        return officeService.getFreeSpots(id, dates);
+    }
+
+    @GetMapping("/address/{id}")
+    ResponseEntity<OfficeResponseDto> getOfficeByAddressId(@PathVariable Long id){
+        return officeService.getOfficeByAddressId(id);
     }
 }
