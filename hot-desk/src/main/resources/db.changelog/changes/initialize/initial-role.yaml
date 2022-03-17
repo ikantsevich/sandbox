@@ -1,8 +1,0 @@
-databaseChangeLog:
-  - logicalFilePath: no-path
-  - changeSet:
-      id: initalize role
-      author: asilbekdev@gmail.com
-      changes:
-        - sql:
-            sql: INSERT INTO role(role_name) values ('ROLE_ADMIN'), ('ROLE_EMPLOYEE'), ('ROLE_MAPPER'),  ('ROLE_MANAGER');

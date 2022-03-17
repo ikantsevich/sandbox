@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -58,5 +59,12 @@ public class BookingController {
     @GetMapping("offices/{officeId}/list")
     ResponseEntity<List<BookingResponseDto>> getBookingsByOfficeId(@PathVariable Long officeId) {
         return bookingService.getBookingsByOfficeId(officeId);
+    }
+
+    @PutMapping("cancel/{id}")
+    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id,
+                                                      @RequestParam LocalDate start,
+                                                      @RequestParam(required = false) LocalDate end){
+        return bookingService.cancelBookings(id, start, end);
     }
 }
