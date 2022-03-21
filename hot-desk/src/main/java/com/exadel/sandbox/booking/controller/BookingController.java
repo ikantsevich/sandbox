@@ -64,7 +64,8 @@ public class BookingController {
     @PutMapping("cancel/{id}")
     ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id,
                                                       @RequestParam LocalDate start,
-                                                      @RequestParam(required = false) LocalDate end){
-        return bookingService.cancelBookings(id, start, end);
+                                                      @RequestParam(required = false) LocalDate end,
+                                                      Principal principal){
+        return bookingService.cancelBookings(id, start, end, principal);
     }
 }

@@ -266,4 +266,12 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
                     throw new ForbiddenException();
             });
     }
+
+    public ResponseEntity<BookingResponseDto> cancelBookings(Long id, LocalDate start, LocalDate end, Principal principal) {
+        Booking booking = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking with id: " + id + " not found"));
+
+        checkForPrivacy(booking.getEmployee().getId(), principal);
+
+        return cancelBookings(id, start, end);
+    }
 }

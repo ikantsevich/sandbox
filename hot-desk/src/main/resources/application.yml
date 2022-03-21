@@ -8,6 +8,9 @@ datasource:
   username: 'root'
   password: ''
 spring:
+  mvc:
+    format:
+      date: yyyy-MM-dd
   jpa:
     properties:
       hibernate.jdbc.time_zone: UTC
