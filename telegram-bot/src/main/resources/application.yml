@@ -1,6 +1,6 @@
 server:
   port: 8080
-#  servlet.context-path:
+  servlet.context-path: /sandbox
 spring:
   autoconfigure:
     exclude:
