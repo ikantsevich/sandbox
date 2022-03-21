@@ -36,6 +36,4 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query(value = "select b from Booking b where b.employee.id = :employeeId")
     List<Booking> findBookingsByEmployeeId(Long employeeId);
-
-    List<Booking> findBookingsByEmployeeId(Long employeeId);
 }
