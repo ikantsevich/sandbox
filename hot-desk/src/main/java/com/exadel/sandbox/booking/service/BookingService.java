@@ -131,7 +131,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
     }
 
     public ResponseEntity<List<BookingResponseDto>> getBookingsByEmId(Long emId) {
-        List<Booking> bookingsByOfficeId = repository.getBookingsByEmployeeId(emId);
+        List<Booking> bookingsByOfficeId = repository.findBookingsByEmployeeId(emId);
 
         List<BookingResponseDto> bookingResponseDtos = bookingsByOfficeId.stream().map(booking -> mapper.map(booking, BookingResponseDto.class)).collect(Collectors.toList());
 
