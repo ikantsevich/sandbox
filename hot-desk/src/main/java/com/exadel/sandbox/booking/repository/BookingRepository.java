@@ -1,13 +1,11 @@
 package com.exadel.sandbox.booking.repository;
 
 import com.exadel.sandbox.booking.entity.Booking;
-import com.exadel.sandbox.booking.entity.BookingDates;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -30,5 +28,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = "select b from Booking b join b.seat s join s.floor f join f.office o where o.id = :officeId")
     List<Booking> findBookingsByOfficeId(Long officeId);
 
+    @Query(value = "select b from Booking b join b.seat s join s.floor f join f.office o join o.address a where a.city = :city")
+    List<Booking> findBookingsByCity(String city);
 
+    @Query(value = "select b from Booking b join b.seat s join s.floor f where f.id = :floorId")
+    List<Booking> findBookingsByFloorId(Long floorId);
+
+    @Query(value = "select b from Booking b where b.employee.id = :employeeId")
+    List<Booking> findBookingsByEmployeeId(Long employeeId);
 }

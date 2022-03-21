@@ -32,7 +32,7 @@
                     <textElement textAlignment="Right">
                         <font size="14" isBold="false"/>
                     </textElement>
-                    <text><![CDATA[Booked Seats By Office]]></text>
+                    <text><![CDATA[All Booked Seats]]></text>
                 </staticText>
             </frame>
             <staticText>
@@ -242,7 +242,7 @@
                     <textElement textAlignment="Right">
                         <font size="14" isBold="false"/>
                     </textElement>
-                    <text><![CDATA[Booked Seats By Office]]></text>
+                    <text><![CDATA[All Booked Seats]]></text>
                 </staticText>
             </frame>
             <staticText>

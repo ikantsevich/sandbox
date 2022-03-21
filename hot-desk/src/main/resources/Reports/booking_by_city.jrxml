@@ -3,6 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="booking_by_employee" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bc4c3d29-1b4f-4e0d-b983-917527068ad3">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
     <parameter name="pBookingRatio" class="java.lang.Float"/>
+    <parameter name="pCityName" class="java.lang.String"/>
     <field name="id" class="java.lang.Long"/>
     <field name="seatReportDto" class="com.exadel.sandbox.reports.dto.SeatReportDto"/>
     <field name="date" class="java.time.LocalDate"/>
@@ -10,7 +11,7 @@
         <band/>
     </background>
     <title>
-        <band height="120">
+        <band height="140">
             <property name="com.jaspersoft.studio.unit.height" value="px"/>
             <frame>
                 <reportElement mode="Opaque" x="-20" y="0" width="595" height="92" backcolor="#006699" uuid="af385082-24bc-4e07-adfb-250a4a33f64e">
@@ -32,13 +33,14 @@
                     <textElement textAlignment="Right">
                         <font size="14" isBold="false"/>
                     </textElement>
-                    <text><![CDATA[Booked Seats By Office]]></text>
+                    <text><![CDATA[Booked Seats By City]]></text>
                 </staticText>
             </frame>
             <staticText>
-                <reportElement x="0" y="96" width="70" height="20" uuid="c1a80e47-d762-4c7a-8096-168949266f63">
+                <reportElement x="0" y="116" width="70" height="20" uuid="c1a80e47-d762-4c7a-8096-168949266f63">
                     <property name="com.jaspersoft.studio.unit.x" value="px"/>
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
                 </reportElement>
                 <textElement verticalAlignment="Middle"/>
                 <text><![CDATA[Booking ratio:]]></text>
@@ -46,7 +48,22 @@
             <textField>
                 <reportElement x="70" y="96" width="214" height="20" uuid="95e42768-49e3-47a7-a02a-ebee51d5e85c">
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{pCityName}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="96" width="70" height="20" uuid="5b06872c-b59e-4dd9-847a-1d653ea3cede">
+                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
                     <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                </reportElement>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[City: ]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="70" y="116" width="214" height="20" uuid="bbd84881-e3a0-49f9-9f5a-cdaa9a9af576">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
                 <textElement textAlignment="Left" verticalAlignment="Middle"/>
                 <textFieldExpression><![CDATA[$P{pBookingRatio} + " %"]]></textFieldExpression>
@@ -242,7 +259,7 @@
                     <textElement textAlignment="Right">
                         <font size="14" isBold="false"/>
                     </textElement>
-                    <text><![CDATA[Booked Seats By Office]]></text>
+                    <text><![CDATA[Booked Seats By City]]></text>
                 </staticText>
             </frame>
             <staticText>

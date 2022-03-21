@@ -1,6 +1,5 @@
 package com.exadel.sandbox.seat.repository;
 
-import com.exadel.sandbox.reports.dto.SeatReportDto;
 import com.exadel.sandbox.seat.entity.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +17,8 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
 
     @Query(value = "select s from Seat s join s.floor f join f.office o where o.id = :id")
     List<Seat> findSeatsByOfficeId(Long id);
+
+    @Query(value = "select s from Seat s join s.floor f join f.office o join o.address a where a.city = :city")
+    List<Seat> findSeatsByCity(String city);
+
 }
