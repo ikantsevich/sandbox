@@ -1,9 +1,9 @@
 package com.exadel.sandbox.address.service;
 
+import com.exadel.sandbox.address.entity.Address;
 import com.exadel.sandbox.address.dto.AddressCreateDto;
 import com.exadel.sandbox.address.dto.AddressResponseDto;
 import com.exadel.sandbox.address.dto.AddressUpdateDto;
-import com.exadel.sandbox.address.entity.Address;
 import com.exadel.sandbox.address.repository.AddressRepository;
 import com.exadel.sandbox.base.BaseCrudService;
 import org.modelmapper.ModelMapper;

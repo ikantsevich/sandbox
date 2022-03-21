@@ -22,7 +22,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = "select d.date from Booking b join b.employee e join b.dates d where e.id = :id and d.date in (:dates)")
     List<LocalDate> checkEmployeeBookedDates(Long id, List<LocalDate> dates);
 
-    @Query(value = "select b from Booking b join b.dates d where d.date >= :startDate and d.date <= :endDate")
+    @Query(value = "select distinct b from Booking b join b.dates d where d.date >= :startDate and d.date <= :endDate")
     List<Booking> findBookingsInTimePeriod(LocalDate startDate, LocalDate endDate);
 
     @Query(value = "select b from Booking b join b.seat s join s.floor f join f.office o where o.id = :officeId")
@@ -35,5 +35,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findBookingsByFloorId(Long floorId);
 
     @Query(value = "select b from Booking b where b.employee.id = :employeeId")
+    List<Booking> findBookingsByEmployeeId(Long employeeId);
+
     List<Booking> findBookingsByEmployeeId(Long employeeId);
 }
