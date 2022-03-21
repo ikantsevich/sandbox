@@ -11,6 +11,7 @@ import com.exadel.sandbox.parking_spot.dto.ParkingSpotResponseDto;
 import com.exadel.sandbox.seat.dto.SeatResponseDto;
 import com.exadel.telegrambot.bot.utils.TelegramUtils;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,19 +36,13 @@ public interface HotDeskFeign {
     OfficeResponseDto getOfficeByAddressId(@PathVariable Long id);
 
     @PutMapping("office/{id}/free-seats")
-    List<SeatResponseDto> getSeatsByOfficeIdAndDate(
-            @PathVariable Long id,
-            @RequestBody List<LocalDate> dateList
-    );
+    List<SeatResponseDto> getSeatsByOfficeIdAndDate(@PathVariable Long id, @RequestBody List<LocalDate> dateList);
 
     @GetMapping("parking-spot/office-id/{id}")
     List<ParkingSpotResponseDto> getParkingSpotByOfficeId(@PathVariable Long id);
 
     @PutMapping("office/{id}/free-spots")
-    List<ParkingSpotResponseDto> getFreeParkingSpots(
-            @PathVariable Long id,
-            @RequestBody List<LocalDate> dates
-    );
+    List<ParkingSpotResponseDto> getFreeParkingSpots(@PathVariable Long id, @RequestBody List<LocalDate> dates);
 
     @GetMapping("booking/{emId}/list")
     List<BookingResponseDto> findBookingsByEmId(@PathVariable Long emId);
@@ -62,5 +57,9 @@ public interface HotDeskFeign {
     BookingResponseDto cancelBooking(@PathVariable Long id, @RequestParam(required = false) LocalDate start, @RequestParam() LocalDate end);
 
     @PutMapping("booking/{id}")
-    BookingResponseDto updateBooking(@PathVariable("id") Long id, @Valid @RequestBody BookingResponseDto bookingResponseDto);
+    BookingResponseDto updateBooking(@PathVariable("id") Long id, @Valid @RequestBody BookingUpdateDto bookingUpdateDto);
+
+    @GetMapping("office/{id}")
+    OfficeResponseDto getOffice(@PathVariable Long id) ;
+
 }

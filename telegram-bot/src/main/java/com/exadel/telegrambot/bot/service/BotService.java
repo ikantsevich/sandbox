@@ -1,12 +1,15 @@
 package com.exadel.telegrambot.bot.service;
 
 import com.exadel.sandbox.booking.dto.BookingResponseDto;
+import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.employee.dto.employeeDto.EmployeeResponseDto;
+import com.exadel.sandbox.officeFloor.dto.officeDto.OfficeResponseDto;
 import com.exadel.telegrambot.bot.feign.HotDeskFeign;
 import com.exadel.telegrambot.bot.feign.TelegramFeign;
 import com.exadel.telegrambot.bot.utils.EmployeeState;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -33,6 +36,7 @@ public class BotService {
     private final TelegramFeign telegramFeign;
     private final KeyboardService keyboardService;
     private final HotDeskFeign hotDeskFeign;
+    private final ModelMapper modelMapper;
 
     public EmployeeResponseDto checkEmployee(Update update) {
         Message message = getMessage(update);
@@ -370,13 +374,11 @@ public class BotService {
         String[] split = (data.indexOf(":") > 0) ? data.split(":") : data.split(" ");
         String currBookingId = split[1];
         List<LocalDate> newDates = new ArrayList<>();
-        if (data.endsWith(CONTINUOUS)){
+        if (data.endsWith(CONTINUOUS)) {
             String startDate = split[2];
             String endDate = split[3];
-            keyboardService.getContinuousDays(newDates,startDate,endDate);
-        }
-        else
-        {
+            keyboardService.getContinuousDays(newDates, startDate, endDate);
+        } else {
             for (int i = 2; i <= split.length - 1; i++) {
                 newDates.add(LocalDate.parse(split[i]));
             }
@@ -388,7 +390,8 @@ public class BotService {
         try {
             BookingResponseDto bookingById = hotDeskFeign.getBookingById(Long.valueOf(currBookingId));
             bookingById.setDates(newDates);
-            hotDeskFeign.updateBooking(Long.valueOf(currBookingId), bookingById);
+            BookingUpdateDto bookingUpdateDto = modelMapper.map(bookingById, BookingUpdateDto.class);
+            hotDeskFeign.updateBooking(Long.valueOf(currBookingId), bookingUpdateDto);
             sendMessage.setText("Updated Successfully");
         } catch (Exception e) {
             sendMessage.setText(e.getMessage());
@@ -499,5 +502,65 @@ public class BotService {
         editMessageText.setMessageId(message.getMessageId());
         editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(bookingId + " " + startDate + " " + endDate + " " + CONTINUOUS, true));
         telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getOfficeForUpdate(Update update) {
+        final String[] s = update.getCallbackQuery().getData().split(" ");
+        final Message message = getMessage(update);
+        String text = message.getText();
+        String city = text.substring(text.indexOf("City:") + 5, text.indexOf("Street:")).trim();
+        String bookingId = s[1];
+        EditMessageText editMessageText = new EditMessageText("\n\n " + textBuilderForBooking(hotDeskFeign.getBookingById(Long.valueOf(bookingId))) + "\n\n Choose the new Office");
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.officeMenuForUpdate(city, bookingId));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getSeatsForUpdate(Update update) {
+        final String[] s = update.getCallbackQuery().getData().split("\\s+");
+        final Message message = getMessage(update);
+        final String text = message.getText();
+        BookingResponseDto bookingById = hotDeskFeign.getBookingById(Long.valueOf(s[1]));
+        String addressId = s[2];
+        EditMessageText editMessageText = new EditMessageText("\n\n " + textBuilderForBooking(bookingById) + "\n\n Choose the new Seat");
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setReplyMarkup(keyboardService.getSeatsForUpdate(GET_NEW_SEAT_FOR_UPDATE, bookingById.getDates(), s[1], addressId));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void getConfirmMenuForOfficeUpdate(Update update) {
+        final Message message = getMessage(update);
+        final String data = update.getCallbackQuery().getData();
+        String text = message.getText();
+        text = text.replace("Choose the new Seat","");
+        EditMessageText editMessageText = new EditMessageText(text+"\nPlease confirm.");
+        editMessageText.setChatId(message.getChatId().toString());
+        editMessageText.setMessageId(message.getMessageId());
+        editMessageText.setReplyMarkup(keyboardService.confirmationMenuButtons(data, true));
+        telegramFeign.editMessageText(editMessageText);
+    }
+
+    public void confirmedEditingForOffice(Update update) {
+        final Message message = getMessage(update);
+        String[] split = update.getCallbackQuery().getData().split("\\s+");
+        String bookingId = split[2];
+        String officeId = split[3];
+        String seatId = split[4];
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(message.getChatId().toString());
+        try {
+            BookingResponseDto bookingById = hotDeskFeign.getBookingById(Long.valueOf(bookingId));
+            OfficeResponseDto office = hotDeskFeign.getOffice(Long.valueOf(officeId));
+            bookingById.setOffice(office);
+            bookingById.setSeatId(Long.valueOf(seatId));
+            hotDeskFeign.updateBooking(Long.valueOf(bookingId), modelMapper.map(bookingById, BookingUpdateDto.class));
+            deleteMessage(update);
+        } catch (Exception e) {
+            sendMessage.setText(e.getMessage());
+        }
+        sendMessage.setText("successfully updated");
+        telegramFeign.sendMessage(sendMessage);
     }
 }

@@ -2,6 +2,7 @@ package com.exadel.sandbox.booking.controller;
 
 import com.exadel.sandbox.booking.dto.BookingCreateDto;
 import com.exadel.sandbox.booking.dto.BookingResponseDto;
+import com.exadel.sandbox.booking.dto.BookingUpdateDto;
 import com.exadel.sandbox.booking.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,8 @@ public class BookingController {
 
     @PutMapping("{id}")
     ResponseEntity<BookingResponseDto> updateBooking(@PathVariable("id") Long id,
-                                                     @Valid @RequestBody BookingResponseDto bookingResponseDto) {
-        return bookingService.update(id, bookingResponseDto);
+                                                     @Valid @RequestBody BookingUpdateDto bookingUpdateDto) {
+        return bookingService.update(id, bookingUpdateDto);
     }
 
     @GetMapping("list/current")

@@ -34,5 +34,9 @@ public interface EmployeeState {
     String GET_DAY_OF_WEEK_FOR_UPDATE = "get_day_of_week_for_update";
     String CHOSE_RECURRING_DATE_FOR_UPDATE = "get_recurring_date_for_update";
     String GET_CONTINUOUS_DATE_END = "Please,choose a ending day \uD83D\uDCC5";
-    String CHOSE_END_DATE_FOR_UPDATE="chose_update_date_for_update";
+    String CHOSE_END_DATE_FOR_UPDATE = "chose_update_date_for_update";
+    String GET_NEW_OFFICE_FOR_UPDATE = "get_new_office_for_update";
+    String GET_NEW_SEAT_FOR_UPDATE = "get_new_seat_for_update";
+    String CHOSE_NEW_SEAT = "CHOSE_NEW_SEAT";
+    String CONFIRM_EDITING_FOR_OFFICE = "CONFIRM_EDITING_FOR_OFFICE";
 }

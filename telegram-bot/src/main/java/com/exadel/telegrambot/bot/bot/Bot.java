@@ -1,6 +1,7 @@
 package com.exadel.telegrambot.bot.bot;
 
 import com.exadel.telegrambot.bot.service.BotService;
+import com.exadel.telegrambot.bot.utils.EmployeeState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -8,10 +9,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 
-import static com.exadel.telegrambot.bot.utils.EmployeeState.CHOSE_END_DATE_FOR_UPDATE;
+import static com.exadel.telegrambot.bot.utils.Constant.CHOSE_NEW_SEAT;
 import static com.exadel.telegrambot.bot.utils.Constant.*;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.CHOOSE_BOOKING_TYPE;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.CHOOSE_RECURRING_TIME;
+import static com.exadel.telegrambot.bot.utils.EmployeeState.CHOSE_END_DATE_FOR_UPDATE;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.GET_CONTINUOUS_DATE_END;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.NEW_DATE;
 import static com.exadel.telegrambot.bot.utils.EmployeeState.*;
@@ -53,7 +55,7 @@ public class Bot {
                 state = GET_DATE_ONE_DAY;
             } else if (data.endsWith(CONTINUOUS) && data.startsWith("id:")) {
                 state = GET_DATE_CONTINUOUS;
-            } else if (data.endsWith(RECURRING)&&!data.startsWith("id")) {
+            } else if (data.endsWith(RECURRING) && !data.startsWith("id")) {
                 state = CHOOSE_RECURRING_TIME;
             } else if (data.startsWith(CHOOSE_RECURRING_TIME)) {
                 state = GET_DAY_OF_WEEK;
@@ -82,7 +84,10 @@ public class Bot {
             } else if (data.startsWith(CONFIRM_CANCELLING)) {
                 state = CONFIRM_CANCELLING;
             } else if (data.startsWith(CONFIRM_EDITING_FOR_DATE)) {
-                state = CONFIRM_EDITING_FOR_DATE;
+                if (data.indexOf(CHOSE_NEW_SEAT) > 0)
+                    state = CONFIRM_EDITING_FOR_OFFICE;
+                else
+                    state = CONFIRM_EDITING_FOR_DATE;
             } else if (data.startsWith(BACK_TO_MAIN_MENU)) {
                 state = BACK_TO_MAIN_MENU;
             } else if (data.startsWith(NEW_DATE)) state = NEW_DATE;
@@ -90,100 +95,49 @@ public class Bot {
                 if (data.endsWith(GET_CONTINUOUS_DATE_END)) state = GET_CONTINUOUS_DATE_END;
                 else if (data.endsWith(CHOSE_END_DATE_FOR_UPDATE)) state = CHOSE_END_DATE_FOR_UPDATE;
                 else state = CHOSE_NEW_DATE;
+            } else if (data.startsWith(NEW_OFFICE)) {
+                state = GET_NEW_OFFICE_FOR_UPDATE;
+            } else if (data.startsWith(OFFICE_FOR_UPDATE)) {
+                state = GET_NEW_SEAT_FOR_UPDATE;
+            } else if (data.startsWith(CHOSE_NEW_SEAT)) {
+                state = CHOSE_NEW_SEAT;
             }
         }
 
         switch (state) {
-            case BACK_TO_MAIN_MENU:
-                botService.getMainMenuSend(update);
-                break;
-            case COUNTRIES:
-                botService.getCountry(update);
-                break;
-            case MY_BOOKINGS:
-                botService.getBookingsByEmId(update);
-                break;
-            case CITIES:
-                botService.getCity(update);
-                break;
-            case OFFICE:
-                botService.getOffice(update);
-                break;
-            case CHOOSE_BOOKING_TYPE:
-                botService.getDateType(update);
-                break;
-            case GET_DATE:
-                botService.getDate(update, LocalDate.now());
-                break;
-            case GET_SEATS:
-                botService.getSeats(update);
-                break;
-            case CHOOSE_RECURRING_TIME:
-                botService.getRecurringTime(update);
-                break;
-            case CHOOSE_RECURRING_TIME_FOR_UPDATE:
-                botService.getRecurringTimeForEdit(update);
-                break;
-            case CHOSE_RECURRING_DATE_FOR_UPDATE:
-                botService.getConfirmMenuForRecurringUpdate(update);
-                break;
-            case GET_DAY_OF_WEEK:
-                botService.getDayOfWeeK(update);
-                break;
-            case GET_DAY_OF_WEEK_FOR_UPDATE:
-                botService.getDayOfWeekForUpdate(update);
-                break;
-            case CHOSE_END_DATE_FOR_UPDATE:
-                botService.getConfirmMenuForContinuousUpdate(update);
-                break;
-            case GET_SEATS_RECURRING:
-                botService.getSeatsByRecurring(update);
-                break;
-            case GET_PARKING:
-                botService.getParking(update);
-                break;
-            case GET_REVIEW:
-                botService.getReview(update);
-                break;
-            case BOOKING:
-                botService.bookWorkPlace(update);
-                break;
-            case PREV_BOOKING:
-                botService.getPrevBooking(update);
-                break;
-            case NEXT_BOOKING:
-                botService.getNextBooking(update);
-                break;
-            case CANCEL_BOOKING:
-                botService.cancelBooking(update);
-                break;
-            case CONFIRM_CANCELLING:
-                botService.confirmedCancelling(update);
-                break;
-            case EDIT_BOOKING:
-                botService.editBooking(update);
-                break;
-            case NEW_DATE:
-                botService.editBookingDate(update);
-                break;
-            case GET_DATE_ONE_DAY:
-                botService.getDateForEditOneDay(update);
-                break;
-            case GET_DATE_CONTINUOUS:
-                botService.getStartDateForEditContinuous(update);
-                break;
-            case CHOSE_NEW_DATE:
-                botService.choseNewDate(update);
-                break;
-            case CONFIRM_EDITING_FOR_DATE:
-                botService.confirmedEditingForDate(update);
-                break;
-            case GET_CONTINUOUS_DATE_END:
-                botService.getEndDateForUpdate(update);
-                break;
-            default:
-                botService.getMainMenuSend(update);
-                break;
+            case COUNTRIES -> botService.getCountry(update);
+            case MY_BOOKINGS -> botService.getBookingsByEmId(update);
+            case CITIES -> botService.getCity(update);
+            case OFFICE -> botService.getOffice(update);
+            case CHOOSE_BOOKING_TYPE -> botService.getDateType(update);
+            case GET_DATE -> botService.getDate(update, LocalDate.now());
+            case GET_SEATS -> botService.getSeats(update);
+            case CHOOSE_RECURRING_TIME -> botService.getRecurringTime(update);
+            case CHOOSE_RECURRING_TIME_FOR_UPDATE -> botService.getRecurringTimeForEdit(update);
+            case CHOSE_RECURRING_DATE_FOR_UPDATE -> botService.getConfirmMenuForRecurringUpdate(update);
+            case GET_DAY_OF_WEEK -> botService.getDayOfWeeK(update);
+            case GET_DAY_OF_WEEK_FOR_UPDATE -> botService.getDayOfWeekForUpdate(update);
+            case CHOSE_END_DATE_FOR_UPDATE -> botService.getConfirmMenuForContinuousUpdate(update);
+            case GET_SEATS_RECURRING -> botService.getSeatsByRecurring(update);
+            case GET_PARKING -> botService.getParking(update);
+            case GET_REVIEW -> botService.getReview(update);
+            case BOOKING -> botService.bookWorkPlace(update);
+            case PREV_BOOKING -> botService.getPrevBooking(update);
+            case NEXT_BOOKING -> botService.getNextBooking(update);
+            case CANCEL_BOOKING -> botService.cancelBooking(update);
+            case CONFIRM_CANCELLING -> botService.confirmedCancelling(update);
+            case EDIT_BOOKING -> botService.editBooking(update);
+            case NEW_DATE -> botService.editBookingDate(update);
+            case GET_DATE_ONE_DAY -> botService.getDateForEditOneDay(update);
+            case GET_DATE_CONTINUOUS -> botService.getStartDateForEditContinuous(update);
+            case CHOSE_NEW_DATE -> botService.choseNewDate(update);
+            case CONFIRM_EDITING_FOR_DATE -> botService.confirmedEditingForDate(update);
+            case GET_CONTINUOUS_DATE_END -> botService.getEndDateForUpdate(update);
+            case GET_NEW_OFFICE_FOR_UPDATE -> botService.getOfficeForUpdate(update);
+            case GET_NEW_SEAT_FOR_UPDATE -> botService.getSeatsForUpdate(update);
+            case EmployeeState.CHOSE_NEW_SEAT -> botService.getConfirmMenuForOfficeUpdate(update);
+            case CONFIRM_EDITING_FOR_OFFICE -> botService.confirmedEditingForOffice(update);
+            default -> botService.getMainMenuSend(update);
         }
     }
 }

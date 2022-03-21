@@ -16,6 +16,9 @@ public class Constant {
     public static String GET_CONTINUOUS_DATE_END = "Please,choose a ending day \uD83D\uDCC5";
     public static String CHOSE_END_DATE_FOR_UPDATE="chose_update_date_for_update";
     public static String MENU_TEXT = "Welcome   ";
+    public static String NEW_OFFICE= "NEW_OFFICE";
+    public static String OFFICE_FOR_UPDATE="OFFICE_FOR_UPDATE";
+    public static String CHOSE_NEW_SEAT="CHOSE_NEW_SEAT";
 
     public static String CHOOSE_COUNTRY = "Choose country";
     public static String CHOOSE_CITY = "Choose city \uD83C\uDF06";
