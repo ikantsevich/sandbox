@@ -1,5 +1,11 @@
+repositories {
+    mavenCentral()
+    maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" }
+}
+
 dependencies {
     implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '5.7.1'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.1.0'
     implementation project(':hot-desk')
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.19.0'
 }
