@@ -29,7 +29,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findBookingsByOfficeId(Long officeId);
 
     @Query(value = "select b from Booking b join b.seat s join s.floor f join f.office o join o.address a where a.city = :cityName")
-    List<Booking> findBookingsByCity(String cityName);
+    List<Booking> findBookingsByCity(String city);
 
     @Query(value = "select b from Booking b join b.seat s join s.floor f where f.id = :floorId")
     List<Booking> findBookingsByFloorId(Long floorId);
