@@ -15,7 +15,7 @@ spring:
     properties:
       hibernate.jdbc.time_zone: UTC
       hibernate.dialect: org.hibernate.dialect.MySQL57Dialect
-      hibernate.show_sql: false
+      hibernate.show_sql: true
       hibernate.format_sql: true
       hibernate.ddl-auto: none
       hibernate.type: trace

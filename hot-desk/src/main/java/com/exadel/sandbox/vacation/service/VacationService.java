@@ -42,7 +42,7 @@ public class VacationService extends BaseCrudService<Vacation, VacationResponseD
     }
 
     public void editBookings(Vacation vacation) {
-        List<Booking> bookings = bookingRepository.getBookingsByEmployeeId(vacation.getEmployee().getId());
+        List<Booking> bookings = bookingRepository.findBookingsByEmployeeId(vacation.getEmployee().getId());
 
         for (Booking booking : bookings) {
             List<BookingDates> remove = new ArrayList<>();
