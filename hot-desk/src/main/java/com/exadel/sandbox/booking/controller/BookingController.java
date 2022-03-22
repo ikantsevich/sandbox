@@ -30,6 +30,7 @@ public class BookingController {
         return bookingService.getById(id);
     }
 
+
     @PostMapping()
     ResponseEntity<BookingResponseDto> createBooking(@Valid @RequestBody BookingCreateDto bookingCreateDTO) {
         return bookingService.create(bookingCreateDTO);
@@ -42,8 +43,8 @@ public class BookingController {
 
     @PutMapping("{id}")
     ResponseEntity<BookingResponseDto> updateBooking(@PathVariable("id") Long id,
-                                                     @Valid @RequestBody BookingUpdateDto bookingUpdateDTO) {
-        return bookingService.update(id, bookingUpdateDTO);
+                                                     @Valid @RequestBody BookingUpdateDto bookingUpdateDto) {
+        return bookingService.update(id, bookingUpdateDto);
     }
 
     @GetMapping("list/current")
@@ -57,10 +58,12 @@ public class BookingController {
     }
 
     @PutMapping("cancel/{id}")
-    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id,
-                                                      @RequestParam LocalDate start,
-                                                      @RequestParam(required = false) LocalDate end){
+    ResponseEntity<BookingResponseDto> cancelBookings(@PathVariable Long id, @RequestParam LocalDate start, @RequestParam(required = false) LocalDate end) {
         return bookingService.cancelBookings(id, start, end);
     }
 
+    @GetMapping("{emId}/list")
+    ResponseEntity<List<BookingResponseDto>> getBookingsByEmId(@PathVariable Long emId) {
+        return bookingService.getBookingsByEmId(emId);
+    }
 }

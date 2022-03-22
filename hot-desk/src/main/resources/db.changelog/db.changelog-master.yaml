@@ -90,5 +90,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
 
   - include:
+      file: changes/new-booking.yaml
+      relativeToChangelogFile: true
+
+  - include:
       file: changes/booking-dates.yaml
       relativeToChangelogFile: true

@@ -14,8 +14,6 @@ import java.util.List;
 @JsonPropertyOrder({"id", "employeeId", "seatId", "parkingSpotId", "dates"})
 public class BookingResponseDto extends BookingBaseDto {
     private Long id;
-    private Long employeeId;
-    private Long seatId;
     private Long parkingSpotId;
     private List<LocalDate> dates;
     private OfficeResponseDto office;

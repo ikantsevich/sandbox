@@ -4,15 +4,21 @@ package com.exadel.telegrambot.bot.utils;
 public class Constant {
     public static String SKIP = "Skip";
     public static String DELETE = "❌";
+    public static String EDIT = "Edit:";
     public static String PREV="<<";
     public static String NEXT=">>";
     public static String BACK_TO_GET_TO_OFFICE = "BACK_TO_GET_TO_OFFICE";
     public static String BACK = "⬅️ Back";
-    public static String DATE="DATE";
-    public static String GET_DATE_TEXT="Please,choose a date \uD83D\uDCC5";
+    public static String BACK_TO_BOOKINGS = "BACK_TO_BOOKINGS";
+    public static String DATE = "DATE";
+    public static String GET_DATE_TEXT = "Please,choose a date \uD83D\uDCC5";
     public static String GET_CONTINUOUS_DATE_BEGIN = "Please,choose a beginning day \uD83D\uDCC5";
     public static String GET_CONTINUOUS_DATE_END = "Please,choose a ending day \uD83D\uDCC5";
-    public static String MENU_TEXT = "Welcome...";
+    public static String CHOSE_END_DATE_FOR_UPDATE="chose_update_date_for_update";
+    public static String MENU_TEXT = "Welcome   ";
+    public static String NEW_OFFICE= "NEW_OFFICE";
+    public static String OFFICE_FOR_UPDATE="OFFICE_FOR_UPDATE";
+    public static String CHOSE_NEW_SEAT="CHOSE_NEW_SEAT";
 
     public static String CHOOSE_COUNTRY = "Choose country";
     public static String CHOOSE_CITY = "Choose city \uD83C\uDF06";
@@ -28,6 +34,8 @@ public class Constant {
     public static String ONE_DAY = "One Day";
     public static String CONTINUOUS = "Continuous";
     public static String RECURRING = "Recurring";
+    public static String NEW_DATE = "NEW_DATE";
+
 
     public static String YES = "YES  ✅";
     public static String NO = "NO  ❌";
@@ -45,5 +53,5 @@ public class Constant {
     public static String YOU_NOT_EMPLOYEE = "You are not our employee";
 
     public static String NEW_BOOKING = "New booking \uD83D\uDCC2";
-    public static String MY_BOOKINGS = "My bookings \uD83D\uDDC2";
+    public static final String MY_BOOKINGS = "My bookings \uD83D\uDDC2";
 }

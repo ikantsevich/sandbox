@@ -25,7 +25,7 @@ public class BotController{
         if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
             if (data.equals(SKIP)) return;
-            if (data.equals(CANCEL) || data.equals(DELETE)){
+            if (data.equals(CANCEL) || data.equals(DELETE)) {
                 botService.deleteMessage(update);
                 return;
             }
@@ -36,5 +36,4 @@ public class BotController{
         }
         bot.updateHandler(update);
     }
-
 }

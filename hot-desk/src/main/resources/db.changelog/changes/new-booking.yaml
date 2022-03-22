@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: create table booking
+      author: asilbekdev@gmail.com
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: booking
+      changes:
+        changes:
+          - createTable:
+              tableName: booking
+              columns:
+                - column:
+                    name: bo_id
+                    type: bigint
+                    autoIncrement: true
+                    remarks: 'Booking primary key'
+                    constraints:
+                      primaryKey: true
+                      primaryKeyName: bo_id_pk
+                - column:
+                    name: em_id
+                    type: int
+                    remarks: 'Employee foreign key'
+                    constraints:
+                      nullable: false
+                      foreignKeyName: bo_em_fk
+                      references: employee(em_id)
+                - column:
+                    name: seat_id
+                    type: int
+                    remarks: 'Seat foreign key'
+                    constraints:
+                      nullable: false
+                      foreignKeyName: bo_seat_fk
+                      references: seat(seat_id)
+                - column:
+                    name: spot_id
+                    type: bigint
+                    remarks: 'Parking spot foreign key'
+                    constraints:
+                      nullable: true
+                      foreignKeyName: bo_spot_fk
+                      references: parking_spot(spot_id)
+                - column:
+                    name: bo_created
+                    type: datetime
+                    remarks: 'Record creation timestamp'
+                    defaultValueComputed: CURRENT_TIMESTAMP
+                - column:
+                    name: bo_modified
+                    type: datetime
+                    remarks: 'Record modified timestamp'
+                    defaultValueComputed: CURRENT_TIMESTAMP

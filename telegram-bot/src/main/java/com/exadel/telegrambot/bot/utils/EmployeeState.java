@@ -19,4 +19,24 @@ public interface EmployeeState {
     String GET_CONTINUOUS_DATE = "get_continuous_date";
     String GET_REVIEW = "get_review";
     String BOOKING = "booking";
+    String NEXT_BOOKING = "next_booking:";
+    String PREV_BOOKING = "prev_booking:";
+    String CANCEL_BOOKING = "cancel_booking";
+    String CONFIRM_CANCELLING = "confirm_cancel";
+    String CONFIRM_EDITING_FOR_DATE = "confirm_editing_for_date";
+    String EDIT_BOOKING = "edit_booking";
+    String BACK_TO_MAIN_MENU = "back_to_main_menu";
+    String NEW_DATE = "NEW_DATE";
+    String CHOSE_NEW_DATE = "chose_new_date";
+    String GET_DATE_ONE_DAY = "get_date_one_day";
+    String GET_DATE_CONTINUOUS = "get_date_continuous";
+    String CHOOSE_RECURRING_TIME_FOR_UPDATE = "get_recurring_time_for_update";
+    String GET_DAY_OF_WEEK_FOR_UPDATE = "get_day_of_week_for_update";
+    String CHOSE_RECURRING_DATE_FOR_UPDATE = "get_recurring_date_for_update";
+    String GET_CONTINUOUS_DATE_END = "Please,choose a ending day \uD83D\uDCC5";
+    String CHOSE_END_DATE_FOR_UPDATE = "chose_update_date_for_update";
+    String GET_NEW_OFFICE_FOR_UPDATE = "get_new_office_for_update";
+    String GET_NEW_SEAT_FOR_UPDATE = "get_new_seat_for_update";
+    String CHOSE_NEW_SEAT = "CHOSE_NEW_SEAT";
+    String CONFIRM_EDITING_FOR_OFFICE = "CONFIRM_EDITING_FOR_OFFICE";
 }

@@ -3,9 +3,7 @@ package com.exadel.sandbox.booking.entity;
 import com.exadel.sandbox.employee.entity.Employee;
 import com.exadel.sandbox.parking_spot.entity.ParkingSpot;
 import com.exadel.sandbox.seat.entity.Seat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +12,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

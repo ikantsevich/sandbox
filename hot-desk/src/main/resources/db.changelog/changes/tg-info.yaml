@@ -45,4 +45,3 @@ databaseChangeLog:
                   name: info_modified
                   type: datetime
                   defaultValueComputed: CURRENT_TIMESTAMP
-#

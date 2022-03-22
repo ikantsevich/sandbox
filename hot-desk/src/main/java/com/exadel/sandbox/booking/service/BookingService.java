@@ -26,7 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -127,13 +130,21 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         return ResponseEntity.ok(bookingResponseDtos);
     }
 
-    public ResponseEntity<BookingResponseDto> update(Long id, BookingUpdateDto bookingUpdateDTO) {
-        Booking booking = checkUpdateBooking(id, bookingUpdateDTO);
+    public ResponseEntity<List<BookingResponseDto>> getBookingsByEmId(Long emId) {
+        List<Booking> bookingsByOfficeId = repository.findBookingsByEmployeeId(emId);
+
+        List<BookingResponseDto> bookingResponseDtos = bookingsByOfficeId.stream().map(booking -> mapper.map(booking, BookingResponseDto.class)).collect(Collectors.toList());
+
+        return ResponseEntity.ok(bookingResponseDtos);
+    }
+
+    public ResponseEntity<BookingResponseDto> update(Long id, BookingUpdateDto bookingUpdateDto) {
+        Booking booking = checkUpdateBooking(id, bookingUpdateDto);
 
         return ResponseEntity.ok(mapper.map(repository.save(booking), BookingResponseDto.class));
     }
 
-//    Checks all possible errors and if bookingUpdateDto passes function returns The booking
+    //    Checks all possible errors and if bookingUpdateDto passes function returns The booking
     private Booking checkUpdateBooking(Long id, BookingUpdateDto bookingUpdateDto) {
         bookingUpdateDto.setDates(new ArrayList<>(new HashSet<>(bookingUpdateDto.getDates())));
 
