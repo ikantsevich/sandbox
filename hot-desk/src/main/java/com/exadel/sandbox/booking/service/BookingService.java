@@ -161,7 +161,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         List<LocalDate> seatBookingDates = new ArrayList<>();
         List<LocalDate> parkingBookedDates = new ArrayList<>();
 
-//        Checking if employee es free.
+//        Checking if employee is free.
         if (bookingUpdateDto.getEmployeeId().equals(booking.getEmployee().getId()))
             employeeBookedDates = repository.checkEmployeeBookedDates(bookingUpdateDto.getEmployeeId(), bookingUpdateDtoDates);
         else
@@ -212,7 +212,13 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
             booking.setParkingSpot(parkingSpot);
         }
 
-        booking.setDates(bookingUpdateDto.getDates().stream().map(BookingDates::new).collect(Collectors.toList()));
+        List<LocalDate> bookedDated = booking.getDates().stream().map(BookingDates::getDate).collect(Collectors.toList());
+        bookedDated.forEach(bookedDate -> {
+            if (bookedDate.isBefore(LocalDate.now()))
+                bookingUpdateDto.getDates().add(bookedDate);
+        });
+
+        booking.setDates(bookingUpdateDto.getDates().stream().map(BookingDates::new).distinct().collect(Collectors.toList()));
 
         return booking;
     }
