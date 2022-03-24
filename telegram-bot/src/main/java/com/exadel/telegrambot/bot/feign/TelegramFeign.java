@@ -1,8 +1,10 @@
 package com.exadel.telegrambot.bot.feign;
 
+import com.exadel.telegrambot.bot.dto.InitialDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.GetUserProfilePhotos;
 import org.telegram.telegrambots.meta.api.methods.StopMessageLiveLocation;
@@ -91,4 +93,7 @@ public interface TelegramFeign {
     //                        Delete message
     @PostMapping("deleteMessage")
     void deleteMessage(@RequestBody DeleteMessage deleteMessage);
+
+    @PostMapping("setWebhook")
+    InitialDto setWebhook(@RequestParam String url);
 }
