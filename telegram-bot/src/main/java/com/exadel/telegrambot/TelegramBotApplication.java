@@ -1,27 +1,28 @@
 package com.exadel.telegrambot;
 
-import com.exadel.telegrambot.bot.dto.InitialDto;
+import com.exadel.telegrambot.bot.feign.TelegramFeign;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
-import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 
-import static com.exadel.telegrambot.bot.utils.TelegramUtils.*;
+import static com.exadel.telegrambot.bot.utils.TelegramUtils.BASE_WEBHOOK;
+import static com.exadel.telegrambot.bot.utils.TelegramUtils.GLOBAL;
 
 @SpringBootApplication
 @EnableFeignClients
 @RequiredArgsConstructor
-public class TelegramBotApplication {
+public class TelegramBotApplication implements CommandLineRunner {
+    private final TelegramFeign telegramFeign;
 
     public static void main(String[] args) {
         SpringApplication.run(TelegramBotApplication.class, args);
-        System.out.println(restTemplate().postForObject(FULL_REQUEST + "setWebhook", new SetWebhook(GLOBAL + "sandbox/" + BASE_WEBHOOK), InitialDto.class));    }
 
-    @Bean
-    public static RestTemplate restTemplate(){
-        return new RestTemplate();
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println(telegramFeign.setWebhook(GLOBAL  + "sandbox/" + BASE_WEBHOOK));
     }
 }

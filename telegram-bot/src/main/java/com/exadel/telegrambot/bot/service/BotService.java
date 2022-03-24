@@ -142,9 +142,10 @@ public class BotService {
     }
 
     public void switchDate(Update update) {
-        final CallbackQuery callbackQuery = update.getCallbackQuery();
-        boolean isPrev = callbackQuery.getData().startsWith(PREV);
-        LocalDate date = LocalDate.parse(callbackQuery.getData().substring(isPrev ? PREV.length() : NEXT.length()));
+        String data = update.getCallbackQuery().getData();
+        boolean isPrev = data.contains(PREV);
+        String substring = data.substring(0, data.length() - 2);
+        LocalDate date = LocalDate.parse(substring.substring(substring.length()-10));
         getDate(update, isPrev ? date.minusMonths(1) : date.plusMonths(1));
     }
 

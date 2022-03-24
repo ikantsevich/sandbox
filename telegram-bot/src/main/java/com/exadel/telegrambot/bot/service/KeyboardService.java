@@ -256,9 +256,9 @@ public class KeyboardService {
             days = new LinkedHashMap<>();
         }
         LinkedHashMap<String, String> floor = new LinkedHashMap<>();
-        floor.put(PREV + dateStr, PREV);
-        floor.put(BACK_TO_GET_TO_OFFICE, BACK);
-        floor.put(NEXT + dateStr, NEXT);
+        floor.put(data + dateStr + PREV, PREV);
+        floor.put(data + BACK_TO_GET_TO_OFFICE, BACK);
+        floor.put(data + dateStr + NEXT, NEXT);
         rowList.add(getRow(floor));
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
