@@ -546,15 +546,15 @@ public class BotService {
         sendMessage.setChatId(message.getChatId().toString());
         try {
             BookingResponseDto bookingById = hotDeskFeign.getBookingById(Long.valueOf(bookingId));
-            OfficeResponseDto office = hotDeskFeign.getOffice(Long.valueOf(officeId));
+            OfficeResponseDto office = hotDeskFeign.getOfficeByAddressId(Long.valueOf(officeId));
             bookingById.setOffice(office);
             bookingById.setSeatId(Long.valueOf(seatId));
             hotDeskFeign.updateBooking(Long.valueOf(bookingId), modelMapper.map(bookingById, BookingUpdateDto.class));
             deleteMessage(update);
+            sendMessage.setText("successfully updated");
         } catch (Exception e) {
-            sendMessage.setText("Update is not confirmed because of some problems.\n Please try again later");
+            sendMessage.setText("Update is not confirmed because of some problems.\nPlease try again later");
         }
-        sendMessage.setText("successfully updated");
         telegramFeign.sendMessage(sendMessage);
     }
 }
