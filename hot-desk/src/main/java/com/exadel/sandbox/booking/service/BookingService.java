@@ -234,17 +234,18 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         Booking booking = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking with id: " + id + "not found"));
 
         List<BookingDates> removedDates = new ArrayList<>();
+        List<BookingDates> bookingDates = new ArrayList<>(booking.getDates());
 
         LocalDate finalEnd = end;
 
-        booking.getDates().forEach(date -> {
+        bookingDates.forEach(date -> {
             if (date.getDate().equals(start) || date.getDate().equals(finalEnd) || (start.isBefore(date.getDate()) && finalEnd.isAfter(date.getDate())))
                 removedDates.add(date);
         });
 
-        booking.getDates().removeAll(removedDates);
+        bookingDates.removeAll(removedDates);
 
-        if (booking.getDates().isEmpty())
+        if (bookingDates.isEmpty())
             repository.delete(booking);
 
         return ResponseEntity.ok(mapper.map(booking, BookingResponseDto.class));
