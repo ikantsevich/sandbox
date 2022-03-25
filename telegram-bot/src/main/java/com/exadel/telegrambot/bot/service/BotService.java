@@ -351,8 +351,7 @@ public class BotService {
                     bookingResponseDto = hotDeskFeign.cancelBooking(Long.parseLong(currBookingId), start, end);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                sendMessage.setText(e.getMessage());
+                sendMessage.setText("Cancellation is not completed.\n Please try again later");
                 telegramFeign.sendMessage(sendMessage);
                 deleteMessage(update);
                 return;
@@ -389,7 +388,7 @@ public class BotService {
             hotDeskFeign.updateBooking(Long.valueOf(currBookingId), bookingUpdateDto);
             sendMessage.setText("Updated Successfully");
         } catch (Exception e) {
-            sendMessage.setText(e.getMessage());
+            sendMessage.setText("It is not updated. \n Please try again later");
         }
         telegramFeign.sendMessage(sendMessage);
     }
@@ -547,15 +546,15 @@ public class BotService {
         sendMessage.setChatId(message.getChatId().toString());
         try {
             BookingResponseDto bookingById = hotDeskFeign.getBookingById(Long.valueOf(bookingId));
-            OfficeResponseDto office = hotDeskFeign.getOffice(Long.valueOf(officeId));
+            OfficeResponseDto office = hotDeskFeign.getOfficeByAddressId(Long.valueOf(officeId));
             bookingById.setOffice(office);
             bookingById.setSeatId(Long.valueOf(seatId));
             hotDeskFeign.updateBooking(Long.valueOf(bookingId), modelMapper.map(bookingById, BookingUpdateDto.class));
             deleteMessage(update);
+            sendMessage.setText("successfully updated");
         } catch (Exception e) {
-            sendMessage.setText(e.getMessage());
+            sendMessage.setText("Update is not confirmed because of some problems.\nPlease try again later");
         }
-        sendMessage.setText("successfully updated");
         telegramFeign.sendMessage(sendMessage);
     }
 }
