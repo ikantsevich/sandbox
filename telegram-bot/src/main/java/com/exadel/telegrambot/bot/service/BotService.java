@@ -130,11 +130,6 @@ public class BotService {
         return employeeByChatId == null ? SKIP_ACTION : employeeByChatId.getTgInfo().getChatState();
     }
 
-    public void hello(Update update) {
-        Message message = getMessage(update);
-        telegramFeign.sendMessage(new SendMessage(message.getChatId().toString(), "Hello"));
-    }
-
     public void deleteMessage(Update update) {
         Message message = getMessage(update);
         telegramFeign.deleteMessage(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
@@ -142,7 +137,7 @@ public class BotService {
 
     public void switchDate(Update update) {
         String data = update.getCallbackQuery().getData();
-        boolean isPrev = data.contains(PREV);
+        boolean isPrev = data.endsWith(PREV);
         String substring = data.substring(0, data.length() - 2);
         LocalDate date = LocalDate.parse(substring.substring(substring.length()-10));
         getDate(update, isPrev ? date.minusMonths(1) : date.plusMonths(1));
