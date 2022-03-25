@@ -161,7 +161,7 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         List<LocalDate> seatBookingDates = new ArrayList<>();
         List<LocalDate> parkingBookedDates = new ArrayList<>();
 
-//        Checking if employee es free.
+//        Checking if employee is free.
         if (bookingUpdateDto.getEmployeeId().equals(booking.getEmployee().getId()))
             employeeBookedDates = repository.checkEmployeeBookedDates(bookingUpdateDto.getEmployeeId(), bookingUpdateDtoDates);
         else
@@ -212,7 +212,13 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
             booking.setParkingSpot(parkingSpot);
         }
 
-        booking.setDates(bookingUpdateDto.getDates().stream().map(BookingDates::new).collect(Collectors.toList()));
+        List<LocalDate> bookedDated = booking.getDates().stream().map(BookingDates::getDate).collect(Collectors.toList());
+        bookedDated.forEach(bookedDate -> {
+            if (bookedDate.isBefore(LocalDate.now()))
+                bookingUpdateDto.getDates().add(bookedDate);
+        });
+
+        booking.setDates(bookingUpdateDto.getDates().stream().map(BookingDates::new).distinct().collect(Collectors.toList()));
 
         return booking;
     }
@@ -228,17 +234,18 @@ public class BookingService extends BaseCrudService<Booking, BookingResponseDto,
         Booking booking = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking with id: " + id + "not found"));
 
         List<BookingDates> removedDates = new ArrayList<>();
+        List<BookingDates> bookingDates = new ArrayList<>(booking.getDates());
 
         LocalDate finalEnd = end;
 
-        booking.getDates().forEach(date -> {
+        bookingDates.forEach(date -> {
             if (date.getDate().equals(start) || date.getDate().equals(finalEnd) || (start.isBefore(date.getDate()) && finalEnd.isAfter(date.getDate())))
                 removedDates.add(date);
         });
 
-        booking.getDates().removeAll(removedDates);
+        bookingDates.removeAll(removedDates);
 
-        if (booking.getDates().isEmpty())
+        if (bookingDates.isEmpty())
             repository.delete(booking);
 
         return ResponseEntity.ok(mapper.map(booking, BookingResponseDto.class));
