@@ -9,7 +9,7 @@ public interface TelegramUtils {
 
     String FULL_REQUEST = TELEGRAM_BASE + TOKEN;
 
-    String GLOBAL = "https://30ca-178-218-201-223.ngrok.io/";
+    String GLOBAL = "https://c3e3-178-218-201-223.ngrok.io/";
 
     String HOT_DESK_URL = "http://localhost:8081/sandbox";
 }
