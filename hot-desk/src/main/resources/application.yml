@@ -6,7 +6,7 @@ datasource:
   host: '${dockerdbhost:localhost}:3306'
   url: 'jdbc:mariadb://${datasource.host}/${datasource.schema}'
   username: 'root'
-  password: ''
+  password: '09102003'
 spring:
   mvc:
     format:
@@ -42,7 +42,7 @@ spring:
     host: 'smtp.gmail.com'
     port: 587
     username: 'hotdesktcompany@gmail.com'
-    password: ''
+    password: 'sahsumrpycrcqgbb'
     properties:
       mail:
         smtp:
