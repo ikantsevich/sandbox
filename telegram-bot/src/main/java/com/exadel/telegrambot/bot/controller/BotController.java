@@ -29,7 +29,7 @@ public class BotController{
                 botService.deleteMessage(update);
                 return;
             }
-            if (data.contains(PREV) || data.contains(NEXT)) {
+            if (data.endsWith(PREV) || data.endsWith(NEXT)) {
                 botService.switchDate(update);
                 return;
             }

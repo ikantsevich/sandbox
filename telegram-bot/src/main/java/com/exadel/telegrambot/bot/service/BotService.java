@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -131,11 +130,6 @@ public class BotService {
         return employeeByChatId == null ? SKIP_ACTION : employeeByChatId.getTgInfo().getChatState();
     }
 
-    public void hello(Update update) {
-        Message message = getMessage(update);
-        telegramFeign.sendMessage(new SendMessage(message.getChatId().toString(), "Hello"));
-    }
-
     public void deleteMessage(Update update) {
         Message message = getMessage(update);
         telegramFeign.deleteMessage(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
@@ -143,7 +137,7 @@ public class BotService {
 
     public void switchDate(Update update) {
         String data = update.getCallbackQuery().getData();
-        boolean isPrev = data.contains(PREV);
+        boolean isPrev = data.endsWith(PREV);
         String substring = data.substring(0, data.length() - 2);
         LocalDate date = LocalDate.parse(substring.substring(substring.length()-10));
         getDate(update, isPrev ? date.minusMonths(1) : date.plusMonths(1));
@@ -153,7 +147,7 @@ public class BotService {
         String data = update.getCallbackQuery().getData();
         Message message = getMessage(update);
         EditMessageText editMessageText = new EditMessageText();
-        if (data.endsWith(ONE_DAY)) {
+        if (data.contains(ONE_DAY)) {
             editMessageText.setText(GET_DATE_TEXT);
             editMessageText.setReplyMarkup(keyboardService.createDate(date, data.substring(EmployeeState.CHOOSE_BOOKING_TYPE.length())));
         } else if (data.length() < 35 && data.startsWith(DATE) && data.endsWith(CONTINUOUS)) {
